@@ -1,4 +1,4 @@
-// path: @/component/config/calendar-config.js
+// @/component/config/calendar-config.js
 
 import viLocale from "@fullcalendar/core/locales/vi";
 

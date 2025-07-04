@@ -1,5 +1,6 @@
-// path: @/component/config/provider-config.js
+// @/component/config/provider-config.js
 
+import "@fontsource/montserrat";
 import viVN from "antd/locale/vi_VN";
 
 export const PROVIDER_CONFIG = {
@@ -19,7 +20,7 @@ export const PROVIDER_CONFIG = {
       List: {},
       Card: { bodyPaddingSM: 4 },
     },
-    token: {},
+    token: { fontFamily: "Montserrat, sans-serif" },
   },
   form: {
     validateMessages: {

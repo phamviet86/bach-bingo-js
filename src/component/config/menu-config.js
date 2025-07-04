@@ -1,4 +1,4 @@
-// path: @/component/config/menu-config.js
+// @/component/config/menu-config.js
 
 import {
   HomeOutlined,

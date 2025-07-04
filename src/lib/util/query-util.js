@@ -1,4 +1,4 @@
-// path: @/lib/util/query-util.js
+// @/lib/util/query-util.js
 
 /**
  * # Hậu tố tham số truy vấn API

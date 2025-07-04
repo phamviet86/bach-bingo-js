@@ -1,4 +1,4 @@
-// path: @/component/config/modal-config.js
+// @/component/config/modal-config.js
 
 export const MODAL_CONFIG = {
   maskClosable: false,

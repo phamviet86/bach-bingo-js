@@ -1,4 +1,4 @@
-// path: @/component/config/selection-config.js
+// @/component/config/selection-config.js
 
 export const COLOR_ENUM = {
   default: {

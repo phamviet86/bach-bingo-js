@@ -1,4 +1,4 @@
-// path: @/component/config/drawer-config.js
+// @/component/config/drawer-config.js
 
 export const DRAWER_CONFIG = {
   maskClosable: false,
