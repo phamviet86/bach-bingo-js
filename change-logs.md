@@ -4,6 +4,7 @@
 
 - [] sửa lại các props cần cho components: pro-table, pro-descriptions, pro-form, drawer-form, modal-description, modal, drawer, calender, transfer
 - [] tạo hook phù hợp với các components trên
+- [] trong quá trình tạo hook cần xem lại các helpers
 
 ## 2025-07-05
 
