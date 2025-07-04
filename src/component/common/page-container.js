@@ -2,17 +2,21 @@
 
 import Link from "next/link";
 import { PageContainer as AntPageContainer } from "@ant-design/pro-components";
+import { convertToUpperCase } from "@/lib/util/convert-util";
 
 // Helper function to render breadcrumb items
 function renderBreadcrumbItem(item) {
   return item.path ? <Link href={item.path}>{item.title}</Link> : item.title;
 }
 
-export function PageContainer({ items = [], ...props }) {
+export function PageContainer({ items = [], title = undefined, ...props }) {
+  const uppercaseTitle = title ? convertToUpperCase(title) : undefined;
+
   return (
     <AntPageContainer
       {...props}
       header={{
+        title: uppercaseTitle,
         breadcrumb: {
           items: items,
           itemRender: renderBreadcrumbItem,
