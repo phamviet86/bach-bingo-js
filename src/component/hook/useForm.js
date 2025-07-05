@@ -30,6 +30,22 @@ export function useForm() {
     formRef?.current?.resetFields();
   };
 
+  const setValues = (values) => {
+    formRef?.current?.setFieldsValue(values);
+  };
+
+  const getValues = () => {
+    return formRef?.current?.getFieldsValue();
+  };
+
+  const getValue = (name) => {
+    return formRef?.current?.getFieldValue(name);
+  };
+
+  const submit = async () => {
+    formRef?.current?.submit();
+  };
+
   // Expose API
   return {
     formRef,
@@ -46,5 +62,9 @@ export function useForm() {
     open,
     close,
     reset,
+    setValues,
+    getValues,
+    getValue,
+    submit,
   };
 }
