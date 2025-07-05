@@ -3,6 +3,45 @@
 import { NextResponse } from "next/server";
 
 /**
+ * Chuẩn hóa dữ liệu trả về từ truy vấn SQL về dạng { data, total }
+ * @param {Array} sqlResult - Mảng kết quả truy vấn từ database
+ * @returns {{ data: Array, total: number }} Đối tượng chứa dữ liệu đã xử lý
+ *
+ * @example
+ * // Khi có dữ liệu
+ * normalizeSqlResult([{ id: 1, name: "A", total: 10 }, { id: 2, name: "B", total: 10 }])
+ * // => { data: [{ id: 1, name: "A" }, { id: 2, name: "B" }], total: 10 }
+ *
+ * @example
+ * // Khi không có dữ liệu
+ * normalizeSqlResult([])
+ * // => { data: [], total: 0 }
+ */
+function normalizeSqlResult(sqlResult) {
+  if (!Array.isArray(sqlResult)) {
+    return {
+      data: [],
+      total: 0,
+    };
+  }
+
+  if (sqlResult.length === 0) {
+    return { data: [], total: 0 };
+  }
+
+  const data = sqlResult.map(({ total, ...row }) => row);
+  const total =
+    typeof sqlResult[0]?.total !== "undefined"
+      ? parseInt(sqlResult[0].total, 10) || 0
+      : data.length;
+
+  return {
+    data,
+    total,
+  };
+}
+
+/**
  * Xây dựng phản hồi API chuẩn với format thống nhất
  * @param {number} status - Mã trạng thái HTTP (200, 400, 500, ...)
  * @param {boolean} success - Trạng thái thành công của request
@@ -58,43 +97,4 @@ export function buildApiResponse(
     response.cookies.set(cookies.name, cookies.value, cookies.options);
   }
   return response;
-}
-
-/**
- * Chuẩn hóa dữ liệu trả về từ truy vấn SQL về dạng { data, total }
- * @param {Array} sqlResult - Mảng kết quả truy vấn từ database
- * @returns {{ data: Array, total: number }} Đối tượng chứa dữ liệu đã xử lý
- *
- * @example
- * // Khi có dữ liệu
- * normalizeSqlResult([{ id: 1, name: "A", total: 10 }, { id: 2, name: "B", total: 10 }])
- * // => { data: [{ id: 1, name: "A" }, { id: 2, name: "B" }], total: 10 }
- *
- * @example
- * // Khi không có dữ liệu
- * normalizeSqlResult([])
- * // => { data: [], total: 0 }
- */
-function normalizeSqlResult(sqlResult) {
-  if (!Array.isArray(sqlResult)) {
-    return {
-      data: [],
-      total: 0,
-    };
-  }
-
-  if (sqlResult.length === 0) {
-    return { data: [], total: 0 };
-  }
-
-  const data = sqlResult.map(({ total, ...row }) => row);
-  const total =
-    typeof sqlResult[0]?.total !== "undefined"
-      ? parseInt(sqlResult[0].total, 10) || 0
-      : data.length;
-
-  return {
-    data,
-    total,
-  };
 }
