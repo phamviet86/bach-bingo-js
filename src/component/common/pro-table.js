@@ -26,6 +26,7 @@ export function ProTable({
   showSearch = true,
   showOptions = false,
   showPagination = true,
+  syncToUrl = false,
 
   // Header configuration
   title = undefined,
@@ -95,6 +96,11 @@ export function ProTable({
   const searchConfig = showSearch ? TABLE_CONFIG.search : false;
   const paginationConfig = showPagination ? TABLE_CONFIG.pagination : false;
   const optionsConfig = showOptions ? TABLE_CONFIG.options : false;
+  const formConfig = syncToUrl
+    ? {
+        syncToUrl: (values, _) => values,
+      }
+    : undefined;
 
   return (
     <>
@@ -108,6 +114,7 @@ export function ProTable({
         headerTitle={title}
         toolBarRender={extra ? () => extra : undefined}
         rowSelection={rowSelectionConfig}
+        form={formConfig}
         search={searchConfig}
         pagination={paginationConfig}
         options={optionsConfig}

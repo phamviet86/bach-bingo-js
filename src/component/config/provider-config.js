@@ -4,24 +4,21 @@ import "@fontsource/montserrat";
 import viVN from "antd/locale/vi_VN";
 import { theme } from "antd";
 
-const { darkAlgorithm } = theme;
+const { darkAlgorithm, defaultAlgorithm } = theme;
 
-export const PROVIDER_CONFIG = {
+// You can make this dynamic by exporting a function instead
+export const getProviderConfig = (isDark = true) => ({
   locale: viVN,
   theme: {
-    // algorithm: dark ? darkAlgorithm : defaultAlgorithm,
-    algorithm: darkAlgorithm,
+    algorithm: isDark ? darkAlgorithm : defaultAlgorithm,
     components: {
       Button: { fontWeight: 500 },
       Form: {
-        labelColor: "rgba(0, 0, 0, 0.56)",
+        // Remove labelColor override to let theme algorithm handle it
       },
       Drawer: {},
       Badge: { statusSize: 8 },
-      Segmented: {
-        itemSelectedBg: "#1677ff",
-        itemSelectedColor: "#ffffff",
-      },
+      Segmented: {},
       List: {},
       Card: { bodyPaddingSM: 4 },
     },
@@ -32,4 +29,7 @@ export const PROVIDER_CONFIG = {
       required: "Thông tin bắt buộc",
     },
   },
-};
+});
+
+// For backward compatibility, export the dark config as default
+export const PROVIDER_CONFIG = getProviderConfig(true);

@@ -196,6 +196,7 @@ export default function TablePage() {
       showSearch={true}
       showOptions={true}
       showPagination={true}
+      syncToUrl={true}
     />
   );
 }
