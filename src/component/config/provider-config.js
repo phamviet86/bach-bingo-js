@@ -2,10 +2,15 @@
 
 import "@fontsource/montserrat";
 import viVN from "antd/locale/vi_VN";
+import { theme } from "antd";
+
+const { darkAlgorithm } = theme;
 
 export const PROVIDER_CONFIG = {
   locale: viVN,
   theme: {
+    // algorithm: dark ? darkAlgorithm : defaultAlgorithm,
+    algorithm: darkAlgorithm,
     components: {
       Button: { fontWeight: 500 },
       Form: {
