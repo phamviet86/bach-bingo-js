@@ -3,8 +3,10 @@
 import { neonDB } from "@/lib/db/neon-db";
 import { parseSearchParams } from "@/lib/util/query-util";
 
+// Database initialization
 const sql = neonDB();
 
+// READ operations
 export async function getOptions(searchParams) {
   try {
     const ignoredSearchColumns = [];
@@ -13,11 +15,11 @@ export async function getOptions(searchParams) {
 
     const sqlValue = [...queryValues];
     const sqlText = `
-      SELECT *, COUNT(*) OVER() AS total
-      FROM options
-      WHERE deleted_at IS NULL
+      SELECT o.*, COUNT(*) OVER() AS total
+      FROM options o
+      WHERE o.deleted_at IS NULL
       ${whereClause}
-      ${orderByClause || "ORDER BY option_table, option_column, option_label"}
+      ${orderByClause || "ORDER BY o.created_at"}
       ${limitClause};
     `;
 
@@ -30,15 +32,16 @@ export async function getOptions(searchParams) {
 export async function getOption(id) {
   try {
     return await sql`
-      SELECT *
-      FROM options
-      WHERE deleted_at IS NULL AND id = ${id};
+      SELECT o.*
+      FROM options o
+      WHERE o.deleted_at IS NULL AND o.id = ${id};
     `;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
+// CREATE operations
 export async function createOption(data) {
   try {
     const {
@@ -62,7 +65,8 @@ export async function createOption(data) {
   }
 }
 
-export async function updateOption(data, id) {
+// UPDATE operations
+export async function updateOption(id, data) {
   try {
     const {
       option_table,
@@ -83,6 +87,7 @@ export async function updateOption(data, id) {
   }
 }
 
+// DELETE operations
 export async function deleteOption(id) {
   try {
     return await sql`
