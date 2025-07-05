@@ -1,4 +1,4 @@
-// @/component/common/button.js
+// path: @/component/common/button.js
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";

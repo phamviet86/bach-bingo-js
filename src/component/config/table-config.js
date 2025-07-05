@@ -1,4 +1,4 @@
-// @/component/config/table-config.js
+// path: @/component/config/table-config.js
 
 export const TABLE_CONFIG = {
   pagination: {

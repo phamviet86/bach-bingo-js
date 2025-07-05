@@ -1,4 +1,4 @@
-// @/component/hook/useNavigate.js
+// path: @/component/hook/useNavigate.js
 
 export * from "./useFetch";
 export * from "./useNavigate";

@@ -1,4 +1,4 @@
-// @/component/common/pro-layout.js
+// path: @/component/common/pro-layout.js
 
 "use client";
 

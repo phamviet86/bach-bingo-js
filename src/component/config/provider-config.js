@@ -1,4 +1,4 @@
-// @/component/config/provider-config.js
+// path: @/component/config/provider-config.js
 
 import "@fontsource/montserrat";
 import viVN from "antd/locale/vi_VN";

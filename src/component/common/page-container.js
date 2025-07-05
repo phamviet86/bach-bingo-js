@@ -1,4 +1,4 @@
-// @/component/common/page-container.js
+// path: @/component/common/page-container.js
 
 import Link from "next/link";
 import { PageContainer as AntPageContainer } from "@ant-design/pro-components";

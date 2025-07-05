@@ -1,4 +1,4 @@
-// @/lib/util/convert-util.js
+// path: @/lib/util/convert-util.js
 
 /**
  * Converts a string to uppercase.

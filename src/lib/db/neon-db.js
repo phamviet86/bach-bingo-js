@@ -1,4 +1,4 @@
-// @/lib/db/neon-db.js
+// path: @/lib/db/neon-db.js
 
 import { neon } from "@neondatabase/serverless";
 

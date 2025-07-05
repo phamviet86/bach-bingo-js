@@ -1,4 +1,4 @@
-// @/component/hook/useNav.js
+// path: @/component/hook/useNav.js
 
 import { usePathname, useRouter } from "next/navigation";
 

@@ -1,4 +1,4 @@
-// @/component/config/form-config.js
+// path: @/component/config/form-config.js
 
 export const FORM_CONFIG = {
   autoFocusFirstInput: false,

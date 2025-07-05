@@ -1,4 +1,4 @@
-// @/lib/util/api-util.js
+// path: @/lib/util/api-util.js
 
 import { NextResponse } from "next/server";
 

@@ -1,4 +1,4 @@
-// @/component/config/layout-config.js
+// path: @/component/config/layout-config.js
 
 export const LAYOUT_CONFIG = {
   title: "Bingo English",

@@ -1,4 +1,4 @@
-// @/component/common/config-provider.js
+// path: @/component/common/config-provider.js
 
 "use client";
 

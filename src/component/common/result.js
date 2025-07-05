@@ -1,4 +1,4 @@
-// @/component/common/results.js
+// path: @/component/common/results.js
 
 import { Result as AntResult } from "antd";
 

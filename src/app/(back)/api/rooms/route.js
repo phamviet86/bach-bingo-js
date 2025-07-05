@@ -1,13 +1,13 @@
-// route: /api/options/route.js
+// path: @/app/(back)/api/rooms/route.js
 
-import { getOptions, createOption } from "@/lib/service/options-service";
+import { getRooms, createRoom } from "@/lib/service/rooms-service";
 import { buildApiResponse } from "@/lib/util/api-util";
 
 export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url);
-    const result = await getOptions(searchParams);
-    return buildApiResponse(200, true, "Lấy danh sách tùy chọn thành công", {
+    const result = await getRooms(searchParams);
+    return buildApiResponse(200, true, "Lấy danh sách phòng học thành công", {
       data: result,
     });
   } catch (error) {
@@ -18,31 +18,27 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     const {
-      option_table,
-      option_column,
-      option_label,
-      option_color = null,
-      option_group = null,
+      room_name,
+      room_status_id,
+      room_desc = null,
     } = await request.json();
 
     // Validate required fields (based on NOT NULL constraints in SQL)
-    if (!option_table || !option_column || !option_label)
+    if (!room_name || !room_status_id)
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
 
     const data = {
-      option_table,
-      option_column,
-      option_label,
-      option_color,
-      option_group,
+      room_name,
+      room_status_id,
+      room_desc,
     };
 
-    const result = await createOption(data);
+    const result = await createRoom(data);
 
     if (!result || !result.length)
       return buildApiResponse(500, false, "Không thể thực hiện thao tác.");
 
-    return buildApiResponse(201, true, "Tạo tùy chọn thành công.", {
+    return buildApiResponse(201, true, "Tạo phòng học thành công.", {
       data: result,
     });
   } catch (error) {

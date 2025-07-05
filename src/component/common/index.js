@@ -1,4 +1,4 @@
-// @/component/common/index.js
+// path: @/component/common/index.js
 
 export * from "./spin";
 export * from "./button";

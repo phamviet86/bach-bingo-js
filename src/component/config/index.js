@@ -1,4 +1,4 @@
-// @/config/index.js
+// path: @/config/index.js
 
 export * from "./calendar-config.js";
 export * from "./drawer-config.js";
