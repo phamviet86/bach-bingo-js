@@ -1,4 +1,4 @@
-// path: @/lib/util/convert-util.js
+// path: @/lib/util/format-util.js
 
 /**
  * Converts a string to uppercase.
@@ -6,9 +6,9 @@
  * @param {string} text - The string to convert.
  * @returns {string} The uppercase version of the input string.
  * @example
- * convertToUpperCase('hello'); // returns 'HELLO'
- * convertToUpperCase('Bingo'); // returns 'BINGO'
+ * toUpperCase('hello'); // returns 'HELLO'
+ * toUpperCase('Bingo'); // returns 'BINGO'
  */
-export function convertToUpperCase(text) {
+export function toUpperCase(text) {
   return typeof text === "string" ? text.toUpperCase() : text;
 }

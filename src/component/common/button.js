@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button as AntButton } from "antd";
 import { useNavigate } from "@/component/hook";
-import { convertToUpperCase } from "@/lib/util/convert-util";
+import { toUpperCase } from "@/lib/util/format-util";
 
 // Components
 export function Button({ label, ...props }) {
-  const uppercaseLabel = label ? convertToUpperCase(label) : null;
+  const uppercaseLabel = label ? toUpperCase(label) : null;
 
   return <AntButton {...props}>{uppercaseLabel}</AntButton>;
 }

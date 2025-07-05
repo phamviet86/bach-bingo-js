@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { PageContainer as AntPageContainer } from "@ant-design/pro-components";
-import { convertToUpperCase } from "@/lib/util/convert-util";
+import { toUpperCase } from "@/lib/util/format-util";
 
 // Helper function to render breadcrumb items
 function renderBreadcrumbItem(item) {
@@ -10,7 +10,7 @@ function renderBreadcrumbItem(item) {
 }
 
 export function PageContainer({ items = [], title = undefined, ...props }) {
-  const uppercaseTitle = title ? convertToUpperCase(title) : undefined;
+  const uppercaseTitle = title ? toUpperCase(title) : undefined;
 
   return (
     <AntPageContainer
