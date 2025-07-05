@@ -7,9 +7,7 @@ export function useTable() {
   const [dataSource, setDataSource] = useState({});
 
   const reload = () => {
-    if (tableRef.current) {
-      tableRef.current.reload();
-    }
+    tableRef?.current?.reload();
   };
 
   return {

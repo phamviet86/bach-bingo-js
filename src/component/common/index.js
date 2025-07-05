@@ -6,4 +6,4 @@ export * from "./config-provider";
 export * from "./page-container";
 export * from "./pro-layout";
 export * from "./result";
-// export * from "./transfer";
+export * from "./pro-table";
