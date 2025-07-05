@@ -12,6 +12,8 @@ Generate a complete service file from a given SQL table structure following mode
 - **Return Data**: Always return `*` (all columns) for all functions
 - **Error Handling**: Wrap all database operations in try-catch blocks
 - **Modern Patterns**: Use ES6+ features, async/await, and consistent code structure
+- **Strict Adherence**: Follow the exact template structure provided - do not modify or create additional patterns
+- **No Custom Changes**: Use only the specified functions and naming conventions shown in the template
 
 ## Service Functions to Include
 
@@ -200,3 +202,51 @@ export async function deleteOption(id) {
    - Use tagged template literals for simple queries
    - Always include `RETURNING *` for INSERT/UPDATE operations
 7. **Search Integration**: Include pagination and search support using `parseSearchParams` utility
+
+## Validation Process
+
+After generating the service file, perform these validation checks:
+
+1. **File Structure Compliance**:
+
+   - ✅ File saved in correct location: `src/lib/service/{tableName}-service.js`
+   - ✅ File name follows kebab-case convention
+   - ✅ Contains exactly 5 required functions (get[TableNames], get[TableName], create[TableName], update[TableName], delete[TableName])
+
+2. **Code Standards Validation**:
+
+   - ✅ All functions use camelCase naming
+   - ✅ All database operations wrapped in try-catch blocks
+   - ✅ All functions return `*` (all columns)
+   - ✅ Soft delete implemented correctly with `deleted_at IS NULL` checks
+
+3. **Template Adherence Check**:
+   - ✅ Imports match template exactly
+   - ✅ Function signatures match template pattern
+   - ✅ Error handling follows template structure
+   - ✅ SQL query patterns follow template guidelines
+
+## Response Format
+
+After generating the service file, provide a summary response in this format:
+
+### Task Completion Summary
+
+**File Generated**: `src/lib/service/{tableName}-service.js`
+
+**Functions Implemented**:
+
+- ✅ `get{TableNames}(searchParams)` - Paginated list with search/filter
+- ✅ `get{TableName}(id)` - Single record retrieval
+- ✅ `create{TableName}(data)` - New record creation
+- ✅ `update{TableName}(id, data)` - Record update
+- ✅ `delete{TableName}(id)` - Soft delete operation
+
+**Validation Results**:
+
+- ✅ File structure compliant
+- ✅ Naming conventions followed
+- ✅ Template adherence verified
+- ✅ All requirements met
+
+**Next Steps**: The service file is ready for use and can be imported in API routes or other service layers.
