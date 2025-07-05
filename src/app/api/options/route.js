@@ -1,4 +1,4 @@
-// path: @/app/(back)/api/options/route.js
+// route: /api/options/route.js
 
 import { getOptions, createOption } from "@/lib/service/options-service";
 import { buildApiResponse } from "@/lib/util/api-util";
