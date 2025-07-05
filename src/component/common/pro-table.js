@@ -53,7 +53,6 @@ export function ProTable({
 
       try {
         const result = await onDataRequest(params, sort, filter);
-        // Expected result format: { success, message, data: array, total }
         onDataRequestSuccess?.(result);
         return result;
       } catch (error) {
