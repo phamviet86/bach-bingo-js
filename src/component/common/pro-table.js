@@ -10,11 +10,12 @@ export function ProTable({
   onDataRequest = undefined,
   onDataRequestSuccess = undefined,
   onDataRequestError = undefined,
-  onDataRequestParams = undefined,
+  requestParams = undefined,
 
   // Row selection handlers
   onRowsSelect = undefined,
   onRowsSelectError = undefined,
+  selectType = "checkbox",
 
   // Column configuration
   columns = [],
@@ -25,7 +26,6 @@ export function ProTable({
   showSearch = true,
   showOptions = false,
   showPagination = true,
-  selectType = "checkbox",
 
   // Header configuration
   title = undefined,
@@ -104,7 +104,7 @@ export function ProTable({
         actionRef={tableRef}
         columns={allColumns}
         request={onDataRequest ? handleDataRequest : undefined}
-        params={onDataRequestParams}
+        params={requestParams}
         headerTitle={title}
         toolBarRender={extra ? () => extra : undefined}
         rowSelection={rowSelectionConfig}

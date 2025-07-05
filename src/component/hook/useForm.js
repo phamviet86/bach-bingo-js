@@ -3,12 +3,17 @@
 import { useRef, useState } from "react";
 
 export function useForm() {
+  // Refs
   const formRef = useRef();
-  const [params, setParams] = useState({});
+
+  // State
   const [initialValues, setInitialValues] = useState({});
+  const [requestParams, setRequestParams] = useState({});
+  const [deleteParams, setDeleteParams] = useState({});
   const [title, setTitle] = useState("");
   const [visible, setVisible] = useState(false);
 
+  // Actions
   const open = () => {
     setVisible(true);
   };
@@ -16,28 +21,30 @@ export function useForm() {
   const close = () => {
     setVisible(false);
     setInitialValues({});
-    setParams({});
+    setRequestParams({});
+    setDeleteParams({});
     setTitle("");
   };
 
   const reset = () => {
-    if (formRef.current) {
-      formRef.current.resetFields();
-    }
+    formRef?.current?.resetFields();
   };
 
+  // Expose API
   return {
     formRef,
-    reset,
-    params,
-    setParams,
     initialValues,
     setInitialValues,
+    requestParams,
+    setRequestParams,
+    deleteParams,
+    setDeleteParams,
     title,
     setTitle,
     visible,
     setVisible,
     open,
     close,
+    reset,
   };
 }
