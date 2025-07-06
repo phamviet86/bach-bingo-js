@@ -35,7 +35,7 @@ export function DrawerForm({
   ...props
 }) {
   // Extract form reference from hook
-  const { formRef, reset, visible, setVisible } = formHook;
+  const { formRef, close, visible, setVisible } = formHook;
 
   // Initialize message API for error/success notifications
   const [messageApi, contextHolder] = message.useMessage();
@@ -89,32 +89,37 @@ export function DrawerForm({
   );
 
   // Data delete handler with error handling
-  const handleDataDelete = useCallback(
-    async () => {
-      if (!onDataDelete) {
-        messageApi.error("Data delete handler not provided");
-        return false;
-      }
+  const handleDataDelete = useCallback(async () => {
+    if (!onDataDelete) {
+      messageApi.error("Data delete handler not provided");
+      return false;
+    }
 
-      try {
-        const result = await onDataDelete(deleteParams);
-        // result: { success, message, data: array }
-        messageApi.success(result.message);
-        onDataDeleteSuccess?.(result);
-        return true;
-      } catch (error) {
-        const errorMessage = error?.message || "Đã xảy ra lỗi";
-        messageApi.error(errorMessage);
-        onDataDeleteError?.(error);
-        return false;
-      }
-    },
-    [onDataDelete, onDataDeleteSuccess, onDataDeleteError, deleteParams, messageApi]
-  );
+    try {
+      const result = await onDataDelete(deleteParams);
+      // result: { success, message, data: array }
+      messageApi.success(result.message);
+      close(); // Close the drawer after successful deletion
+      onDataDeleteSuccess?.(result);
+      return true;
+    } catch (error) {
+      const errorMessage = error?.message || "Đã xảy ra lỗi";
+      messageApi.error(errorMessage);
+      onDataDeleteError?.(error);
+      return false;
+    }
+  }, [
+    onDataDelete,
+    onDataDeleteSuccess,
+    onDataDeleteError,
+    deleteParams,
+    close,
+    messageApi,
+  ]);
 
   // Configure submitter buttons based on available handlers
   const submitterConfig = {
-    render: (_, defaultDoms) => {
+    render: (props, defaultDoms) => {
       return [
         onDataDelete ? (
           <Popconfirm
@@ -137,10 +142,17 @@ export function DrawerForm({
         ),
         <Button
           key="reset-button"
-          onClick={() => reset?.()}
           label="Khôi phục"
+          onClick={() => props.form?.resetFields()}
         />,
-        ...defaultDoms,
+        <Button
+          key="submit-button"
+          label="Lưu"
+          color="primary"
+          variant="solid"
+          onClick={() => props.form?.submit()}
+        />,
+        // ...defaultDoms,
       ];
     },
   };

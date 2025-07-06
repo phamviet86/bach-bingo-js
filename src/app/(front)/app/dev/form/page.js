@@ -189,6 +189,7 @@ export default function DrawerFormDemo() {
     formHook.setRequestParams(undefined);
     formHook.setDeleteParams(undefined);
     formHook.open();
+    handleTestSetValues();
   };
 
   const handleEditUser = (user) => {
@@ -392,6 +393,36 @@ export default function DrawerFormDemo() {
         onDataDeleteSuccess={handleSuccess}
         onDataDeleteError={handleError}
         deleteParams={formHook.deleteParams}
+        footer={[
+          <Button
+            key="test-set-values"
+            onClick={handleTestSetValues}
+            disabled={!formHook.visible}
+          >
+            Test setValues
+          </Button>,
+          <Button
+            key="test-get-values"
+            onClick={handleTestGetValues}
+            disabled={!formHook.visible}
+          >
+            Test getValues
+          </Button>,
+          <Button
+            key="test-get-value"
+            onClick={handleTestGetValue}
+            disabled={!formHook.visible}
+          >
+            Test getValue (name)
+          </Button>,
+          <Button
+            key="test-submit"
+            onClick={handleTestSubmit}
+            disabled={!formHook.visible}
+          >
+            Test submit
+          </Button>,
+        ]}
       />
     </div>
   );
