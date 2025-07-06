@@ -257,7 +257,9 @@ export default function DrawerFormDemo() {
   const handleTestGetValues = () => {
     const allValues = formHook.getValues();
     console.log("All form values:", allValues);
-    message.info(`Form values retrieved: ${JSON.stringify(allValues, null, 2)}`);
+    message.info(
+      `Form values retrieved: ${JSON.stringify(allValues, null, 2)}`
+    );
   };
 
   const handleTestGetValue = () => {
@@ -294,10 +296,12 @@ export default function DrawerFormDemo() {
             <strong>Form Title:</strong> {formHook.title || "No title set"}
           </div>
           <div>
-            <strong>Selected User:</strong> {selectedUser ? selectedUser.name : "None"}
+            <strong>Selected User:</strong>{" "}
+            {selectedUser ? selectedUser.name : "None"}
           </div>
           <div style={{ fontSize: "12px", color: "#666" }}>
-            <strong>Instructions:</strong> Open a form (Create or Edit) to test the form methods
+            <strong>Instructions:</strong> Open a form (Create or Edit) to test
+            the form methods
           </div>
         </Space>
       </Card>
@@ -311,28 +315,16 @@ export default function DrawerFormDemo() {
           >
             Create New User
           </Button>
-          <Button
-            onClick={handleTestSetValues}
-            disabled={!formHook.visible}
-          >
+          <Button onClick={handleTestSetValues} disabled={!formHook.visible}>
             Test setValues
           </Button>
-          <Button
-            onClick={handleTestGetValues}
-            disabled={!formHook.visible}
-          >
+          <Button onClick={handleTestGetValues} disabled={!formHook.visible}>
             Test getValues
           </Button>
-          <Button
-            onClick={handleTestGetValue}
-            disabled={!formHook.visible}
-          >
+          <Button onClick={handleTestGetValue} disabled={!formHook.visible}>
             Test getValue (name)
           </Button>
-          <Button
-            onClick={handleTestSubmit}
-            disabled={!formHook.visible}
-          >
+          <Button onClick={handleTestSubmit} disabled={!formHook.visible}>
             Test submit
           </Button>
         </Space>
