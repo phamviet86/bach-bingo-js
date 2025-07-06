@@ -393,7 +393,7 @@ export default function DrawerFormDemo() {
         onDataDeleteSuccess={handleSuccess}
         onDataDeleteError={handleError}
         deleteParams={formHook.deleteParams}
-        footer={[
+        extra={[
           <Button
             key="test-set-values"
             onClick={handleTestSetValues}

@@ -1,7 +1,8 @@
 // path: @/component/common/drawer-form.js
 
 import { useCallback } from "react";
-import { message, Popconfirm } from "antd";
+import { Row, Col, Space } from "antd";
+import { message, Popconfirm, Flex } from "antd";
 import { DrawerForm as AntDrawerForm } from "@ant-design/pro-components";
 import { Button } from "@/component/common";
 import { FORM_CONFIG, DRAWER_CONFIG } from "@/component/config";
@@ -27,6 +28,7 @@ export function DrawerForm({
 
   // Form configuration
   fields = null,
+  extra = [],
 
   // Form reference hook
   formHook = {},
@@ -119,42 +121,49 @@ export function DrawerForm({
 
   // Configure submitter buttons based on available handlers
   const submitterConfig = {
-    render: (props, defaultDoms) => {
-      return [
-        onDataDelete ? (
-          <Popconfirm
-            key="delete-button"
-            title="Xác nhận xóa?"
-            description="Bạn có chắc chắn muốn xóa?"
-            onConfirm={handleDataDelete}
-            okText="Xóa"
-            cancelText="Hủy"
-          >
-            <Button
-              color="danger"
-              variant="solid"
-              label="Xoá"
-              icon={<DeleteOutlined />}
-            />
-          </Popconfirm>
-        ) : (
-          []
-        ),
-        <Button
-          key="reset-button"
-          label="Khôi phục"
-          onClick={() => props.form?.resetFields()}
-        />,
-        <Button
-          key="submit-button"
-          label="Lưu"
-          color="primary"
-          variant="solid"
-          onClick={() => props.form?.submit()}
-        />,
-        // ...defaultDoms,
-      ];
+    searchConfig: { resetText: "Khôi phục", submitText: "Lưu" },
+    resetButtonProps: {
+      style: {
+        display: "none",
+      },
     },
+    render: (props, defaultDoms) => (
+      <Row justify="space-between" align="middle" style={{ width: "100%" }}>
+        {/* Left: delete */}
+        <Col>
+          {onDataDelete && (
+            <Popconfirm
+              key="delete-button"
+              title="Xác nhận xóa?"
+              description="Bạn có chắc chắn muốn xóa?"
+              onConfirm={handleDataDelete}
+              okText="Xóa"
+              cancelText="Hủy"
+            >
+              <Button
+                color="danger"
+                variant="outlined"
+                label="Xoá"
+                icon={<DeleteOutlined />}
+              />
+            </Popconfirm>
+          )}
+        </Col>
+
+        {/* Right: reset + submit */}
+        <Col>
+          <Space wrap>
+            {extra}
+            <Button
+              key="reset-button"
+              label="Khôi phục"
+              onClick={() => props.form?.resetFields()}
+            />
+            {defaultDoms}
+          </Space>
+        </Col>
+      </Row>
+    ),
   };
 
   // Render component
