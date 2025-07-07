@@ -1,6 +1,6 @@
 // path: @/component/common/drawer.js
 
-import { useCallback, useState, cloneElement } from "react";
+import { useCallback, cloneElement } from "react";
 import { Drawer as AntDrawer, message, Space } from "antd";
 import { Button } from "@/component/common";
 import { DRAWER_CONFIG } from "@/component/config";
@@ -25,23 +25,17 @@ export function Drawer({
   okText = "OK",
   cancelText = "Cancel",
 
+  // Drawer reference hook
+  drawerHook = {},
+
   // Other props
   ...props
 }) {
   // ========== Hooks and State ==========
-  const [visible, setVisible] = useState(false);
+  const { visible, open, close } = drawerHook;
   const [messageApi, contextHolder] = message.useMessage();
 
   // ========== Event Handlers ==========
-  // Drawer visibility handlers
-  const openDrawer = useCallback(() => {
-    setVisible(true);
-  }, []);
-
-  const closeDrawer = useCallback(() => {
-    setVisible(false);
-  }, []);
-
   // OK button handler with error handling
   const handleOk = useCallback(async () => {
     if (!onOk) {
@@ -51,7 +45,7 @@ export function Drawer({
 
     try {
       const result = await onOk();
-      closeDrawer();
+      close();
       if (showOkMessage && result?.message) {
         messageApi.success(result.message);
       }
@@ -62,18 +56,18 @@ export function Drawer({
       onOkError?.(error);
       return false;
     }
-  }, [onOk, onOkSuccess, onOkError, showOkMessage, messageApi, closeDrawer]);
+  }, [onOk, onOkSuccess, onOkError, showOkMessage, messageApi, close]);
 
   // Cancel button handler with error handling
   const handleCancel = useCallback(async () => {
     if (!onCancel) {
-      closeDrawer();
+      close();
       return false;
     }
 
     try {
       const result = await onCancel();
-      closeDrawer();
+      close();
       if (showCancelMessage && result?.message) {
         messageApi.warning(result.message);
       }
@@ -90,19 +84,19 @@ export function Drawer({
     onCancelError,
     showCancelMessage,
     messageApi,
-    closeDrawer,
+    close,
   ]);
 
   // ========== Render Logic ==========
   return (
     <>
       {contextHolder}
-      {trigger ? cloneElement(trigger, { onClick: openDrawer }) : null}
+      {trigger ? cloneElement(trigger, { onClick: open }) : null}
       <AntDrawer
         {...props}
         {...DRAWER_CONFIG}
         open={visible}
-        onClose={closeDrawer}
+        onClose={close}
         extra={
           <Space>
             <Button

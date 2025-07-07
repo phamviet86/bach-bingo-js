@@ -1,6 +1,6 @@
 // path: @/component/common/modal.js
 
-import { useCallback, useState, cloneElement } from "react";
+import { useCallback, cloneElement } from "react";
 import { Modal as AntModal, message } from "antd";
 import { MODAL_CONFIG } from "@/component/config";
 
@@ -20,23 +20,17 @@ export function Modal({
   // Modal trigger
   trigger = undefined,
 
+  // Modal reference hook
+  modalHook = {},
+
   // Other props
   ...props
 }) {
   // ========== Hooks and State ==========
-  const [visible, setVisible] = useState(false);
+  const { visible, open, close } = modalHook;
   const [messageApi, contextHolder] = message.useMessage();
 
   // ========== Event Handlers ==========
-  // Modal visibility handlers
-  const openModal = useCallback(() => {
-    setVisible(true);
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setVisible(false);
-  }, []);
-
   // OK button handler with error handling
   const handleOk = useCallback(async () => {
     if (!onOk) {
@@ -46,7 +40,7 @@ export function Modal({
 
     try {
       const result = await onOk();
-      closeModal();
+      close();
       if (showOkMessage && result?.message) {
         messageApi.success(result.message);
       }
@@ -57,18 +51,18 @@ export function Modal({
       onOkError?.(error);
       return false;
     }
-  }, [onOk, onOkSuccess, onOkError, showOkMessage, messageApi, closeModal]);
+  }, [onOk, onOkSuccess, onOkError, showOkMessage, messageApi, close]);
 
   // Cancel button handler with error handling
   const handleCancel = useCallback(async () => {
     if (!onCancel) {
-      closeModal();
+      close();
       return false;
     }
 
     try {
       const result = await onCancel();
-      closeModal();
+      close();
       if (showCancelMessage && result?.message) {
         messageApi.warning(result.message);
       }
@@ -85,14 +79,14 @@ export function Modal({
     onCancelError,
     showCancelMessage,
     messageApi,
-    closeModal,
+    close,
   ]);
 
   // ========== Render Logic ==========
   return (
     <>
       {contextHolder}
-      {trigger ? cloneElement(trigger, { onClick: openModal }) : null}
+      {trigger ? cloneElement(trigger, { onClick: open }) : null}
       <AntModal
         {...props}
         {...MODAL_CONFIG}
