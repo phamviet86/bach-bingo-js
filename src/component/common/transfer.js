@@ -1,8 +1,9 @@
 // path: @/component/common/transfer.js
 
-import { useState, useEffect, useCallback, useRef, use } from "react";
-import { Transfer as AntTransfer, message, Spin } from "antd";
+import { useState, useEffect, useCallback, useRef, cloneElement } from "react";
+import { Transfer as AntTransfer, message, Spin, Modal, Drawer } from "antd";
 import { convertTransferItems } from "@/lib/util/convert-util";
+import { DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import styles from "../style/transfer.module.css";
 
 const buildSearchParams = (columns, value) => {
@@ -22,23 +23,41 @@ const buildSearchParams = (columns, value) => {
 };
 
 export function Transfer({
+  // Transfer variant configuration
+  variant = "page", // "page" | "modal" | "drawer"
+
+  // Data handling props
   onSourceRequest = undefined,
-  onSourceParams = undefined,
-  onSourceItem = undefined,
+  sourceParams = undefined,
+  sourceItem = undefined,
   onTargetRequest = undefined,
-  onTargetParams = undefined,
-  onTargetItem = undefined,
-  onTargetAdd = undefined,
-  onTargetRemove = undefined,
+  targetParams = undefined,
+  targetItem = undefined,
+  onAddItem = undefined,
+  onRemoveItem = undefined,
+
+  // Search configuration
   showSearch = false,
   searchSourceColumns = [],
   searchTargetColumns = [],
+
+  // Display configuration
   listStyle = { width: "100%", height: "100%", minHeight: "300px" },
   rowKey = (record) => record.key,
   render = (record) => record.key,
   responsiveBreakpoint = "md",
+
+  // Modal/Drawer specific props
+  transferHook = {},
+  modalProps = {},
+  drawerProps = {},
+  trigger = undefined,
+
+  // Other props
   ...props
 }) {
+  // ========== Hooks and State ==========
+  const { transferRef, visible, open, close } = transferHook;
   const [messageApi, contextHolder] = message.useMessage();
   const [dataSource, setDataSource] = useState([]);
   const [targetKeys, setTargetKeys] = useState([]);
@@ -50,6 +69,8 @@ export function Transfer({
   // Loading state
   const [loading, setLoading] = useState(true);
 
+  // ========== Event Handlers ==========
+  // Data handling
   const handleData = useCallback(() => {
     // Lấy key theo thứ tự
     const sourceKeys = sourceRequestData.map((item) => item.key);
@@ -77,6 +98,7 @@ export function Transfer({
     handleData();
   }, [handleData]);
 
+  // Data request handlers with error handling
   const handleSourceRequest = useCallback(async () => {
     setLoading(true);
     if (!onSourceRequest) {
@@ -86,9 +108,9 @@ export function Transfer({
     }
 
     try {
-      const sourceResult = await onSourceRequest(onSourceParams);
-      const sourceData = onSourceItem
-        ? convertTransferItems(sourceResult.data || [], onSourceItem)
+      const sourceResult = await onSourceRequest(sourceParams);
+      const sourceData = sourceItem
+        ? convertTransferItems(sourceResult.data || [], sourceItem)
         : sourceResult.data || [];
 
       setSourceRequestData(sourceData);
@@ -99,7 +121,7 @@ export function Transfer({
       setLoading(false);
       return;
     }
-  }, [onSourceRequest, onSourceParams, onSourceItem, messageApi]);
+  }, [onSourceRequest, sourceParams, sourceItem, messageApi]);
 
   const handleTargetRequest = useCallback(async () => {
     setLoading(true);
@@ -110,21 +132,22 @@ export function Transfer({
     }
 
     try {
-      const targetResult = await onTargetRequest(onTargetParams);
-      const targetData = onTargetItem
-        ? convertTransferItems(targetResult.data || [], onTargetItem)
+      const targetResult = await onTargetRequest(targetParams);
+      const targetData = targetItem
+        ? convertTransferItems(targetResult.data || [], targetItem)
         : targetResult.data || [];
 
       setTargetRequestData(targetData);
       setLoading(false);
       return;
     } catch (error) {
-      messageApi.error(error.message || "Đã xảy ra lỗi khi tải dữ liệu source");
+      messageApi.error(error.message || "Đã xảy ra lỗi khi tải dữ liệu target");
       setLoading(false);
       return;
     }
-  }, [onTargetRequest, onTargetParams, onTargetItem, messageApi]);
+  }, [onTargetRequest, targetParams, targetItem, messageApi]);
 
+  // Data reload functionality
   const reloadDataRef = useRef();
 
   const reloadData = useCallback(async () => {
@@ -144,15 +167,15 @@ export function Transfer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Khi add/remove item: reload lại data (gọi reloadDataRef)
+  // Target add/remove handlers with error handling
   const handleTargetAdd = useCallback(
     async (keys) => {
-      if (!onTargetAdd) {
+      if (!onAddItem) {
         messageApi.error("Data add handler not provided");
         return;
       }
       try {
-        const result = await onTargetAdd(keys);
+        const result = await onAddItem(keys);
         if (result?.success) {
           messageApi.success(result?.message || "Thêm thành công");
           await reloadDataRef.current();
@@ -162,17 +185,17 @@ export function Transfer({
         return;
       }
     },
-    [onTargetAdd, messageApi]
+    [onAddItem, messageApi]
   );
 
   const handleTargetRemove = useCallback(
     async (keys) => {
-      if (!onTargetRemove) {
+      if (!onRemoveItem) {
         messageApi.error("Data remove handler not provided");
         return;
       }
       try {
-        const result = await onTargetRemove(keys);
+        const result = await onRemoveItem(keys);
         if (result?.success) {
           messageApi.success(result?.message || "Xóa thành công");
           await reloadDataRef.current();
@@ -182,7 +205,7 @@ export function Transfer({
         return;
       }
     },
-    [onTargetRemove, messageApi]
+    [onRemoveItem, messageApi]
   );
 
   // Khi chuyển record (sang phải/trái)
@@ -197,6 +220,7 @@ export function Transfer({
     [handleTargetAdd, handleTargetRemove]
   );
 
+  // Search handlers with debouncing
   const handleSourceSearch = useCallback(
     async (searchValue) => {
       if (!searchValue?.trim()) {
@@ -213,11 +237,11 @@ export function Transfer({
 
       try {
         const searchResult = await onSourceRequest({
-          ...onSourceParams,
+          ...sourceParams,
           ...searchParams,
         });
-        const sourceData = onSourceItem
-          ? convertTransferItems(searchResult.data || [], onSourceItem)
+        const sourceData = sourceItem
+          ? convertTransferItems(searchResult.data || [], sourceItem)
           : searchResult.data || [];
 
         setSourceSearchKeys(sourceData.map((item) => item.key));
@@ -231,13 +255,7 @@ export function Transfer({
         return;
       }
     },
-    [
-      onSourceRequest,
-      onSourceParams,
-      onSourceItem,
-      messageApi,
-      searchSourceColumns,
-    ]
+    [onSourceRequest, sourceParams, sourceItem, messageApi, searchSourceColumns]
   );
 
   const handleTargetSearch = useCallback(
@@ -257,11 +275,11 @@ export function Transfer({
 
       try {
         const searchResult = await onTargetRequest({
-          ...onTargetParams,
+          ...targetParams,
           ...searchParams,
         });
-        const targetData = onTargetItem
-          ? convertTransferItems(searchResult.data || [], onTargetItem)
+        const targetData = targetItem
+          ? convertTransferItems(searchResult.data || [], targetItem)
           : searchResult.data || [];
 
         setTargetSearchKeys(targetData.map((item) => item.key));
@@ -275,13 +293,7 @@ export function Transfer({
         return;
       }
     },
-    [
-      onTargetRequest,
-      onTargetParams,
-      onTargetItem,
-      messageApi,
-      searchTargetColumns,
-    ]
+    [onTargetRequest, targetParams, targetItem, messageApi, searchTargetColumns]
   );
 
   // Search timeout ref for debouncing
@@ -317,6 +329,77 @@ export function Transfer({
     },
     [sourceSearchKeys, targetSearchKeys]
   );
+
+  // ========== Base Transfer Props ==========
+  const baseTransferProps = {
+    ...props,
+    direction: "vertical",
+    dataSource,
+    targetKeys,
+    onChange: handleChange,
+    onSearch: handleSearch,
+    rowKey,
+    render,
+    listStyle,
+    showSearch,
+    filterOption: handleFilter,
+  };
+
+  // ========== Render Logic ==========
+  // If variant is "drawer", render DrawerForm
+  if (variant === "drawer") {
+    return (
+      <>
+        {contextHolder}
+        {trigger && cloneElement(trigger, { onClick: open })}
+        <Drawer
+          {...DRAWER_CONFIG}
+          {...drawerProps}
+          open={visible}
+          onClose={close}
+        >
+          <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
+            <div
+              className={`${styles.remoteTransfer} ${
+                styles[`responsive-${responsiveBreakpoint}`]
+              }`}
+            >
+              <AntTransfer {...baseTransferProps} />
+            </div>
+          </Spin>
+        </Drawer>
+      </>
+    );
+  }
+
+  // If variant is "modal", render ModalForm
+  if (variant === "modal") {
+    return (
+      <>
+        {contextHolder}
+        {trigger && cloneElement(trigger, { onClick: open })}
+        <Modal
+          {...MODAL_CONFIG}
+          {...modalProps}
+          open={visible}
+          onCancel={close}
+          footer={null} // No footer buttons in modal
+        >
+          <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
+            <div
+              className={`${styles.remoteTransfer} ${
+                styles[`responsive-${responsiveBreakpoint}`]
+              }`}
+            >
+              <AntTransfer {...baseTransferProps} />
+            </div>
+          </Spin>
+        </Modal>
+      </>
+    );
+  }
+
+  // Default: page variant
   return (
     <>
       {contextHolder}
@@ -326,19 +409,7 @@ export function Transfer({
             styles[`responsive-${responsiveBreakpoint}`]
           }`}
         >
-          <AntTransfer
-            {...props}
-            direction="vertical"
-            dataSource={dataSource}
-            targetKeys={targetKeys}
-            onChange={handleChange}
-            onSearch={handleSearch}
-            rowKey={rowKey}
-            render={render}
-            listStyle={listStyle}
-            showSearch={showSearch}
-            filterOption={handleFilter}
-          />
+          <AntTransfer {...baseTransferProps} />
         </div>
       </Spin>
     </>
