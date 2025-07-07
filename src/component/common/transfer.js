@@ -57,7 +57,7 @@ export function Transfer({
   ...props
 }) {
   // ========== Hooks and State ==========
-  const { transferRef, visible, open, close } = transferHook;
+  const { reloadRef, visible, open, close } = transferHook;
   const [messageApi, contextHolder] = message.useMessage();
   const [dataSource, setDataSource] = useState([]);
   const [targetKeys, setTargetKeys] = useState([]);
@@ -159,6 +159,11 @@ export function Transfer({
 
   // Đảm bảo luôn cập nhật ref tới hàm reloadData mới nhất
   reloadDataRef.current = reloadData;
+
+  // Expose reload function cho external hook
+  if (reloadRef) {
+    reloadRef.current = reloadData;
+  }
 
   // Khi mount: tải lại dữ liệu
   useEffect(() => {
