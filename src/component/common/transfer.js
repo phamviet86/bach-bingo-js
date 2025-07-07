@@ -363,15 +363,17 @@ export function Transfer({
           open={visible}
           onClose={close}
         >
-          <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
-            <div
-              className={`${styles.remoteTransfer} ${
-                styles[`responsive-${responsiveBreakpoint}`]
-              }`}
-            >
-              <AntTransfer {...baseTransferProps} />
-            </div>
-          </Spin>
+          {visible ? (
+            <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
+              <div
+                className={`${styles.remoteTransfer} ${
+                  styles[`responsive-${responsiveBreakpoint}`]
+                }`}
+              >
+                <AntTransfer {...baseTransferProps} />
+              </div>
+            </Spin>
+          ) : null}
         </Drawer>
       </>
     );
@@ -390,15 +392,17 @@ export function Transfer({
           onCancel={close}
           footer={null} // No footer buttons in modal
         >
-          <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
-            <div
-              className={`${styles.remoteTransfer} ${
-                styles[`responsive-${responsiveBreakpoint}`]
-              }`}
-            >
-              <AntTransfer {...baseTransferProps} />
-            </div>
-          </Spin>
+          {visible ? (
+            <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
+              <div
+                className={`${styles.remoteTransfer} ${
+                  styles[`responsive-${responsiveBreakpoint}`]
+                }`}
+              >
+                <AntTransfer {...baseTransferProps} />
+              </div>
+            </Spin>
+          ) : null}
         </Modal>
       </>
     );
