@@ -375,7 +375,7 @@ export default function DrawerFormDemo() {
       </Card>
 
       <AntForm
-        variant="page" // Change to "modal" for ModalForm
+        variant="drawer" // Change to "modal" for ModalForm
         title={formHook.title}
         width={600}
         formHook={formHook}

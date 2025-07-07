@@ -49,6 +49,7 @@ export function AntTable({
   const [messageApi, contextHolder] = message.useMessage();
 
   // ========== Event Handlers ==========
+  // Data request handler with error handling
   const handleDataRequest = useCallback(
     async (params, sort, filter) => {
       if (!onRequest) {
@@ -70,6 +71,7 @@ export function AntTable({
     [onRequest, onRequestSuccess, onRequestError, messageApi]
   );
 
+  // Row selection handler with error handling
   const handleRowsSelect = useCallback(
     (_, selectedRowsData) => {
       if (!onRowsSelect) return true;
@@ -125,6 +127,7 @@ export function AntTable({
   };
 
   // ========== Render Logic ==========
+  // If variant is "drawer", render DrawerForm
   if (variant === "drawer") {
     return (
       <>
@@ -142,6 +145,7 @@ export function AntTable({
     );
   }
 
+  // If variant is "modal", render ModalForm
   if (variant === "modal") {
     return (
       <>

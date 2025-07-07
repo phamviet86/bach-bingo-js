@@ -1,6 +1,6 @@
 // path: @/component/common/form.js
 
-import { useCallback } from "react";
+import { useCallback, cloneElement } from "react";
 import { message, Popconfirm, Flex } from "antd";
 import { DrawerForm, ModalForm, ProForm } from "@ant-design/pro-components";
 import { Button } from "@/component/common";
@@ -8,8 +8,8 @@ import { FORM_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import { DeleteOutlined } from "@ant-design/icons";
 
 export function AntForm({
-  // form variant configuration
-  variant = "page",
+  // Form variant configuration
+  variant = "page", // "page" | "modal" | "drawer"
 
   // Data handling props
   onRequest = undefined,
@@ -38,12 +38,11 @@ export function AntForm({
   // Other props
   ...props
 }) {
-  // Extract form reference from hook
+  // ========== Hooks and State ==========
   const { formRef, close, visible, setVisible } = formHook;
-
-  // Initialize message API for error/success notifications
   const [messageApi, contextHolder] = message.useMessage();
 
+  // ========== Event Handlers ==========
   // Data request handler with error handling
   const handleDataRequest = useCallback(
     async (params) => {
@@ -103,7 +102,7 @@ export function AntForm({
       const result = await onDelete(deleteParams);
       // result: { success, message, data: array }
       messageApi.success(result.message);
-      if (variant) close(); // Close drawer/modal if variant is set
+      if (variant != "page") close(); // Close drawer/modal if variant is set
       onDeleteSuccess?.(result);
       return true;
     } catch (error) {
@@ -122,6 +121,7 @@ export function AntForm({
     close,
   ]);
 
+  // ========== Configuration Setup ==========
   // Configure submitter buttons based on available handlers
   const submitterConfig = {
     searchConfig: { resetText: "Khôi phục", submitText: "Lưu" },
@@ -174,39 +174,25 @@ export function AntForm({
     ),
   };
 
-  // Default case: render ProForm
-  if (variant === "page") {
-    return (
-      <>
-        {contextHolder}
-        <ProForm
-          {...props}
-          {...FORM_CONFIG}
-          formRef={formRef}
-          request={onRequest ? handleDataRequest : undefined}
-          params={requestParams}
-          onFinish={onSubmit ? handleDataSubmit : undefined}
-          submitter={submitterConfig}
-        >
-          {fields}
-        </ProForm>
-      </>
-    );
-  }
+  // ========== Base Form Props ==========
+  const baseFormProps = {
+    ...props,
+    ...FORM_CONFIG,
+    formRef,
+    request: onRequest ? handleDataRequest : undefined,
+    params: requestParams,
+    onFinish: onSubmit ? handleDataSubmit : undefined,
+    submitter: submitterConfig,
+  };
 
+  // ========== Render Logic ==========
   // If variant is "drawer", render DrawerForm
   if (variant === "drawer") {
     return (
       <>
         {contextHolder}
         <DrawerForm
-          {...props}
-          {...FORM_CONFIG}
-          formRef={formRef}
-          request={onRequest ? handleDataRequest : undefined}
-          params={requestParams}
-          onFinish={onSubmit ? handleDataSubmit : undefined}
-          submitter={submitterConfig}
+          {...baseFormProps}
           open={visible}
           onOpenChange={setVisible}
           drawerProps={DRAWER_CONFIG}
@@ -223,13 +209,7 @@ export function AntForm({
       <>
         {contextHolder}
         <ModalForm
-          {...props}
-          {...FORM_CONFIG}
-          formRef={formRef}
-          request={onRequest ? handleDataRequest : undefined}
-          params={requestParams}
-          onFinish={onSubmit ? handleDataSubmit : undefined}
-          submitter={submitterConfig}
+          {...baseFormProps}
           open={visible}
           onOpenChange={setVisible}
           modalProps={MODAL_CONFIG}
@@ -239,4 +219,12 @@ export function AntForm({
       </>
     );
   }
+
+  // Default: page variant
+  return (
+    <>
+      {contextHolder}
+      <ProForm {...baseFormProps}>{fields}</ProForm>
+    </>
+  );
 }
