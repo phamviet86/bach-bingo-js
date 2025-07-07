@@ -5,6 +5,17 @@ import { useRef, useState } from "react";
 export function useDesc() {
   const descRef = useRef();
   const [dataSource, setDataSource] = useState({});
+  const [visible, setVisible] = useState(false);
+
+  // Actions
+  const open = () => {
+    setVisible(true);
+  };
+
+  const close = () => {
+    setVisible(false);
+    setDataSource({});
+  };
 
   const reload = () => {
     if (descRef.current) {
@@ -14,8 +25,12 @@ export function useDesc() {
 
   return {
     descRef,
-    reload,
     dataSource,
     setDataSource,
+    visible,
+    setVisible,
+    open,
+    close,
+    reload,
   };
 }
