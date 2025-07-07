@@ -1,11 +1,11 @@
-// path: @/component/common/pro-table.js
+// path: @/component/common/table.js
 
 import { useCallback } from "react";
 import { message } from "antd";
-import { ProTable as AntProTable } from "@ant-design/pro-components";
+import { ProTable } from "@ant-design/pro-components";
 import { TABLE_CONFIG } from "@/component/config";
 
-export function ProTable({
+export function AntTable({
   // Data request handlers
   onDataRequest = undefined,
   onDataRequestSuccess = undefined,
@@ -105,7 +105,7 @@ export function ProTable({
   return (
     <>
       {contextHolder}
-      <AntProTable
+      <ProTable
         {...props}
         actionRef={tableRef}
         columns={allColumns}

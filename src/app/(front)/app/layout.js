@@ -5,8 +5,8 @@ import { AppProvider } from "./provider";
 import { AppSpin } from "@/component/common";
 import { MENU_CONFIG } from "@/component/config";
 
-const ProLayout = dynamic(
-  () => import("@/component/common/pro-layout").then((mod) => mod.ProLayout),
+const AntLayout = dynamic(
+  () => import("@/component/common/layout").then((mod) => mod.AntLayout),
   {
     loading: () => <AppSpin />,
     ssr: false,
@@ -16,7 +16,7 @@ const ProLayout = dynamic(
 export default function Layout({ children }) {
   return (
     <AppProvider>
-      <ProLayout menu={MENU_CONFIG}>{children}</ProLayout>
+      <AntLayout menu={MENU_CONFIG}>{children}</AntLayout>
     </AppProvider>
   );
 }

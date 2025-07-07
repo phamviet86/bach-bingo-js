@@ -1,4 +1,4 @@
-// path: @/component/common/drawer-form.js
+// path: @/component/common/form.js
 
 import { useCallback } from "react";
 import { message, Popconfirm, Flex } from "antd";
