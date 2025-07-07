@@ -401,27 +401,6 @@ export default function DrawerFormDemo() {
           >
             Test setValues
           </Button>,
-          <Button
-            key="test-get-values"
-            onClick={handleTestGetValues}
-            disabled={!formHook.visible}
-          >
-            Test getValues
-          </Button>,
-          <Button
-            key="test-get-value"
-            onClick={handleTestGetValue}
-            disabled={!formHook.visible}
-          >
-            Test getValue (name)
-          </Button>,
-          <Button
-            key="test-submit"
-            onClick={handleTestSubmit}
-            disabled={!formHook.visible}
-          >
-            Test submit
-          </Button>,
         ]}
       />
     </div>

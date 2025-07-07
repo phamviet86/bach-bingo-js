@@ -128,41 +128,46 @@ export function DrawerForm({
       },
     },
     render: (props, defaultDoms) => (
-      <Row justify="space-between" align="middle" style={{ width: "100%" }}>
+      <Flex
+        justify="space-between"
+        align="middle"
+        style={{ width: "100%" }}
+        gap="small"
+        wrap
+      >
         {/* Left: delete */}
-        <Col>
-          {onDataDelete && (
-            <Popconfirm
-              key="delete-button"
-              title="Xác nhận xóa?"
-              description="Bạn có chắc chắn muốn xóa?"
-              onConfirm={handleDataDelete}
-              okText="Xóa"
-              cancelText="Hủy"
-            >
-              <Button
-                color="danger"
-                variant="outlined"
-                label="Xoá"
-                icon={<DeleteOutlined />}
-              />
-            </Popconfirm>
-          )}
-        </Col>
+        {onDataDelete ? (
+          <Popconfirm
+            key="delete-button"
+            title="Xác nhận xóa?"
+            description="Bạn có chắc chắn muốn xóa?"
+            onConfirm={handleDataDelete}
+            okText="Xóa"
+            cancelText="Hủy"
+          >
+            <Button
+              color="danger"
+              variant="outlined"
+              label="Xoá"
+              icon={<DeleteOutlined />}
+            />
+          </Popconfirm>
+        ) : (
+          <div />
+        )}
 
         {/* Right: reset + submit */}
-        <Col>
-          <Space wrap>
-            {extra}
-            <Button
-              key="reset-button"
-              label="Khôi phục"
-              onClick={() => props.form?.resetFields()}
-            />
-            {defaultDoms}
-          </Space>
-        </Col>
-      </Row>
+
+        <Flex justify="flex-end" gap="small" wrap>
+          {extra}
+          <Button
+            key="reset-button"
+            label="Khôi phục"
+            onClick={() => props.form?.resetFields()}
+          />
+          {defaultDoms}
+        </Flex>
+      </Flex>
     ),
   };
 
