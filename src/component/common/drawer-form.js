@@ -115,8 +115,8 @@ export function DrawerForm({
     onDataDeleteSuccess,
     onDataDeleteError,
     deleteParams,
-    close,
     messageApi,
+    close,
   ]);
 
   // Configure submitter buttons based on available handlers
