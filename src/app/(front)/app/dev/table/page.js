@@ -4,7 +4,7 @@ import { EllipsisOutlined, PlusOutlined } from "@ant-design/icons";
 import { TableDropdown } from "@ant-design/pro-components";
 import { Button, Dropdown, Space, Tag } from "antd";
 import { useRef } from "react";
-import { ProTable } from "@/component/common";
+import { AntTable } from "@/component/common";
 import { useTable } from "@/component/hook";
 
 export const waitTimePromise = async (time = 100) => {
@@ -187,7 +187,9 @@ export default function TablePage() {
   ];
 
   return (
-    <ProTable
+    <AntTable
+      variant="modal"
+      trigger={<Button type="primary">Open Table</Button>}
       columns={columns}
       tableHook={tableHook}
       onDataRequest={handleDataRequest}
@@ -197,6 +199,7 @@ export default function TablePage() {
       showOptions={true}
       showPagination={true}
       syncToUrl={true}
+      modalProps={{ title: "ModalTable" }}
     />
   );
 }

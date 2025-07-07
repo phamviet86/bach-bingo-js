@@ -8,8 +8,17 @@ export function useTable() {
 
   // State
   const [dataSource, setDataSource] = useState({});
+  const [visible, setVisible] = useState(false);
 
   // Actions
+  const open = () => {
+    setVisible(true);
+  };
+
+  const close = () => {
+    setVisible(false);
+  };
+
   const reload = () => {
     tableRef?.current?.reload();
   };
@@ -17,8 +26,12 @@ export function useTable() {
   // Expose API
   return {
     tableRef,
-    reload,
     dataSource,
     setDataSource,
+    visible,
+    setVisible,
+    open,
+    close,
+    reload,
   };
 }

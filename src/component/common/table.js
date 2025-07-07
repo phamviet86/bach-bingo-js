@@ -1,11 +1,12 @@
 // path: @/component/common/table.js
 
-import { useCallback } from "react";
-import { message } from "antd";
+import { useCallback, cloneElement } from "react";
+import { message, Modal, Drawer } from "antd";
 import { ProTable } from "@ant-design/pro-components";
-import { TABLE_CONFIG } from "@/component/config";
+import { TABLE_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 
 export function AntTable({
+  variant = "page", // Table variant (default, bordered, etc.)
   // Data request handlers
   onDataRequest = undefined,
   onDataRequestSuccess = undefined,
@@ -35,11 +36,15 @@ export function AntTable({
   // Table reference hook
   tableHook = {},
 
+  modalProps = {},
+  drawerProps = {},
+  trigger = undefined,
+
   // Other props
   ...props
 }) {
   // Extract table reference from hook
-  const { tableRef } = tableHook;
+  const { tableRef, visible, open, close } = tableHook;
 
   // Initialize message API for error/success notifications
   const [messageApi, contextHolder] = message.useMessage();
@@ -102,27 +107,69 @@ export function AntTable({
       }
     : undefined;
 
-  return (
-    <>
-      {contextHolder}
-      <ProTable
-        {...props}
-        actionRef={tableRef}
-        columns={allColumns}
-        request={onDataRequest ? handleDataRequest : undefined}
-        params={requestParams}
-        headerTitle={title}
-        toolBarRender={extra ? () => extra : undefined}
-        rowSelection={rowSelectionConfig}
-        form={formConfig}
-        search={searchConfig}
-        pagination={paginationConfig}
-        options={optionsConfig}
-        tableAlertRender={false}
-        rowKey="id"
-        bordered
-        ghost
-      />
-    </>
-  );
+  const baseTableProps = {
+    // ...props,
+    actionRef: tableRef,
+    columns: allColumns,
+    request: onDataRequest ? handleDataRequest : undefined,
+    params: requestParams,
+    headerTitle: title,
+    toolBarRender: extra ? () => extra : undefined,
+    rowSelection: rowSelectionConfig,
+    form: formConfig,
+    search: searchConfig,
+    pagination: paginationConfig,
+    options: optionsConfig,
+    tableAlertRender: false,
+    rowKey: "id",
+    bordered: true,
+    ghost: true,
+  };
+
+  if (variant === "page") {
+    return (
+      <>
+        {contextHolder}
+        <ProTable {...baseTableProps} />
+      </>
+    );
+  }
+
+  if (variant === "drawer") {
+    return (
+      <>
+        {contextHolder}
+        {trigger && variant === "drawer"
+          ? cloneElement(trigger, { onClick: open })
+          : null}
+        <Drawer
+          {...drawerProps}
+          {...DRAWER_CONFIG}
+          open={visible}
+          onClose={close}
+        >
+          <ProTable {...baseTableProps} />
+        </Drawer>
+      </>
+    );
+  }
+
+  if (variant === "modal") {
+    return (
+      <>
+        {contextHolder}
+        {trigger && variant === "modal"
+          ? cloneElement(trigger, { onClick: open })
+          : null}
+        <Modal
+          {...modalProps}
+          {...MODAL_CONFIG}
+          open={visible}
+          onCancel={close}
+        >
+          <ProTable {...baseTableProps} />
+        </Modal>
+      </>
+    );
+  }
 }
