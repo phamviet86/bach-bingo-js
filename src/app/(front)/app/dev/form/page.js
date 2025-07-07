@@ -15,7 +15,7 @@ import {
   ProFormTextArea,
   ProFormDatePicker,
 } from "@ant-design/pro-components";
-import { DrawerForm } from "@/component/common";
+import { AntForm } from "@/component/common";
 import { useForm } from "@/component/hook";
 
 const { Title, Paragraph } = Typography;
@@ -374,7 +374,8 @@ export default function DrawerFormDemo() {
         </Space>
       </Card>
 
-      <DrawerForm
+      <AntForm
+        variant="page" // Change to "modal" for ModalForm
         title={formHook.title}
         width={600}
         formHook={formHook}
@@ -397,7 +398,7 @@ export default function DrawerFormDemo() {
           <Button
             key="test-set-values"
             onClick={handleTestSetValues}
-            disabled={!formHook.visible}
+            // disabled={!formHook.visible}
           >
             Test setValues
           </Button>,

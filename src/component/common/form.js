@@ -1,14 +1,14 @@
 // path: @/component/common/drawer-form.js
 
 import { useCallback } from "react";
-import { Row, Col, Space } from "antd";
 import { message, Popconfirm, Flex } from "antd";
-import { DrawerForm as AntDrawerForm } from "@ant-design/pro-components";
+import { DrawerForm, ModalForm, ProForm } from "@ant-design/pro-components";
 import { Button } from "@/component/common";
-import { FORM_CONFIG, DRAWER_CONFIG } from "@/component/config";
+import { FORM_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import { DeleteOutlined } from "@ant-design/icons";
 
-export function DrawerForm({
+export function AntForm({
+  variant = "page",
   // Data request handlers
   onDataRequest = undefined,
   onDataRequestSuccess = undefined,
@@ -101,7 +101,7 @@ export function DrawerForm({
       const result = await onDataDelete(deleteParams);
       // result: { success, message, data: array }
       messageApi.success(result.message);
-      close(); // Close the drawer after successful deletion
+      if (variant) close(); // Close drawer/modal if variant is set
       onDataDeleteSuccess?.(result);
       return true;
     } catch (error) {
@@ -116,6 +116,7 @@ export function DrawerForm({
     onDataDeleteError,
     deleteParams,
     messageApi,
+    variant,
     close,
   ]);
 
@@ -171,24 +172,69 @@ export function DrawerForm({
     ),
   };
 
-  // Render component
-  return (
-    <>
-      {contextHolder}
-      <AntDrawerForm
-        {...props}
-        {...FORM_CONFIG}
-        formRef={formRef}
-        request={onDataRequest ? handleDataRequest : undefined}
-        params={requestParams}
-        onFinish={onDataSubmit ? handleDataSubmit : undefined}
-        open={visible}
-        onOpenChange={setVisible}
-        drawerProps={DRAWER_CONFIG}
-        submitter={submitterConfig}
-      >
-        {fields}
-      </AntDrawerForm>
-    </>
-  );
+  // Default case: render ProForm
+  if (variant === "page") {
+    return (
+      <>
+        {contextHolder}
+        <ProForm
+          {...props}
+          {...FORM_CONFIG}
+          formRef={formRef}
+          request={onDataRequest ? handleDataRequest : undefined}
+          params={requestParams}
+          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          submitter={submitterConfig}
+        >
+          {fields}
+        </ProForm>
+      </>
+    );
+  }
+
+  // If variant is "drawer", render DrawerForm
+  if (variant === "drawer") {
+    return (
+      <>
+        {contextHolder}
+        <DrawerForm
+          {...props}
+          {...FORM_CONFIG}
+          formRef={formRef}
+          request={onDataRequest ? handleDataRequest : undefined}
+          params={requestParams}
+          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          submitter={submitterConfig}
+          open={visible}
+          onOpenChange={setVisible}
+          drawerProps={DRAWER_CONFIG}
+        >
+          {fields}
+        </DrawerForm>
+      </>
+    );
+  }
+
+  // If variant is "modal", render ModalForm
+  if (variant === "modal") {
+    return (
+      <>
+        {contextHolder}
+        <ModalForm
+          {...props}
+          {...FORM_CONFIG}
+          formRef={formRef}
+          request={onDataRequest ? handleDataRequest : undefined}
+          params={requestParams}
+          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          submitter={submitterConfig}
+          open={visible}
+          onOpenChange={setVisible}
+          modalProps={MODAL_CONFIG}
+        >
+          {fields}
+        </ModalForm>
+      </>
+    );
+  }
 }

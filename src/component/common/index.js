@@ -7,4 +7,4 @@ export * from "./page-container";
 export * from "./pro-layout";
 export * from "./result";
 export * from "./pro-table";
-export * from "./drawer-form";
+export * from "./form";
