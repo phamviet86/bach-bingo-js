@@ -188,7 +188,7 @@ export default function TablePage() {
 
   return (
     <AntTable
-      variant="drawer"
+      variant="drawer" // Change to "modal" for ModalForm
       trigger={<Button type="primary">Open Table</Button>}
       columns={columns}
       tableHook={tableHook}

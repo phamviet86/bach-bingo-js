@@ -156,6 +156,7 @@ export function AntTable({
           {...modalProps}
           open={visible}
           onCancel={close}
+          footer={null} // No footer buttons in modal
         >
           <ProTable {...baseTableProps} />
         </Modal>
