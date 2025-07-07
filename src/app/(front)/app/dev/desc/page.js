@@ -58,83 +58,65 @@ export default function DescTestPage() {
   // ========== Description Columns Configuration ==========
   const descriptionColumns = [
     {
-      title: "Basic Information",
-      dataIndex: "basicInfo",
-      children: [
-        {
-          title: "ID",
-          dataIndex: "id",
-          copyable: true,
-        },
-        {
-          title: "Full Name",
-          dataIndex: "name",
-          ellipsis: true,
-        },
-        {
-          title: "Email",
-          dataIndex: "email",
-          copyable: true,
-        },
-        {
-          title: "Phone",
-          dataIndex: "phone",
-        },
-      ],
+      title: "ID",
+      dataIndex: "id",
+      copyable: true,
     },
     {
-      title: "Work Information",
-      dataIndex: "workInfo",
-      children: [
-        {
-          title: "Department",
-          dataIndex: "department",
-          valueType: "text",
-        },
-        {
-          title: "Position",
-          dataIndex: "position",
-        },
-        {
-          title: "Manager",
-          dataIndex: "manager",
-        },
-        {
-          title: "Join Date",
-          dataIndex: "joinDate",
-          valueType: "date",
-        },
-      ],
+      title: "Full Name",
+      dataIndex: "name",
+      ellipsis: true,
     },
     {
-      title: "Additional Details",
-      dataIndex: "additionalInfo",
-      children: [
-        {
-          title: "Status",
-          dataIndex: "status",
-          valueType: "select",
-          valueEnum: {
-            Active: { text: "Active", status: "Success" },
-            Inactive: { text: "Inactive", status: "Default" },
-            Suspended: { text: "Suspended", status: "Error" },
-          },
-        },
-        {
-          title: "Location",
-          dataIndex: "location",
-        },
-        {
-          title: "Salary",
-          dataIndex: "salary",
-          valueType: "money",
-        },
-        {
-          title: "Projects",
-          dataIndex: "projects",
-          ellipsis: true,
-        },
-      ],
+      title: "Email",
+      dataIndex: "email",
+      copyable: true,
+    },
+    {
+      title: "Phone",
+      dataIndex: "phone",
+    },
+    {
+      title: "Department",
+      dataIndex: "department",
+      valueType: "text",
+    },
+    {
+      title: "Position",
+      dataIndex: "position",
+    },
+    {
+      title: "Manager",
+      dataIndex: "manager",
+    },
+    {
+      title: "Join Date",
+      dataIndex: "joinDate",
+      valueType: "date",
+    },
+    {
+      title: "Status",
+      dataIndex: "status",
+      valueType: "select",
+      valueEnum: {
+        Active: { text: "Active", status: "Success" },
+        Inactive: { text: "Inactive", status: "Default" },
+        Suspended: { text: "Suspended", status: "Error" },
+      },
+    },
+    {
+      title: "Location",
+      dataIndex: "location",
+    },
+    {
+      title: "Salary",
+      dataIndex: "salary",
+      valueType: "money",
+    },
+    {
+      title: "Projects",
+      dataIndex: "projects",
+      ellipsis: true,
     },
   ];
 
@@ -212,6 +194,7 @@ export default function DescTestPage() {
               View in Drawer
             </Button>
           }
+          column={1}
         />
       </Card>
 
