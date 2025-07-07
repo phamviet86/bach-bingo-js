@@ -2,7 +2,7 @@
 
 import "antd/dist/reset.css";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
-import { ConfigProvider } from "@/component/common";
+import { AntProvider } from "@/component/common";
 import Head from "next/head";
 
 export default function RootLayout({ children }) {
@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       </Head>
       <body>
         <AntdRegistry>
-          <ConfigProvider>{children}</ConfigProvider>
+          <AntProvider>{children}</AntProvider>
         </AntdRegistry>
       </body>
     </html>
