@@ -5,21 +5,30 @@ import { Modal as AntModal, message } from "antd";
 import { MODAL_CONFIG } from "@/component/config";
 
 export function Modal({
+  // Action handling props
   onOk = undefined,
   onOkError = undefined,
   onOkSuccess = undefined,
   onCancel = undefined,
   onCancelError = undefined,
   onCancelSuccess = undefined,
+
+  // Message configuration
   showOkMessage = false,
   showCancelMessage = false,
+
+  // Modal trigger
   trigger = undefined,
+
+  // Other props
   ...props
 }) {
+  // ========== Hooks and State ==========
   const [visible, setVisible] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
 
-  // Handlers
+  // ========== Event Handlers ==========
+  // Modal visibility handlers
   const openModal = useCallback(() => {
     setVisible(true);
   }, []);
@@ -28,6 +37,7 @@ export function Modal({
     setVisible(false);
   }, []);
 
+  // OK button handler with error handling
   const handleOk = useCallback(async () => {
     if (!onOk) {
       messageApi.error("OK handler not provided");
@@ -49,6 +59,7 @@ export function Modal({
     }
   }, [onOk, onOkSuccess, onOkError, showOkMessage, messageApi, closeModal]);
 
+  // Cancel button handler with error handling
   const handleCancel = useCallback(async () => {
     if (!onCancel) {
       closeModal();
@@ -77,7 +88,7 @@ export function Modal({
     closeModal,
   ]);
 
-  // Render the component
+  // ========== Render Logic ==========
   return (
     <>
       {contextHolder}
