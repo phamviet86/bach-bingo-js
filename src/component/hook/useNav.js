@@ -14,7 +14,7 @@ import { usePathname, useRouter } from "next/navigation";
  * navBack(); // Navigates to parent path
  * navDetail(123); // Navigates to /current/path/123
  */
-export function useNavigate() {
+export function useNav() {
   const router = useRouter();
   const currentPath = usePathname();
 

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Button as AntButton } from "antd";
-import { useNavigate } from "@/component/hook";
+import { useNav } from "@/component/hook";
 
 // Components
 export function Button({ label, ...props }) {
@@ -25,7 +25,7 @@ export function BackButton({
   variant = "filled",
   ...props
 }) {
-  const { navBack } = useNavigate();
+  const { navBack } = useNav();
   return (
     <Button
       {...props}
