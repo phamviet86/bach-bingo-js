@@ -6,14 +6,16 @@ import { ProTable } from "@ant-design/pro-components";
 import { TABLE_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 
 export function AntTable({
-  variant = "page", // Table variant (default, bordered, etc.)
-  // Data request handlers
-  onDataRequest = undefined,
-  onDataRequestSuccess = undefined,
-  onDataRequestError = undefined,
+  // Table variant configuration
+  variant = "page", // "page" | "modal" | "drawer"
+
+  // Data handling props
+  onRequest = undefined,
+  onRequestSuccess = undefined,
+  onRequestError = undefined,
   requestParams = undefined,
 
-  // Row selection handlers
+  // Row selection props
   onRowsSelect = undefined,
   onRowsSelectError = undefined,
   selectType = "checkbox",
@@ -23,7 +25,7 @@ export function AntTable({
   leftColumns = [],
   rightColumns = [],
 
-  // Table display options
+  // Display configuration
   showSearch = true,
   showOptions = false,
   showPagination = true,
@@ -33,9 +35,8 @@ export function AntTable({
   title = undefined,
   extra = undefined,
 
-  // Table reference hook
+  // Modal/Drawer specific props
   tableHook = {},
-
   modalProps = {},
   drawerProps = {},
   trigger = undefined,
@@ -43,35 +44,32 @@ export function AntTable({
   // Other props
   ...props
 }) {
-  // Extract table reference from hook
+  // ========== Hooks and State ==========
   const { tableRef, visible, open, close } = tableHook;
-
-  // Initialize message API for error/success notifications
   const [messageApi, contextHolder] = message.useMessage();
 
-  // Data request handler with error handling
+  // ========== Event Handlers ==========
   const handleDataRequest = useCallback(
     async (params, sort, filter) => {
-      if (!onDataRequest) {
+      if (!onRequest) {
         messageApi.error("Data request handler not provided");
         return false;
       }
 
       try {
-        const result = await onDataRequest(params, sort, filter);
-        onDataRequestSuccess?.(result);
+        const result = await onRequest(params, sort, filter);
+        onRequestSuccess?.(result);
         return result;
       } catch (error) {
         const errorMessage = error?.message || "An error occurred";
         messageApi.error(errorMessage);
-        onDataRequestError?.(error);
+        onRequestError?.(error);
         return false;
       }
     },
-    [onDataRequest, onDataRequestSuccess, onDataRequestError, messageApi]
+    [onRequest, onRequestSuccess, onRequestError, messageApi]
   );
 
-  // Row selection handler with error handling
   const handleRowsSelect = useCallback(
     (_, selectedRowsData) => {
       if (!onRowsSelect) return true;
@@ -89,29 +87,29 @@ export function AntTable({
     [onRowsSelect, onRowsSelectError, messageApi]
   );
 
-  // Combine all columns in the correct order
+  // ========== Configuration Setup ==========
+  // Column configuration
   const allColumns = [...leftColumns, ...columns, ...rightColumns];
 
-  // Configure row selection if handler is provided
+  // Row selection configuration
   const rowSelectionConfig = onRowsSelect
     ? { type: selectType, onChange: handleRowsSelect }
     : undefined;
 
-  // Configure table features based on props
+  // Feature configurations
   const searchConfig = showSearch ? TABLE_CONFIG.search : false;
   const paginationConfig = showPagination ? TABLE_CONFIG.pagination : false;
   const optionsConfig = showOptions ? TABLE_CONFIG.options : false;
   const formConfig = syncToUrl
-    ? {
-        syncToUrl: (values, _) => values,
-      }
+    ? { syncToUrl: (values, _) => values }
     : undefined;
 
+  // ========== Base Table Props ==========
   const baseTableProps = {
-    // ...props,
+    ...props,
     actionRef: tableRef,
     columns: allColumns,
-    request: onDataRequest ? handleDataRequest : undefined,
+    request: onRequest ? handleDataRequest : undefined,
     params: requestParams,
     headerTitle: title,
     toolBarRender: extra ? () => extra : undefined,
@@ -126,25 +124,15 @@ export function AntTable({
     ghost: true,
   };
 
-  if (variant === "page") {
-    return (
-      <>
-        {contextHolder}
-        <ProTable {...baseTableProps} />
-      </>
-    );
-  }
-
+  // ========== Render Logic ==========
   if (variant === "drawer") {
     return (
       <>
         {contextHolder}
-        {trigger && variant === "drawer"
-          ? cloneElement(trigger, { onClick: open })
-          : null}
+        {trigger && cloneElement(trigger, { onClick: open })}
         <Drawer
-          {...drawerProps}
           {...DRAWER_CONFIG}
+          {...drawerProps}
           open={visible}
           onClose={close}
         >
@@ -158,12 +146,10 @@ export function AntTable({
     return (
       <>
         {contextHolder}
-        {trigger && variant === "modal"
-          ? cloneElement(trigger, { onClick: open })
-          : null}
+        {trigger && cloneElement(trigger, { onClick: open })}
         <Modal
-          {...modalProps}
           {...MODAL_CONFIG}
+          {...modalProps}
           open={visible}
           onCancel={close}
         >
@@ -172,4 +158,12 @@ export function AntTable({
       </>
     );
   }
+
+  // Default: page variant
+  return (
+    <>
+      {contextHolder}
+      <ProTable {...baseTableProps} />
+    </>
+  );
 }

@@ -381,18 +381,18 @@ export default function DrawerFormDemo() {
         formHook={formHook}
         fields={formFields}
         // Data request handlers
-        onDataRequest={handleDataRequest}
-        onDataRequestSuccess={handleSuccess}
-        onDataRequestError={handleError}
+        onRequest={handleDataRequest}
+        onRequestSuccess={handleSuccess}
+        onRequestError={handleError}
         requestParams={formHook.requestParams}
         // Data submit handlers
-        onDataSubmit={handleDataSubmit}
-        onDataSubmitSuccess={handleSuccess}
-        onDataSubmitError={handleError}
+        onSubmit={handleDataSubmit}
+        onSubmitSuccess={handleSuccess}
+        onSubmitError={handleError}
         // Data delete handlers (only for edit mode)
-        onDataDelete={selectedUser ? handleDataDelete : undefined}
-        onDataDeleteSuccess={handleSuccess}
-        onDataDeleteError={handleError}
+        onDelete={selectedUser ? handleDataDelete : undefined}
+        onDeleteSuccess={handleSuccess}
+        onDeleteError={handleError}
         deleteParams={formHook.deleteParams}
         extra={[
           <Button

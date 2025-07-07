@@ -8,22 +8,24 @@ import { FORM_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import { DeleteOutlined } from "@ant-design/icons";
 
 export function AntForm({
+  // form variant configuration
   variant = "page",
-  // Data request handlers
-  onDataRequest = undefined,
-  onDataRequestSuccess = undefined,
-  onDataRequestError = undefined,
+
+  // Data handling props
+  onRequest = undefined,
+  onRequestSuccess = undefined,
+  onRequestError = undefined,
   requestParams = undefined,
 
   // Data submit handlers
-  onDataSubmit = undefined,
-  onDataSubmitSuccess = undefined,
-  onDataSubmitError = undefined,
+  onSubmit = undefined,
+  onSubmitSuccess = undefined,
+  onSubmitError = undefined,
 
   // Data delete handlers
-  onDataDelete = undefined,
-  onDataDeleteSuccess = undefined,
-  onDataDeleteError = undefined,
+  onDelete = undefined,
+  onDeleteSuccess = undefined,
+  onDeleteError = undefined,
   deleteParams = undefined,
 
   // Form configuration
@@ -45,75 +47,75 @@ export function AntForm({
   // Data request handler with error handling
   const handleDataRequest = useCallback(
     async (params) => {
-      if (!onDataRequest) {
+      if (!onRequest) {
         messageApi.error("Data request handler not provided");
         return false;
       }
 
       try {
-        const result = await onDataRequest(params);
+        const result = await onRequest(params);
         // result: { success, message, data: array }
-        onDataRequestSuccess?.(result);
+        onRequestSuccess?.(result);
         return result.data[0] || {};
       } catch (error) {
         const errorMessage = error?.message || "Đã xảy ra lỗi";
         messageApi.error(errorMessage);
-        onDataRequestError?.(error);
+        onRequestError?.(error);
         return false;
       }
     },
-    [onDataRequest, onDataRequestSuccess, onDataRequestError, messageApi]
+    [onRequest, onRequestSuccess, onRequestError, messageApi]
   );
 
   // Data submit handler with error handling
   const handleDataSubmit = useCallback(
     async (values) => {
-      if (!onDataSubmit) {
+      if (!onSubmit) {
         messageApi.error("Data submit handler not provided");
         return false;
       }
       if (!values) return false;
 
       try {
-        const result = await onDataSubmit(values);
+        const result = await onSubmit(values);
         // result: { success, message, data: array }
         messageApi.success(result.message);
-        onDataSubmitSuccess?.(result);
+        onSubmitSuccess?.(result);
         return true;
       } catch (error) {
         const errorMessage = error?.message || "Đã xảy ra lỗi";
         messageApi.error(errorMessage);
-        onDataSubmitError?.(error);
+        onSubmitError?.(error);
         return false;
       }
     },
-    [onDataSubmit, onDataSubmitSuccess, onDataSubmitError, messageApi]
+    [onSubmit, onSubmitSuccess, onSubmitError, messageApi]
   );
 
   // Data delete handler with error handling
   const handleDataDelete = useCallback(async () => {
-    if (!onDataDelete) {
+    if (!onDelete) {
       messageApi.error("Data delete handler not provided");
       return false;
     }
 
     try {
-      const result = await onDataDelete(deleteParams);
+      const result = await onDelete(deleteParams);
       // result: { success, message, data: array }
       messageApi.success(result.message);
       if (variant) close(); // Close drawer/modal if variant is set
-      onDataDeleteSuccess?.(result);
+      onDeleteSuccess?.(result);
       return true;
     } catch (error) {
       const errorMessage = error?.message || "Đã xảy ra lỗi";
       messageApi.error(errorMessage);
-      onDataDeleteError?.(error);
+      onDeleteError?.(error);
       return false;
     }
   }, [
-    onDataDelete,
-    onDataDeleteSuccess,
-    onDataDeleteError,
+    onDelete,
+    onDeleteSuccess,
+    onDeleteError,
     deleteParams,
     messageApi,
     variant,
@@ -137,7 +139,7 @@ export function AntForm({
         wrap
       >
         {/* Left: delete */}
-        {onDataDelete ? (
+        {onDelete ? (
           <Popconfirm
             key="delete-button"
             title="Xác nhận xóa?"
@@ -181,9 +183,9 @@ export function AntForm({
           {...props}
           {...FORM_CONFIG}
           formRef={formRef}
-          request={onDataRequest ? handleDataRequest : undefined}
+          request={onRequest ? handleDataRequest : undefined}
           params={requestParams}
-          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          onFinish={onSubmit ? handleDataSubmit : undefined}
           submitter={submitterConfig}
         >
           {fields}
@@ -201,9 +203,9 @@ export function AntForm({
           {...props}
           {...FORM_CONFIG}
           formRef={formRef}
-          request={onDataRequest ? handleDataRequest : undefined}
+          request={onRequest ? handleDataRequest : undefined}
           params={requestParams}
-          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          onFinish={onSubmit ? handleDataSubmit : undefined}
           submitter={submitterConfig}
           open={visible}
           onOpenChange={setVisible}
@@ -224,9 +226,9 @@ export function AntForm({
           {...props}
           {...FORM_CONFIG}
           formRef={formRef}
-          request={onDataRequest ? handleDataRequest : undefined}
+          request={onRequest ? handleDataRequest : undefined}
           params={requestParams}
-          onFinish={onDataSubmit ? handleDataSubmit : undefined}
+          onFinish={onSubmit ? handleDataSubmit : undefined}
           submitter={submitterConfig}
           open={visible}
           onOpenChange={setVisible}

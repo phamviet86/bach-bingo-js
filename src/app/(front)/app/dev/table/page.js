@@ -188,14 +188,14 @@ export default function TablePage() {
 
   return (
     <AntTable
-      variant="modal"
+      variant="drawer"
       trigger={<Button type="primary">Open Table</Button>}
       columns={columns}
       tableHook={tableHook}
-      onDataRequest={handleDataRequest}
+      onRequest={handleDataRequest}
       title="Advanced Table"
       extra={toolBarElements}
-      showSearch={true}
+      showSearch={false}
       showOptions={true}
       showPagination={true}
       syncToUrl={true}
@@ -203,3 +203,4 @@ export default function TablePage() {
     />
   );
 }
+``;
