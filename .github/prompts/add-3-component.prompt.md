@@ -81,6 +81,24 @@ export function {TableName}Fields(params) { /* form field definitions */ }
 - ✅ Templates: Follow exact structure and naming patterns
 - ✅ Validation: Required field validation based on SQL NOT NULL constraints
 - ✅ Vietnamese: Proper Vietnamese labels and placeholders
+- ✅ Index Export: Add component exports to `src/component/custom/index.js`
+
+## Export to Index File
+
+After creating the component file, add all component exports to the main index file:
+
+**File Location**: `src/component/custom/index.js`
+
+**Export Pattern**:
+
+```javascript
+// Export all components from {tableName}-component.js
+export * from "./{tableName}-component";
+```
+
+**Implementation**:
+
+- Add the export block to the existing index.js file
 
 ## Response Format
 
@@ -89,7 +107,9 @@ export function {TableName}Fields(params) { /* form field definitions */ }
 **Files Generated**:
 
 - `src/component/custom/{tableName}-component.js`
+- Updated `src/component/custom/index.js` with component exports
 
 **Components**: ✅ Table, Desc, Create, Edit, Columns, Fields
+**Exports**: ✅ Added to index.js file
 **Validation**: ✅ All requirements met
 **Next Steps**: Frontend components ready for use in pages and forms
