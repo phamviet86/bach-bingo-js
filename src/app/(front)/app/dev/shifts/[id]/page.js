@@ -1,4 +1,4 @@
-// ROOMS DETAIL PAGE
+// SHIFTS DETAIL PAGE
 
 "use client";
 
@@ -8,10 +8,10 @@ import { SettingOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
-  RoomsDesc,
-  RoomsEdit,
-  RoomsColumns,
-  RoomsFields,
+  ShiftsDesc,
+  ShiftsEdit,
+  ShiftsColumns,
+  ShiftsFields,
 } from "@/component/custom";
 import { useDesc, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
@@ -28,16 +28,16 @@ function PageContent({ params }) {
   // Context
   const {} = usePageContext();
 
-  // Hooks
+  // Navigation
   const { navBack } = useNav();
-  const { id: roomsId } = use(params);
+  const { id: shiftId } = use(params);
 
-  // Phòng học logic hooks
-  const useRooms = {
+  // ca học logic hooks
+  const useShifts = {
     desc: useDesc(),
     edit: useForm(),
-    columns: RoomsColumns(),
-    fields: RoomsFields(),
+    columns: ShiftsColumns(),
+    fields: ShiftsFields(),
   };
 
   // Page action buttons
@@ -48,36 +48,36 @@ function PageContent({ params }) {
       label="Sửa"
       color="primary"
       variant="solid"
-      onClick={() => useRooms.edit.open()}
+      onClick={() => useShifts.edit.open()}
     />,
   ];
 
   // Main content
   const pageContent = (
     <ProCard boxShadow bordered>
-      <RoomsDesc
-        descHook={useRooms.desc}
-        columns={useRooms.columns}
-        requestParams={{ id: roomsId }}
+      <ShiftsDesc
+        descHook={useShifts.desc}
+        columns={useShifts.columns}
+        requestParams={{ id: shiftId }}
         onRequestSuccess={(result) =>
-          useRooms.desc.setDataSource(result?.data?.[0])
+          useShifts.desc.setDataSource(result?.data?.[0])
         }
       />
-      <RoomsEdit
-        formHook={useRooms.edit}
-        fields={useRooms.fields}
-        requestParams={{ id: roomsId }}
-        deleteParams={{ id: roomsId }}
-        onSubmitSuccess={() => useRooms.desc.reload()}
+      <ShiftsEdit
+        formHook={useShifts.edit}
+        fields={useShifts.fields}
+        requestParams={{ id: shiftId }}
+        deleteParams={{ id: shiftId }}
+        onSubmitSuccess={() => useShifts.desc.reload()}
         onDeleteSuccess={() => navBack()}
-        title="Sửa phòng học"
+        title="Sửa ca học"
         variant="drawer"
       />
     </ProCard>
   );
 
   // Page title
-  const pageTitle = useRooms.desc?.dataSource?.roomName || "Chi tiết";
+  const pageTitle = useShifts.desc?.dataSource?.shift_name || "Chi tiết";
 
   // Render
   return (
@@ -91,7 +91,7 @@ function PageContent({ params }) {
             </Space>
           ),
         },
-        { title: "Phòng học", path: "/app/system/rooms" },
+        { title: "ca học", path: "/app/system/shifts" },
         { title: pageTitle },
       ]}
       title={pageTitle}

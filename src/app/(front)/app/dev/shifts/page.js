@@ -1,4 +1,4 @@
-// ROOMS LIST PAGE
+// SHIFTS LIST PAGE
 
 "use client";
 
@@ -7,10 +7,10 @@ import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import {
-  RoomsTable,
-  RoomsCreate,
-  RoomsColumns,
-  RoomsFields,
+  ShiftsTable,
+  ShiftsCreate,
+  ShiftsColumns,
+  ShiftsFields,
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
@@ -30,12 +30,12 @@ function PageContent() {
   // Hooks
   const { navDetail } = useNav();
 
-  // Phòng học logic hooks
-  const useRooms = {
+  // ca học logic hooks
+  const useShifts = {
     table: useTable(),
     create: useForm(),
-    columns: RoomsColumns(),
-    fields: RoomsFields(),
+    columns: ShiftsColumns(),
+    fields: ShiftsFields(),
   };
 
   // Page action buttons
@@ -45,23 +45,23 @@ function PageContent() {
       label="Tải lại"
       color="default"
       variant="outlined"
-      onClick={() => useRooms.table.reload()}
+      onClick={() => useShifts.table.reload()}
     />,
     <AntButton
       key="create-button"
       label="Tạo mới"
       color="primary"
       variant="solid"
-      onClick={() => useRooms.create.open()}
+      onClick={() => useShifts.create.open()}
     />,
   ];
 
   // Main content
   const pageContent = (
     <ProCard boxShadow bordered>
-      <RoomsTable
-        tableHook={useRooms.table}
-        columns={useRooms.columns}
+      <ShiftsTable
+        tableHook={useShifts.table}
+        columns={useShifts.columns}
         leftColumns={[
           {
             width: 56,
@@ -78,11 +78,11 @@ function PageContent() {
           },
         ]}
       />
-      <RoomsCreate
-        formHook={useRooms.create}
-        fields={useRooms.fields}
+      <ShiftsCreate
+        formHook={useShifts.create}
+        fields={useShifts.fields}
         onSubmitSuccess={(result) => navDetail(result?.data[0]?.id)}
-        title="Tạo phòng học"
+        title="Tạo ca học"
         variant="drawer"
       />
     </ProCard>
@@ -100,9 +100,9 @@ function PageContent() {
             </Space>
           ),
         },
-        { title: "Phòng học" },
+        { title: "ca học" },
       ]}
-      title="Quản lý phòng học"
+      title="Quản lý ca học"
       extra={pageButton}
       content={pageContent}
     />
