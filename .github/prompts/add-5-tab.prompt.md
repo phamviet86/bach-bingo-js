@@ -34,7 +34,7 @@ Generate complete frontend tab page file from SQL table structure following esta
 import { Space } from "antd";
 import {
   SettingOutlined,
-  InfoCircleOutlined,
+  EyeOutlined,
   EditOutlined,
 } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
@@ -61,9 +61,9 @@ export default function Page() {…}
 5. **Page Structure**:
    - **Tab Page**: MUST have all CRUD operations in tab format
 6. **EXACT PATTERNS**:
-   - Use `leftColumns` with render function for InfoCircleOutlined button
+   - Use `leftColumns` with render function for EyeOutlined button
    - Use `rightColumns` with render function for EditOutlined button
-7. **Icons**: Import and use exact icons from sample: `SettingOutlined, InfoCircleOutlined, EditOutlined`
+7. **Icons**: Import and use exact icons from sample: `SettingOutlined, EyeOutlined, EditOutlined`
 8. **Vietnamese Labels**: Use Vietnamese table name from SQL comment for page titles
 9. **Navigation**: Use exact navigation patterns with `items` array and proper paths
 10. **Variable Naming**: Use table-specific naming for logic objects (e.g., `useRooms` for rooms table, `useUsers` for users table, NOT generic `useOptions`)
@@ -85,7 +85,7 @@ export default function Page() {…}
 
 ### Tab Page Requirements
 
-- **MUST** import all required icons: `SettingOutlined, InfoCircleOutlined, EditOutlined`
+- **MUST** import all required icons: `SettingOutlined, EyeOutlined, EditOutlined`
 - **MUST** import all required components: table, desc, create, edit, columns, fields
 - **MUST** import all required hooks: `useTable, useDesc, useForm`
 - **MUST** use `use{TableName}` object containing ALL properties from sample
@@ -107,7 +107,7 @@ export default function Page() {…}
 
 - **MUST** use exact reload button with `useOptions.table.reload()` callback
 - **MUST** use exact create button with `useOptions.create.open()` callback
-- **MUST** use exact info button in leftColumns with InfoCircleOutlined icon
+- **MUST** use exact info button in leftColumns with EyeOutlined icon
 - **MUST** use exact edit button in rightColumns with EditOutlined icon
 - **MUST** use exact button configurations: color, variant, onClick patterns
 

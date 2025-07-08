@@ -3,11 +3,7 @@
 "use client";
 
 import { Space } from "antd";
-import {
-  SettingOutlined,
-  InfoCircleOutlined,
-  EditOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton } from "@/component/common";
 import {
@@ -67,7 +63,7 @@ export default function Page() {
             search: false,
             render: (_, record) => (
               <AntButton
-                icon={<InfoCircleOutlined />}
+                icon={<EyeOutlined />}
                 color="primary"
                 variant="link"
                 onClick={() => {
@@ -146,7 +142,7 @@ export default function Page() {
         },
         { title: "Tùy chọn" },
       ]}
-      title="Tab tùy chọn"
+      title="Quản lý tùy chọn"
       extra={pageButton}
       content={pageContent}
       tabList={[optionsTab]}
