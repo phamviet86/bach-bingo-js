@@ -49,7 +49,7 @@ export async function PUT(request, context) {
       option_group,
     };
 
-    const result = await updateOption(data, id);
+    const result = await updateOption(id, data);
 
     if (!result || !result.length)
       return buildApiResponse(
