@@ -3,12 +3,15 @@
 ## Upcoming Tasks
 
 - [] add theme mode switch on prolayout
+- [] trong quá trình tạo hook cần xem lại các helpers
+  - calendar
+
+## 2025-07-07
+
 - [+] sửa lại các props cần cho components: pro-table, pro-descriptions, pro-form, drawer-form, modal-description, modal, drawer, calender, transfer
   - gộp thành: table, descriptions, form, modal, drawer, calendar, transfer
 - [+] tạo hook phù hợp với các components trên
-- [] trong quá trình tạo hook cần xem lại các helpers
-  - calendar
-- [] add prompt cho schema, component, pages
+- [+] add prompt cho schema, component, pages
 
 ## 2025-07-05
 
