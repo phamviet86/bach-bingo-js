@@ -3,6 +3,8 @@
 ## Columns
 
 ```javascript
+import { COLOR_ENUM } from "@/component/config";
+
 export function Columns(params) {
   const { shiftStatus } = params || {};
   return [
@@ -46,6 +48,13 @@ export function Columns(params) {
       valueType: "textarea",
       responsive: ["lg"],
     },
+    {
+      // select with enum
+      title: "Màu Sắc",
+      dataIndex: "option_color",
+      valueType: "select",
+      valueEnum: COLOR_ENUM,
+    },
   ];
 }
 ```
@@ -60,6 +69,7 @@ import {
   ProFormTextArea,
   ProFormTimePicker,
 } from "@ant-design/pro-form";
+import { COLOR_ENUM } from "@/component/config";
 
 export function Fields(params) {
   const { shiftStatus } = params || {};
@@ -107,6 +117,12 @@ export function Fields(params) {
           label="Mô tả"
           placeholder="Nhập mô tả ca học"
           fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
+        />
+        <ProFormSelect
+          name="option_color"
+          label="Màu Sắc"
+          placeholder="Chọn màu sắc"
+          valueEnum={COLOR_ENUM}
         />
       </ProForm.Group>
     </>

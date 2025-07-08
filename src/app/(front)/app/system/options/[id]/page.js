@@ -90,7 +90,7 @@ function PageContent({ params }) {
             </Space>
           ),
         },
-        { title: "Tuỳ chọn", path: "/app/system/options" },
+        { title: "Tùy chọn", path: "/app/system/options" },
         { title: pageTitle },
       ]}
       title={pageTitle}

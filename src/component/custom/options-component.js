@@ -9,6 +9,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText } from "@ant-design/pro-form";
+import { COLOR_ENUM } from "@/component/config";
 
 export function OptionsTable(props) {
   return (
@@ -55,29 +56,48 @@ export function OptionsColumns(params) {
 
   return [
     {
+      title: "ID",
+      dataIndex: "id",
+      valueType: "text",
+      search: false,
+      width: 80,
+      sorter: { multiple: 1 },
+      responsive: ["md"],
+    },
+    {
       title: "Bảng",
       dataIndex: "option_table",
       valueType: "text",
+      sorter: { multiple: 1 },
+      responsive: ["lg"],
     },
     {
       title: "Cột",
       dataIndex: "option_column",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Nhãn",
       dataIndex: "option_label",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Màu Sắc",
       dataIndex: "option_color",
-      valueType: "text",
+      valueType: "select",
+      valueEnum: COLOR_ENUM,
+      filters: true,
+      sorter: { multiple: 1 },
+      responsive: ["xl"],
     },
     {
       title: "Nhóm",
       dataIndex: "option_group",
       valueType: "text",
+      sorter: { multiple: 1 },
+      responsive: ["xxl"],
     },
   ];
 }
@@ -112,7 +132,8 @@ export function OptionsFields(params) {
         <ProFormText
           name="option_color"
           label="Màu Sắc"
-          placeholder="Nhập màu sắc"
+          placeholder="Chọn màu sắc"
+          valueEnum={COLOR_ENUM}
         />
         <ProFormText
           name="option_group"
