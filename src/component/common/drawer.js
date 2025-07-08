@@ -2,7 +2,7 @@
 
 import { useCallback, cloneElement } from "react";
 import { Drawer as AntDrawer, message, Space } from "antd";
-import { Button } from "@/component/common";
+import { AntButton } from "@/component/common";
 import { DRAWER_CONFIG } from "@/component/config";
 
 export function Drawer({
@@ -99,14 +99,14 @@ export function Drawer({
         onClose={close}
         extra={
           <Space>
-            <Button
+            <AntButton
               label={cancelText}
               onClick={handleCancel}
               color="default"
               variant="outlined"
               key="cancel-button"
             />
-            <Button
+            <AntButton
               label={okText}
               onClick={handleOk}
               color="primary"

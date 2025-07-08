@@ -1,7 +1,7 @@
 // path: @/component/common/steps.js
 
 import React, { useState, useCallback, cloneElement } from "react";
-import { Steps, Button, Space, Modal, Drawer, message, Flex } from "antd";
+import { message, Steps, Button, Space, Modal, Drawer, Flex } from "antd";
 import { DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 
 export function AntSteps({

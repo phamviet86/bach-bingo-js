@@ -1,9 +1,9 @@
 // path: @/component/common/form.js
 
-import { useCallback, cloneElement } from "react";
+import { useCallback } from "react";
 import { message, Popconfirm, Flex } from "antd";
 import { DrawerForm, ModalForm, ProForm } from "@ant-design/pro-components";
-import { Button } from "@/component/common";
+import { AntButton } from "@/component/common";
 import { FORM_CONFIG, DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import { DeleteOutlined } from "@ant-design/icons";
 
@@ -148,7 +148,7 @@ export function AntForm({
             okText="Xóa"
             cancelText="Hủy"
           >
-            <Button
+            <AntButton
               color="danger"
               variant="outlined"
               label="Xoá"
@@ -163,7 +163,7 @@ export function AntForm({
 
         <Flex justify="flex-end" gap="small" wrap>
           {extra}
-          <Button
+          <AntButton
             key="reset-button"
             label="Khôi phục"
             onClick={() => props.form?.resetFields()}

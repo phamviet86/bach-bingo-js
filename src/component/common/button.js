@@ -2,19 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button as AntButton } from "antd";
+import { Button } from "antd";
 import { useNav } from "@/component/hook";
 
 // Components
-export function Button({ label, ...props }) {
-  return <AntButton {...props}>{label}</AntButton>;
+export function AntButton({ label, ...props }) {
+  return <Button {...props}>{label}</Button>;
 }
 
 export function DetailButton({ id, ...props }) {
   const pathname = usePathname();
   return (
     <Link href={`${pathname}/${id}`}>
-      <Button {...props} />
+      <AntButton {...props} />
     </Link>
   );
 }
@@ -27,7 +27,7 @@ export function BackButton({
 }) {
   const { navBack } = useNav();
   return (
-    <Button
+    <AntButton
       {...props}
       label={label}
       color={color}

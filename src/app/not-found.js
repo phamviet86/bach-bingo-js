@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Result, Button } from "@/component/common";
+import { Result, AntButton } from "@/component/common";
 
 export default function NotFound() {
   return (
@@ -11,7 +11,7 @@ export default function NotFound() {
       subTitle="Không tìm thấy trang này."
       extra={
         <Link href="/app">
-          <Button type="primary" label="Quay về trang chủ" />
+          <AntButton type="primary" label="Quay về trang chủ" />
         </Link>
       }
     />
