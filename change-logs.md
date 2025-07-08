@@ -5,6 +5,7 @@
 - [] add theme mode switch on prolayout
 - [] trong quá trình tạo hook cần xem lại các helpers
   - calendar
+- [] test thu prompt moi voi shifts
 
 ## 2025-07-07
 
