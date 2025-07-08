@@ -8,7 +8,7 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText } from "@ant-design/pro-form";
+import { ProForm, ProFormText, ProFormSelect } from "@ant-design/pro-form";
 import { COLOR_ENUM } from "@/component/config";
 
 export function OptionsTable(props) {
@@ -129,7 +129,7 @@ export function OptionsFields(params) {
           placeholder="Nhập nhãn"
           rules={[{ required: true }]}
         />
-        <ProFormText
+        <ProFormSelect
           name="option_color"
           label="Màu Sắc"
           placeholder="Chọn màu sắc"
