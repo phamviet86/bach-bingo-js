@@ -21,6 +21,7 @@ export function Columns(params) {
       dataIndex: "shift_status_id",
       valueType: "select",
       valueEnum: shiftStatus?.valueEnum || {},
+      filters: true,
       sorter: { multiple: 1 },
     },
     {
@@ -54,6 +55,9 @@ export function Columns(params) {
       dataIndex: "option_color",
       valueType: "select",
       valueEnum: COLOR_ENUM,
+      filters: true,
+      sorter: { multiple: 1 },
+      responsive: ["xl"],
     },
   ];
 }
