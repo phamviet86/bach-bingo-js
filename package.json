@@ -12,7 +12,7 @@
     "@ant-design/colors": "^7.2.1",
     "@ant-design/icons": "^6.0.0",
     "@ant-design/nextjs-registry": "^1.0.2",
-    "@ant-design/pro-components": "^2.8.9",
+    "@ant-design/pro-components": "^2.8.7",
     "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@fontsource/montserrat": "^5.2.6",
     "@fullcalendar/core": "^6.1.18",

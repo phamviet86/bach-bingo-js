@@ -29,7 +29,7 @@ export function AntTable({
   showSearch = true,
   showOptions = false,
   showPagination = true,
-  syncToUrl = false,
+  syncToUrl = true,
 
   // Header configuration
   title = undefined,
