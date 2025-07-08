@@ -1,6 +1,5 @@
 // path: @/component/custom/options-components.js
 
-// import for components
 import { AntTable, AntForm, AntDescriptions } from "@/component/common";
 import {
   fetchList,
@@ -9,11 +8,8 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-
-// import for ProForm components
 import { ProForm, ProFormText } from "@ant-design/pro-form";
 
-// Component definitions
 export function OptionsTable(props) {
   return (
     <AntTable
@@ -54,7 +50,6 @@ export function OptionsEdit(props) {
   );
 }
 
-// Columns and fields
 export function OptionsColumns(params) {
   const {} = params || {};
 

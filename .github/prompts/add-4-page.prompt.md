@@ -85,6 +85,7 @@ export default function Page(props) {
 
 function PageContent() {
   // COPY EXACT STRUCTURE FROM SAMPLE
+  // IMPORTANT: Replace 'useOptions' with 'use{TableName}' (e.g., useRooms, useUsers, etc.)
 }
 ```
 
@@ -117,6 +118,7 @@ export default function Page(props) {
 }
 function PageContent({ params }) {
   // COPY EXACT STRUCTURE FROM SAMPLE
+  // IMPORTANT: Replace 'useOptions' with 'use{TableName}' (e.g., useRooms, useUsers, etc.)
 }
 ```
 
@@ -128,7 +130,7 @@ function PageContent({ params }) {
 4. **State Management**: Use EXACT hook patterns from samples: `useTable, useForm, useNav, useDesc`
 5. **Page Structure**:
    - **Provider**: MUST use `{ optionData }` destructuring from `useAppContext()` exactly as shown
-   - **List Page**: MUST have separate `PageContent` component with all sample logic including `useOptions` object
+   - **List Page**: MUST have separate `PageContent` component with all sample logic including `use{TableName}` object (table-specific naming)
    - **Detail Page**: MUST have separate `PageContent` component with `use(params)` pattern
 6. **EXACT PATTERNS**:
    - Use `items` prop in AntPage (NOT `breadcrumb`)
@@ -139,6 +141,7 @@ function PageContent({ params }) {
 7. **Icons**: Import and use exact icons from samples: `SettingOutlined, InfoCircleOutlined`
 8. **Vietnamese Labels**: Use Vietnamese table name from SQL comment for page titles
 9. **Navigation**: Use exact navigation patterns with `items` array and proper paths
+10. **Variable Naming**: Use table-specific naming for logic objects (e.g., `useRooms` for rooms table, `useUsers` for users table, NOT generic `useOptions`)
 
 ## CRITICAL SAMPLE ADHERENCE
 
@@ -151,7 +154,7 @@ function PageContent({ params }) {
 ### List Page MUST:
 
 - Have `PageContent` function component separate from main Page
-- Use `useOptions` object with `table`, `create`, `columns`, `fields` properties
+- Use `use{TableName}` object with `table`, `create`, `columns`, `fields` properties (replace {TableName} with actual table name)
 - Use `pageButton` array with reload and create buttons
 - Use `pageContent` variable with ProCard wrapper
 - Use `leftColumns` array with DetailButton render function
@@ -161,7 +164,7 @@ function PageContent({ params }) {
 
 - Have `PageContent` function component with `{ params }` destructuring
 - Use `const { id: {tableName}Id } = use(params);` pattern
-- Use `useOptions` object with `desc`, `edit`, `columns`, `fields` properties
+- Use `use{TableName}` object with `desc`, `edit`, `columns`, `fields` properties (replace {TableName} with actual table name)
 - Use `pageButton` array with BackButton and edit button
 - Use `pageContent` variable with component integration
 - Use dynamic `pageTitle` with fallback text
@@ -179,7 +182,7 @@ function PageContent({ params }) {
 ### List Page Requirements
 
 - **MUST** have separate `PageContent` function component
-- **MUST** use `useOptions` object containing: `table: useTable()`, `create: useForm()`, `columns`, `fields`
+- **MUST** use `use{TableName}` object containing: `table: useTable()`, `create: useForm()`, `columns`, `fields` (replace {TableName} with actual table name)
 - **MUST** use `pageButton` array with proper button configurations
 - **MUST** use `pageContent` variable wrapping table in `ProCard boxShadow bordered`
 - **MUST** use `leftColumns` array with DetailButton render function
@@ -190,7 +193,7 @@ function PageContent({ params }) {
 
 - **MUST** have separate `PageContent` function with `{ params }` parameter
 - **MUST** use `const { id: {tableName}Id } = use(params);` pattern for ID extraction
-- **MUST** use `useOptions` object containing: `desc: useDesc()`, `edit: useForm()`, `columns`, `fields`
+- **MUST** use `use{TableName}` object containing: `desc: useDesc()`, `edit: useForm()`, `columns`, `fields` (replace {TableName} with actual table name)
 - **MUST** use `pageButton` array with BackButton and edit button
 - **MUST** use `pageContent` variable wrapping components in `ProCard bordered`
 - **MUST** use dynamic `pageTitle` with proper fallback
@@ -213,7 +216,7 @@ function PageContent({ params }) {
 - Do NOT create simplified or custom versions
 - Do NOT use `breadcrumb` prop - use `items` prop only
 - Do NOT skip the separate PageContent component
-- Do NOT skip the useOptions object structure
+- Do NOT skip the use{TableName} object structure (table-specific naming)
 - Do NOT skip the pageButton and pageContent variables
 - Do NOT use different hook patterns than shown in samples
 
@@ -242,7 +245,7 @@ function PageContent({ params }) {
 - ✅ **CRITICAL**: Exact sample structure copied completely
 - ✅ **CRITICAL**: All sample imports included (icons, ProCard, hooks)
 - ✅ **CRITICAL**: PageContent component separation maintained
-- ✅ **CRITICAL**: useOptions object structure maintained
+- ✅ **CRITICAL**: use{TableName} object structure maintained (table-specific naming)
 - ✅ **CRITICAL**: pageButton and pageContent variables maintained
 - ✅ **CRITICAL**: items prop used instead of breadcrumb prop
 - ✅ **CRITICAL**: All hook patterns match samples exactly
