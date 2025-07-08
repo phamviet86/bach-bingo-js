@@ -3,10 +3,10 @@
 import dynamic from "next/dynamic";
 import { Dropdown } from "antd";
 import {
+  UserOutlined,
   SunOutlined,
   MoonOutlined,
-  UserOutlined,
-  DesktopOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import { AppSpin, AntProvider } from "@/component/common";
 import { getProviderConfig, MENU_CONFIG } from "@/component/config";
@@ -40,22 +40,22 @@ function LayoutContent({ children }) {
       case "dark":
         return <MoonOutlined />;
       case "auto":
-        return <DesktopOutlined />;
+        return <SyncOutlined />;
       default:
-        return <DesktopOutlined />;
+        return <SyncOutlined />;
     }
   };
 
   const getThemeLabel = (mode) => {
     switch (mode) {
       case "light":
-        return "Chế độ sáng";
+        return "Giao diện sáng";
       case "dark":
-        return "Chế độ tối";
+        return "Giao diện tối";
       case "auto":
         return "Tự động";
       default:
-        return "Chế độ tối";
+        return "Tự động";
     }
   };
 
@@ -63,18 +63,18 @@ function LayoutContent({ children }) {
     {
       key: "light",
       icon: <SunOutlined />,
-      label: "Chế độ sáng",
+      label: "Giao diện sáng",
       onClick: () => setTheme("light"),
     },
     {
       key: "dark",
       icon: <MoonOutlined />,
-      label: "Chế độ tối",
+      label: "Giao diện tối",
       onClick: () => setTheme("dark"),
     },
     {
       key: "auto",
-      icon: <DesktopOutlined />,
+      icon: <SyncOutlined />,
       label: "Tự động",
       onClick: () => setTheme("auto"),
     },
@@ -96,7 +96,7 @@ function LayoutContent({ children }) {
                     {
                       key: "theme-submenu",
                       icon: getThemeIcon(themeMode),
-                      label: `Giao diện: ${getThemeLabel(themeMode)}`,
+                      label: getThemeLabel(themeMode),
                       children: themeMenuItems,
                     },
                   ],

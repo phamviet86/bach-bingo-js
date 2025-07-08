@@ -135,7 +135,7 @@ function PageContent({ params }) {
 6. **EXACT PATTERNS**:
    - Use `items` prop in AntPage (NOT `breadcrumb`)
    - Use `ProCard boxShadow bordered` for list page
-   - Use `ProCard bordered` for detail page
+   - Use `ProCard boxShadow bordered` for detail page
    - Use `pageButton` and `pageContent` variables
    - Use `leftColumns` with render function for DetailButton
 7. **Icons**: Import and use exact icons from samples: `SettingOutlined, InfoCircleOutlined`
@@ -195,7 +195,7 @@ function PageContent({ params }) {
 - **MUST** use `const { id: {tableName}Id } = use(params);` pattern for ID extraction
 - **MUST** use `use{TableName}` object containing: `desc: useDesc()`, `edit: useForm()`, `columns`, `fields` (replace {TableName} with actual table name)
 - **MUST** use `pageButton` array with BackButton and edit button
-- **MUST** use `pageContent` variable wrapping components in `ProCard bordered`
+- **MUST** use `pageContent` variable wrapping components in `ProCard boxShadow bordered`
 - **MUST** use dynamic `pageTitle` with proper fallback
 - **MUST** use `items` prop with path navigation including parent page link
 - **MUST** import all required hooks: `useDesc, useForm, useNav`

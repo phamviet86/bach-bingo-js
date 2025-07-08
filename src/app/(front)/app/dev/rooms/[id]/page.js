@@ -53,7 +53,7 @@ function PageContent({ params }) {
 
   // Main content
   const pageContent = (
-    <ProCard bordered>
+    <ProCard boxShadow bordered>
       <RoomsDesc
         descHook={useRooms.desc}
         columns={useRooms.columns}
