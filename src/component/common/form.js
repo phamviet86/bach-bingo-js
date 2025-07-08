@@ -188,6 +188,8 @@ export function AntForm({
   // ========== Render Logic ==========
   // If variant is "drawer", render DrawerForm
   if (variant === "drawer") {
+    if (!visible) return null;
+
     return (
       <>
         {contextHolder}
@@ -205,6 +207,8 @@ export function AntForm({
 
   // If variant is "modal", render ModalForm
   if (variant === "modal") {
+    if (!visible) return null;
+
     return (
       <>
         {contextHolder}

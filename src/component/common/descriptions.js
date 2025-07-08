@@ -66,13 +66,14 @@ export function AntDescriptions({
     request: onRequest ? handleDataRequest : undefined,
     params: requestParams,
     column: column,
-    title: title,
     extra: extra,
   };
 
   // ========== Render Logic ==========
   // If variant is "drawer", render DrawerForm
   if (variant === "drawer") {
+    if (!visible) return null;
+
     return (
       <>
         {contextHolder}
@@ -82,6 +83,7 @@ export function AntDescriptions({
           {...drawerProps}
           open={visible}
           onClose={close}
+          title={title}
         >
           <ProDescriptions {...baseDescriptionsProps} />
         </Drawer>
@@ -91,6 +93,8 @@ export function AntDescriptions({
 
   // If variant is "modal", render ModalForm
   if (variant === "modal") {
+    if (!visible) return null;
+
     return (
       <>
         {contextHolder}
@@ -100,9 +104,10 @@ export function AntDescriptions({
           {...modalProps}
           open={visible}
           onCancel={close}
+          title={title}
           footer={null} // No footer buttons in modal
         >
-          <ProDescriptions {...baseDescriptionsProps} />
+          <ProDescriptions {...baseDescriptionsProps} title={title} />
         </Modal>
       </>
     );
