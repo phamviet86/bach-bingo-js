@@ -30,7 +30,7 @@ export default function Page({ params }) {
 
   // Page action buttons
   const pageButton = [
-    <BackButton key="back-button" />,
+    <BackButton key="back-button" color="default" variant="outlined" />,
     <AntButton
       key="edit-button"
       label="Sửa"
