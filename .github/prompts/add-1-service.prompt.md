@@ -1,46 +1,45 @@
+---
+mode: "agent"
+tools: ["githubRepo", "codebase"]
+description: "Generate a backend service file from a SQL table definition using template code"
+---
+
 # Generate Service File from SQL Table
 
 ## Instructions
 
-Generate a complete service file from SQL table structure following established patterns.
+Generate a service file from SQL table structure using the template below.
 
 ## Reference Examples
 
-**MANDATORY**: Review these files COMPLETELY before generating any code:
+Review these files for input/output pattern:
 
 - **SQL Input**: [`.github/prompts/examples/table-structure-sample.sql`](./examples/table-structure-sample.sql)
 - **Service Output**: [`.github/prompts/examples/backend-service-sample.js`](./examples/backend-service-sample.js)
 
-## Critical Requirements
+## Template
 
-- **File Location**: `src/lib/service/{tableName}-service.js`
-- **File Naming**: kebab-case files, camelCase functions, PascalCase classes
-- **Functions**: 5 required functions (get[TableNames], get[TableName], create[TableName], update[TableName], delete[TableName])
-- **Error Handling**: Wrap all operations in try-catch blocks
-- **Data**: Always return `*` (all columns)
-- **Soft Delete**: Use `deleted_at IS NULL` checks and `SET deleted_at = NOW()`
-- **ABSOLUTE ADHERENCE**: Copy the EXACT structure from sample files - do NOT modify any patterns
-- **NO CUSTOM CHANGES**: Use ONLY the patterns shown in sample files - do NOT create your own variations
-- **EXACT COPY**: Follow every detail of the sample files including SQL patterns, variable naming, and query structure
-
-## Template Structure
-
-**CRITICAL**: You MUST copy the EXACT structure from sample files. Do NOT create simplified versions.
+Use this exact template code:
 
 ```javascript
-// path: @/lib/service/{tableName}-service.js
+// path: @/lib/service/{table-name}-service.js
+
 import { neonDB } from "@/lib/db/neon-db";
 import { parseSearchParams } from "@/lib/util/query-util";
 
-// Database initialization
+// Initialize database client
 const sql = neonDB();
 
 // READ operations
-export async function get{TableNames}(searchParams) {
+export async function get{TableNamePlural}(searchParams) {
   try {
     const ignoredSearchColumns = [];
-    const { whereClause, orderByClause, limitClause, queryValues } =
-      parseSearchParams(searchParams, ignoredSearchColumns);
+    const {
+      whereClause,
+      orderByClause,
+      limitClause,
+      queryValues,
+    } = parseSearchParams(searchParams, ignoredSearchColumns);
 
     const sqlValue = [...queryValues];
     const sqlText = `
@@ -58,25 +57,34 @@ export async function get{TableNames}(searchParams) {
   }
 }
 
-export async function get{TableName}(id) {
+export async function get{TableNameSingular}(id) {
   try {
     return await sql`
       SELECT {alias}.*
       FROM {tableName} {alias}
-      WHERE {alias}.deleted_at IS NULL AND {alias}.id = ${id};
+      WHERE {alias}.deleted_at IS NULL
+        AND {alias}.id = ${id};
     `;
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
-// CREATE operations
-export async function create{TableName}(data) {
+// CREATE operation
+export async function create{TableNameSingular}(data) {
   try {
-    const { field1, field2, field3 } = data;
+    const {
+      {column1},
+      {column2},
+      /* …other fields… */
+    } = data;
+
     return await sql`
-      INSERT INTO {tableName} (field1, field2, field3)
-      VALUES (${field1}, ${field2}, ${field3})
+      INSERT INTO {tableName} (
+        {column1}, {column2} /*, …other fields… */
+      ) VALUES (
+        ${column1}, ${column2} /*, ${otherField}… */
+      )
       RETURNING *;
     `;
   } catch (error) {
@@ -84,14 +92,23 @@ export async function create{TableName}(data) {
   }
 }
 
-// UPDATE operations
-export async function update{TableName}(id, data) {
+// UPDATE operation
+export async function update{TableNameSingular}(id, data) {
   try {
-    const { field1, field2, field3 } = data;
+    const {
+      {column1},
+      {column2},
+      /* …other fields… */
+    } = data;
+
     return await sql`
       UPDATE {tableName}
-      SET field1 = ${field1}, field2 = ${field2}, field3 = ${field3}
-      WHERE deleted_at IS NULL AND id = ${id}
+      SET
+        {column1} = ${column1},
+        {column2} = ${column2}
+        /*, …otherField = ${otherField}… */
+      WHERE deleted_at IS NULL
+        AND id = ${id}
       RETURNING *;
     `;
   } catch (error) {
@@ -99,13 +116,14 @@ export async function update{TableName}(id, data) {
   }
 }
 
-// DELETE operations
-export async function delete{TableName}(id) {
+// DELETE operation
+export async function delete{TableNameSingular}(id) {
   try {
     return await sql`
       UPDATE {tableName}
       SET deleted_at = NOW()
-      WHERE deleted_at IS NULL AND id = ${id}
+      WHERE deleted_at IS NULL
+        AND id = ${id}
       RETURNING *;
     `;
   } catch (error) {
@@ -114,69 +132,58 @@ export async function delete{TableName}(id) {
 }
 ```
 
-## Implementation Guidelines
+## Placeholder Mapping
 
-1. **MANDATORY SAMPLE READING**: Read and understand EVERY LINE of the sample files before coding
-2. **EXACT COPY REQUIREMENT**: Copy the complete structure from sample files - do NOT simplify or modify
-3. **Table Alias**: Use first letter of table name (e.g., `o` for `options`)
-4. **Function Names**: Plural for lists (`getOptions`), singular for CRUD (`getOption`, `createOption`)
-5. **SQL Patterns**:
-   - **getList**: Use template literals with `sql.query(sqlText, sqlValue)` pattern EXACTLY as in sample
-   - **getSingle/CRUD**: Use tagged template literals `sql\`...\`` EXACTLY as in sample
-6. **parseSearchParams**: Use EXACT pattern from sample: `parseSearchParams(searchParams, ignoredSearchColumns)`
-7. **Query Structure**: MUST include `COUNT(*) OVER() AS total` for list queries
-8. **Variable Naming**: Use snake_case for database fields directly (do NOT convert to camelCase)
-9. **Error Handling**: `throw new Error(error.message)` in all catch blocks
-10. **Return Pattern**: Always include `RETURNING *` for INSERT/UPDATE operations
+Replace template placeholders with your table data:
 
-## CRITICAL SAMPLE ADHERENCE
+### Naming Placeholders
 
-### getList Function MUST:
+- **{table-name}**: kebab-case table name (e.g., `users`, `user-roles`)
+- **{tableName}**: SQL table name (e.g., `users`, `user_roles`)
+- **{TableNamePlural}**: PascalCase plural (e.g., `Users`, `UserRoles`)
+- **{TableNameSingular}**: PascalCase singular (e.g., `User`, `UserRole`)
+- **{alias}**: Short table alias (e.g., `u` for users, `ur` for user_roles)
 
-- Use `const ignoredSearchColumns = [];` exactly as shown
-- Use `const { whereClause, orderByClause, limitClause, queryValues } = parseSearchParams(searchParams, ignoredSearchColumns);` exactly as shown
-- Use `const sqlValue = [...queryValues];` exactly as shown
-- Use template literal pattern with `sql.query(sqlText, sqlValue)` exactly as shown
-- Include `COUNT(*) OVER() AS total` in SELECT clause
-- Use `${whereClause}`, `${orderByClause || "ORDER BY {alias}.created_at"}`, `${limitClause}` exactly as shown
+### Column Placeholders
 
-### getSingle Function MUST:
+- **{column1}, {column2}, ...**: Replace with actual column names from your SQL table
+- Use **snake_case** for database field names (do NOT convert to camelCase)
+- Skip columns: `id`, `created_at`, `updated_at`, `deleted_at` (auto-managed)
 
-- Use tagged template literal pattern `sql\`...\`` exactly as shown
-- Use `WHERE {alias}.deleted_at IS NULL AND {alias}.id = ${id};` exactly as shown
+## Quick Steps
 
-### CREATE/UPDATE Functions MUST:
+1. **File Path**: Create `src/lib/service/{table-name}-service.js`
+2. **Copy Template**: Use the exact template structure above
+3. **Replace Names**: Fill in table naming placeholders
+4. **Map Columns**: Replace `{column1}, {column2}...` with your table's columns
+5. **Validate**: Ensure all 5 functions are present and use correct SQL patterns
 
-- Use snake_case for database field names in destructuring (NOT camelCase)
-- Use tagged template literal pattern exactly as shown
-- Include `RETURNING *;` at the end
+## Critical Rules
 
-### DELETE Function MUST:
-
-- Use soft delete pattern with `SET deleted_at = NOW()` exactly as shown
-- Include `RETURNING *;` at the end
+- ✅ **File naming**: kebab-case (e.g., `users-service.js`)
+- ✅ **Functions**: 5 required (getList, getSingle, create, update, delete)
+- ✅ **SQL patterns**: getList uses `sql.query()`, others use tagged templates
+- ✅ **Soft delete**: Use `deleted_at IS NULL` and `SET deleted_at = NOW()`
+- ✅ **Error handling**: All functions wrapped in try-catch
+- ✅ **Field naming**: Use snake_case for database fields
+- ✅ **Return data**: Always include `RETURNING *` for mutations
 
 ## Validation Checklist
 
-- ✅ **MANDATORY SAMPLE READING**: Completely reviewed backend-service-sample.js
-- ✅ **File location**: `src/lib/service/{tableName}-service.js`
+- ✅ **File location**: `src/lib/service/{table-name}-service.js`
 - ✅ **File naming**: kebab-case convention
-- ✅ **Functions**: All 5 required functions implemented
-- ✅ **Naming**: camelCase functions, proper plural/singular usage
-- ✅ **Error handling**: try-catch blocks in all functions
-- ✅ **Soft delete**: `deleted_at IS NULL` checks implemented
-- ✅ **EXACT SQL PATTERNS**: getList uses `sql.query()`, others use tagged templates
-- ✅ **parseSearchParams**: Uses exact sample pattern with `ignoredSearchColumns`
-- ✅ **COUNT(\*) OVER()**: Included in list query for pagination
-- ✅ **Variable naming**: snake_case for database fields (NOT camelCase)
-- ✅ **Query structure**: Follows exact sample patterns without modifications
+- ✅ **Functions**: All 5 required functions (get list, get single, create, update, delete)
+- ✅ **Imports**: neonDB and parseSearchParams utilities imported
+- ✅ **Database client**: `const sql = neonDB();` initialized
+- ✅ **SQL patterns**: getList uses `sql.query()`, others use tagged templates
+- ✅ **Soft delete**: All queries check `deleted_at IS NULL`
+- ✅ **Delete operation**: Uses `SET deleted_at = NOW()` instead of hard delete
+- ✅ **Error handling**: All functions wrapped in try-catch blocks
+- ✅ **Field naming**: snake_case for database fields (NOT camelCase)
+- ✅ **Return data**: RETURNING \* included in all mutation operations
+- ✅ **Search functionality**: parseSearchParams used for filtering and pagination
+- ✅ **Column mapping**: All table columns properly mapped (excluding system fields)
 
-## Response Format
+## Output Location
 
-### Task Completion Summary
-
-**File Generated**: `src/lib/service/{tableName}-service.js`
-**Functions**: ✅ get{TableNames}, get{TableName}, create{TableName}, update{TableName}, delete{TableName}
-**Sample Adherence**: ✅ EXACT copy of sample patterns - no modifications made
-**Validation**: ✅ All requirements met exactly as specified in sample
-**Next Steps**: Service ready for API route integration
+Generated file: `src/lib/service/{table-name}-service.js`

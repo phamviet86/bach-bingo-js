@@ -1,3 +1,8 @@
+# Template for page provider
+
+## Template
+
+```javascript
 // PROVIDER
 
 import { createContext, useContext, useMemo } from "react";
@@ -41,3 +46,4 @@ export function usePageContext() {
     [enrollmentType]
   );
  */
+```
