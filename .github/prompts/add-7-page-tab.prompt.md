@@ -1,6 +1,6 @@
 ---
 mode: "agent"
-tools: ["githubRepo", "codebase"]
+tools: ['changes', 'codebase', 'editFiles', 'githubRepo', 'problems', 'search', 'searchResults']
 description: "Generate a frontend page tab component from a SQL table definition using template code"
 ---
 

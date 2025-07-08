@@ -1,6 +1,6 @@
 ---
 mode: "agent"
-tools: ["githubRepo", "codebase"]
+tools: ['changes', 'codebase', 'editFiles', 'githubRepo', 'problems', 'search', 'searchResults']
 description: "Generate frontend component files from SQL table structure using template code"
 ---
 

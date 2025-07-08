@@ -1,6 +1,6 @@
 ---
 mode: "agent"
-tools: ["githubRepo", "codebase"]
+tools: ['changes', 'codebase', 'editFiles', 'githubRepo', 'problems', 'search', 'searchResults']
 description: "Generate React/Next.js frontend page list component and provider from SQL table structure using template code"
 ---
 
