@@ -25,7 +25,7 @@ export default function Page(props) {
 
 function PageContent() {
   // Context
-  const {} = usePageContext();
+  const { roomStatus } = usePageContext();
 
   // Hooks
   const { navDetail } = useNav();
@@ -34,8 +34,8 @@ function PageContent() {
   const useRooms = {
     table: useTable(),
     create: useForm(),
-    columns: RoomsColumns(),
-    fields: RoomsFields(),
+    columns: RoomsColumns({ roomStatus }),
+    fields: RoomsFields({ roomStatus }),
   };
 
   // Page action buttons
@@ -96,7 +96,7 @@ function PageContent() {
           title: (
             <Space>
               <SettingOutlined />
-              <span>Hệ thống</span>
+              <span>Thiết lập</span>
             </Space>
           ),
         },

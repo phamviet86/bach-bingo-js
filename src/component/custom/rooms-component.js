@@ -8,7 +8,12 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import {
+  ProForm,
+  ProFormText,
+  ProFormSelect,
+  ProFormTextArea,
+} from "@ant-design/pro-form";
 
 export function RoomsTable(props) {
   return (
@@ -51,28 +56,32 @@ export function RoomsEdit(props) {
 }
 
 export function RoomsColumns(params) {
-  const {} = params || {};
+  const { roomStatus } = params || {};
   return [
     {
       title: "Tên phòng",
       dataIndex: "room_name",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
-      title: "Trạng thái phòng",
+      title: "Trạng thái",
       dataIndex: "room_status_id",
-      valueType: "digit",
+      valueType: "select",
+      valueEnum: roomStatus?.valueEnum || {},
+      sorter: { multiple: 1 },
     },
     {
-      title: "Mô tả phòng",
+      title: "Mô tả",
       dataIndex: "room_desc",
       valueType: "text",
+      responsive: ["md"],
     },
   ];
 }
 
 export function RoomsFields(params) {
-  const {} = params || {};
+  const { roomStatus } = params || {};
   return (
     <>
       <ProForm.Group>
@@ -84,17 +93,21 @@ export function RoomsFields(params) {
           label="Tên phòng"
           placeholder="Nhập tên phòng"
           rules={[{ required: true }]}
+          colProps={{ xs: 12 }}
         />
-        <ProFormDigit
+        <ProFormSelect
           name="room_status_id"
-          label="Trạng thái phòng"
-          placeholder="Nhập trạng thái phòng (ID)"
+          label="Trạng thái"
+          placeholder="Chọn trạng thái"
+          options={roomStatus?.options || []}
           rules={[{ required: true }]}
+          colProps={{ xs: 12 }}
         />
-        <ProFormText
+        <ProFormTextArea
           name="room_desc"
-          label="Mô tả phòng"
-          placeholder="Nhập mô tả phòng"
+          label="Mô tả"
+          placeholder="Nhập mô tả"
+          fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
         />
       </ProForm.Group>
     </>

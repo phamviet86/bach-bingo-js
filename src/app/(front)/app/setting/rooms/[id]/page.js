@@ -26,7 +26,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const {} = usePageContext();
+  const { roomStatus } = usePageContext();
 
   // Hooks
   const { navBack } = useNav();
@@ -36,8 +36,8 @@ function PageContent({ params }) {
   const useRooms = {
     desc: useDesc(),
     edit: useForm(),
-    columns: RoomsColumns(),
-    fields: RoomsFields(),
+    columns: RoomsColumns({ roomStatus }),
+    fields: RoomsFields({ roomStatus }),
   };
 
   // Page action buttons
@@ -77,7 +77,7 @@ function PageContent({ params }) {
   );
 
   // Page title
-  const pageTitle = useRooms.desc?.dataSource?.roomName || "Chi tiết";
+  const pageTitle = useRooms.desc?.dataSource?.room_name || "Chi tiết";
 
   // Render
   return (
@@ -87,11 +87,11 @@ function PageContent({ params }) {
           title: (
             <Space>
               <SettingOutlined />
-              <span>Hệ thống</span>
+              <span>Thiết lập</span>
             </Space>
           ),
         },
-        { title: "Phòng học", path: "/app/system/rooms" },
+        { title: "Phòng học", path: "/app/setting/rooms" },
         { title: pageTitle },
       ]}
       title={pageTitle}

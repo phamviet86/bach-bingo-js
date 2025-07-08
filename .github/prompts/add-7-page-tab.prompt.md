@@ -118,6 +118,7 @@ export default function Page() {
             ),
           },
         ]}
+        syncToUrl={false}
       />
       <{TableName}Create
         formHook={use{TableName}.create}
