@@ -34,7 +34,8 @@ export async function getOption(id) {
     return await sql`
       SELECT o.*
       FROM options o
-      WHERE o.deleted_at IS NULL AND o.id = ${id};
+      WHERE o.deleted_at IS NULL
+        AND o.id = ${id};
     `;
   } catch (error) {
     throw new Error(error.message);

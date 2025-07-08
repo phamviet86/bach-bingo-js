@@ -34,7 +34,8 @@ export async function getRoom(id) {
     return await sql`
       SELECT r.*
       FROM rooms r
-      WHERE r.deleted_at IS NULL AND r.id = ${id};
+      WHERE r.deleted_at IS NULL
+        AND r.id = ${id};
     `;
   } catch (error) {
     throw new Error(error.message);
