@@ -21,8 +21,8 @@ export function Columns(params) {
       dataIndex: "shift_status_id",
       valueType: "select",
       valueEnum: shiftStatus?.valueEnum || {},
-      filters: true,
       sorter: { multiple: 1 },
+      filters: true,
     },
     {
       // time format

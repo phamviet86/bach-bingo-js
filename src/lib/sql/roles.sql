@@ -1,4 +1,4 @@
--- table: vai trò
+-- table: Vai trò
 
 DROP TABLE IF EXISTS roles CASCADE;
 CREATE TABLE roles (

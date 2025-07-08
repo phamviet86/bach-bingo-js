@@ -1,4 +1,4 @@
-// ROOMS PROVIDER
+// ROLES PROVIDER
 
 import { createContext, useContext, useMemo } from "react";
 import { useAppContext } from "../../provider";
@@ -9,18 +9,18 @@ const PageContext = createContext(null);
 export function PageProvider({ children }) {
   const { optionData } = useAppContext();
 
-  const roomStatus = convertSelection(
+  const roleStatus = convertSelection(
     optionData,
     { value: "id", label: "option_label", color: "option_color" },
-    { option_table: "rooms", option_column: "room_status_id" }
+    { option_table: "roles", option_column: "role_status_id" }
   );
 
   // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(
     () => ({
-      roomStatus,
+      roleStatus,
     }),
-    [roomStatus]
+    [roleStatus]
   );
 
   return (
