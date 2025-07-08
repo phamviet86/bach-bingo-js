@@ -3,7 +3,7 @@
 "use client";
 
 import { Space } from "antd";
-import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { ToolOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import {
@@ -25,7 +25,7 @@ export default function Page(props) {
 
 function PageContent() {
   // Context
-  const {} = usePageContext();
+  const { shiftStatus } = usePageContext();
 
   // Hooks
   const { navDetail } = useNav();
@@ -34,8 +34,8 @@ function PageContent() {
   const useShifts = {
     table: useTable(),
     create: useForm(),
-    columns: ShiftsColumns(),
-    fields: ShiftsFields(),
+    columns: ShiftsColumns({ shiftStatus }),
+    fields: ShiftsFields({ shiftStatus }),
   };
 
   // Page action buttons
@@ -95,12 +95,12 @@ function PageContent() {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <ToolOutlined />
+              <span>Thiết lập</span>
             </Space>
           ),
         },
-        { title: "ca học" },
+        { title: "Ca học" },
       ]}
       title="Quản lý ca học"
       extra={pageButton}

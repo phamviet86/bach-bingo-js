@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { ToolOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -26,7 +26,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const {} = usePageContext();
+  const { shiftStatus } = usePageContext();
 
   // Navigation
   const { navBack } = useNav();
@@ -36,8 +36,8 @@ function PageContent({ params }) {
   const useShifts = {
     desc: useDesc(),
     edit: useForm(),
-    columns: ShiftsColumns(),
-    fields: ShiftsFields(),
+    columns: ShiftsColumns({ shiftStatus }),
+    fields: ShiftsFields({ shiftStatus }),
   };
 
   // Page action buttons
@@ -86,12 +86,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <ToolOutlined />
+              <span>Thiết lập</span>
             </Space>
           ),
         },
-        { title: "ca học", path: "/app/system/shifts" },
+        { title: "Ca học", path: "/app/setting/shifts" },
         { title: pageTitle },
       ]}
       title={pageTitle}

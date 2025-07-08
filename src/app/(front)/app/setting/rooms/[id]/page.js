@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { ToolOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -86,7 +86,7 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <SettingOutlined />
+              <ToolOutlined />
               <span>Thiết lập</span>
             </Space>
           ),

@@ -3,7 +3,7 @@
 "use client";
 
 import { Space } from "antd";
-import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { ToolOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import {
@@ -95,7 +95,7 @@ function PageContent() {
         {
           title: (
             <Space>
-              <SettingOutlined />
+              <ToolOutlined />
               <span>Thiết lập</span>
             </Space>
           ),
