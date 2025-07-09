@@ -2,10 +2,23 @@
 
 ## Upcoming Tasks
 
-- [] add theme mode switch on prolayout
 - [] trong quá trình tạo hook cần xem lại các helpers
   - calendar
-- [] test thu prompt moi voi shifts
+
+## 2025-07-09
+
+- [] Add users
+  - add user-roles tab
+- [] Add syllabuses
+  - Add modules tab
+  - Add lectures tab
+- [] Add courses
+  - Add classes tab
+
+## 2025-07-08
+
+- [+] add theme mode switch on prolayout
+- [+] test thu prompt moi voi shifts
 
 ## 2025-07-07
 

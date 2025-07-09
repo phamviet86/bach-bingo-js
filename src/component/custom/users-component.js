@@ -9,6 +9,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import { Space, Typography } from "antd";
 
 export function UsersTable(props) {
   return (
@@ -54,49 +55,59 @@ export function UsersColumns(params) {
   const {} = params || {};
   return [
     {
+      title: "Người dùng",
+      search: false,
+      hideInDescriptions: true,
+      render: (_, record) => (
+        <Space direction="vertical" size={0}>
+          <Typography.Text strong>{record?.user_name}</Typography.Text>
+          <Typography.Text type="secondary">
+            {record?.user_desc}
+          </Typography.Text>
+        </Space>
+      ),
+    },
+    {
       title: "Tên người dùng",
       dataIndex: "user_name",
       valueType: "text",
-    },
-    {
-      title: "Trạng thái người dùng",
-      dataIndex: "user_status_id",
-      valueType: "digit",
-    },
-    {
-      title: "Email người dùng",
-      dataIndex: "user_email",
-      valueType: "text",
-    },
-    {
-      title: "Mật khẩu người dùng",
-      dataIndex: "user_password",
-      valueType: "text",
-    },
-    {
-      title: "Số điện thoại",
-      dataIndex: "user_phone",
-      valueType: "text",
-    },
-    {
-      title: "Số điện thoại phụ huynh",
-      dataIndex: "user_parent_phone",
-      valueType: "text",
-    },
-    {
-      title: "Ảnh đại diện",
-      dataIndex: "user_avatar",
-      valueType: "text",
+      hidden: true, // Hidden by default
     },
     {
       title: "Mô tả",
       dataIndex: "user_desc",
       valueType: "text",
+      hidden: true, // Hidden by default
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "user_status_id",
+      valueType: "digit",
+      responsive: ["md"],
+    },
+    {
+      title: "Email",
+      dataIndex: "user_email",
+      valueType: "text",
+      responsive: ["lg"],
+    },
+    {
+      title: "Phone",
+      dataIndex: "user_phone",
+      valueType: "text",
+      responsive: ["md"],
+    },
+    {
+      title: "Phone 2",
+      dataIndex: "user_parent_phone",
+      valueType: "text",
+      hidden: true, // Hidden by default
     },
     {
       title: "Ghi chú",
       dataIndex: "user_notes",
       valueType: "text",
+      responsive: ["xl"],
     },
   ];
 }
