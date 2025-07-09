@@ -7,3 +7,5 @@ export * from "./rooms-component";
 export * from "./shifts-component";
 
 export * from "./roles-component";
+
+export * from "./users-component";
