@@ -9,3 +9,5 @@ export * from "./useNav";
 export * from "./useSteps";
 export * from "./useTable";
 export * from "./useTransfer";
+export * from "./useLocalStorage";
+export * from "./useTheme";
