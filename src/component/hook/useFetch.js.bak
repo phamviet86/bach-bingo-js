@@ -2,17 +2,56 @@
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { fetchList, fetchGet } from "@/lib/util/fetch-util";
-import { useLocalStorage } from "./useLocalStorage";
 
 // Constants
 const MAX_CACHE_SIZE = 100;
+const CACHE_PERSIST_INTERVAL = 60000; // 1 phút
 const ONE_WEEK_IN_MS = 7 * 24 * 60 * 60 * 1000; // 1 tuần tính bằng milliseconds
 
 // Cache store để lưu trữ kết quả của các request
 const cacheStore = new Map();
 
-// Flag to track if cache has been initialized from localStorage
-let cacheInitialized = false;
+// Khởi tạo cache từ localStorage nếu có
+const initializeCache = () => {
+  if (typeof window !== "undefined") {
+    try {
+      const persistedCache = localStorage.getItem("fetchDataCache");
+      if (persistedCache) {
+        const parsed = JSON.parse(persistedCache);
+
+        // Restore cache với cấu trúc Map
+        Object.entries(parsed).forEach(([key, value]) => {
+          cacheStore.set(key, value);
+        });
+
+        // Dọn dẹp các entry hết hạn và cache cũ hơn 1 tuần
+        const now = Date.now();
+        const oneWeekAgo = now - ONE_WEEK_IN_MS;
+
+        for (const [key, value] of cacheStore.entries()) {
+          // Xóa nếu cache đã hết hạn hoặc cũ hơn 1 tuần
+          if (value.expiry < now || value.timestamp < oneWeekAgo) {
+            cacheStore.delete(key);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error restoring cache from localStorage:", error);
+    }
+  }
+};
+
+// Lưu cache vào localStorage
+const persistCache = () => {
+  if (typeof window !== "undefined") {
+    try {
+      const cacheObject = Object.fromEntries(cacheStore.entries());
+      localStorage.setItem("fetchDataCache", JSON.stringify(cacheObject));
+    } catch (error) {
+      console.error("Error persisting cache to localStorage:", error);
+    }
+  }
+};
 
 // Helper function để dọn dẹp cache khi kích thước vượt quá ngưỡng
 const cleanupCache = () => {
@@ -42,40 +81,11 @@ const cleanupCache = () => {
 
 // Khởi tạo cache khi module được load
 if (typeof window !== "undefined") {
-  // Chỉ thực hiện cleanup cache cũ định kỳ (thực hiện mỗi ngày)
+  initializeCache();
+  // Định kỳ lưu cache
+  setInterval(persistCache, CACHE_PERSIST_INTERVAL);
+  // Định kỳ dọn dẹp cache cũ (thực hiện mỗi ngày)
   setInterval(cleanupCache, 24 * 60 * 60 * 1000);
-
-  // Restore cache từ localStorage một lần duy nhất
-  const initializeCacheFromStorage = () => {
-    if (cacheInitialized) return;
-
-    try {
-      const persistedCache = localStorage.getItem("fetchDataCache");
-      if (persistedCache) {
-        const parsed = JSON.parse(persistedCache);
-
-        // Restore cache với cấu trúc Map
-        Object.entries(parsed).forEach(([key, value]) => {
-          cacheStore.set(key, value);
-        });
-
-        // Dọn dẹp các entry hết hạn và cache cũ hơn 1 tuần
-        const now = Date.now();
-        const oneWeekAgo = now - ONE_WEEK_IN_MS;
-
-        for (const [key, value] of cacheStore.entries()) {
-          if (value.expiry < now || value.timestamp < oneWeekAgo) {
-            cacheStore.delete(key);
-          }
-        }
-      }
-      cacheInitialized = true;
-    } catch (error) {
-      console.error("Error initializing cache from localStorage:", error);
-    }
-  };
-
-  initializeCacheFromStorage();
 }
 
 function useDataCache(cacheKey, fetchFunction, cacheTime = null) {
@@ -86,74 +96,19 @@ function useDataCache(cacheKey, fetchFunction, cacheTime = null) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
 
-  // Sử dụng useLocalStorage để quản lý cache persistence
-  const [persistedCache, setPersistentCache] = useLocalStorage(
-    "fetchDataCache",
-    {}
-  );
-
   // Track if we've fetched during this component instance
   const hasFetched = useRef(false);
 
   // Track ongoing fetch operations to prevent duplicate requests
   const fetchInProgress = useRef(false);
 
-  // Khôi phục cache từ localStorage khi component mount (chỉ nếu chưa initialized)
-  useEffect(() => {
-    if (useCache && persistedCache && !cacheInitialized) {
-      try {
-        // Restore cache với cấu trúc Map từ persistedCache
-        Object.entries(persistedCache).forEach(([key, value]) => {
-          cacheStore.set(key, value);
-        });
-
-        // Dọn dẹp các entry hết hạn và cache cũ hơn 1 tuần
-        const now = Date.now();
-        const oneWeekAgo = now - ONE_WEEK_IN_MS;
-
-        for (const [key, value] of cacheStore.entries()) {
-          // Xóa nếu cache đã hết hạn hoặc cũ hơn 1 tuần
-          if (value.expiry < now || value.timestamp < oneWeekAgo) {
-            cacheStore.delete(key);
-          }
-        }
-        cacheInitialized = true;
-      } catch (error) {
-        console.error("Error restoring cache from localStorage:", error);
-      }
-    }
-  }, [useCache, persistedCache]);
-
   // Xóa cache với cacheKey hiện tại nếu cacheTime là null hoặc 0
   useEffect(() => {
     if (!useCache) {
       cacheStore.delete(cacheKey);
-      // Cập nhật persistent cache
-      const updatedCache = Object.fromEntries(cacheStore.entries());
-      setPersistentCache(updatedCache);
+      persistCache();
     }
-  }, [cacheKey, useCache, setPersistentCache]);
-
-  // Helper function để persist cache sử dụng useLocalStorage
-  const persistCacheToStorage = useCallback(() => {
-    if (useCache) {
-      try {
-        const cacheObject = Object.fromEntries(cacheStore.entries());
-        setPersistentCache(cacheObject);
-        cleanupCache();
-      } catch (error) {
-        console.error("Error persisting cache to localStorage:", error);
-      }
-    }
-  }, [useCache, setPersistentCache]);
-
-  // Auto-persist cache định kỳ để tránh mất data
-  useEffect(() => {
-    if (useCache) {
-      const persistInterval = setInterval(persistCacheToStorage, 60000); // Persist mỗi phút
-      return () => clearInterval(persistInterval);
-    }
-  }, [useCache, persistCacheToStorage]);
+  }, [cacheKey, useCache]);
 
   const executeFetch = useCallback(
     async (skipCache = false, updateLoading = true) => {
@@ -211,9 +166,8 @@ function useDataCache(cacheKey, fetchFunction, cacheTime = null) {
             expiry: Date.now() + cacheTTL,
             timestamp: Date.now(), // Thêm thời gian tạo cache cho hard expiry
           });
-
-          // Persist cache using useLocalStorage
-          persistCacheToStorage();
+          cleanupCache();
+          persistCache();
         }
 
         // Return raw result without extracting data.data
@@ -232,7 +186,7 @@ function useDataCache(cacheKey, fetchFunction, cacheTime = null) {
         hasFetched.current = true;
       }
     },
-    [cacheKey, useCache, cacheTTL, fetchFunction, persistCacheToStorage]
+    [cacheKey, useCache, cacheTTL, fetchFunction]
   );
 
   useEffect(() => {
