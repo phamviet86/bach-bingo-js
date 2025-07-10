@@ -36,3 +36,8 @@ export function BackButton({
     />
   );
 }
+
+export function DetailLink({ id, ...props }) {
+  const pathname = usePathname();
+  return <Link href={`${pathname}/${id}`} {...props} />;
+}

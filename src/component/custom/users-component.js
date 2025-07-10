@@ -1,6 +1,11 @@
 // path: @/component/custom/users-component.js
 
-import { AntTable, AntForm, AntDescriptions } from "@/component/common";
+import {
+  AntTable,
+  AntForm,
+  AntDescriptions,
+  DetailLink,
+} from "@/component/common";
 import {
   fetchList,
   fetchGet,
@@ -14,7 +19,8 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
-import { Space, Typography } from "antd";
+import { Space, Typography, Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 export function UsersTable(props) {
   return (
@@ -59,6 +65,22 @@ export function UsersEdit(props) {
 export function UsersColumns(params) {
   const { userStatus } = params || {};
   return [
+    {
+      width: 68,
+      align: "center",
+      search: false,
+      hideInDescriptions: true,
+      render: (_, record) => (
+        <DetailLink id={record?.id}>
+          <Avatar
+            src={record.user_avatar}
+            shape="square"
+            size="large"
+            icon={<UserOutlined />}
+          />
+        </DetailLink>
+      ),
+    },
     {
       title: "Người dùng",
       search: false,

@@ -59,25 +59,7 @@ function PageContent() {
   // Main content
   const pageContent = (
     <ProCard boxShadow bordered>
-      <UsersTable
-        tableHook={useUsers.table}
-        columns={useUsers.columns}
-        leftColumns={[
-          {
-            width: 56,
-            align: "center",
-            search: false,
-            render: (_, record) => (
-              <DetailButton
-                icon={<InfoCircleOutlined />}
-                color="primary"
-                variant="link"
-                id={record?.id}
-              />
-            ),
-          },
-        ]}
-      />
+      <UsersTable tableHook={useUsers.table} columns={useUsers.columns} />
       <UsersCreate
         formHook={useUsers.create}
         fields={useUsers.fields}
