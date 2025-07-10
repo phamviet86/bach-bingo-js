@@ -8,7 +8,12 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import {
+  ProForm,
+  ProFormText,
+  ProFormSelect,
+  ProFormTextArea,
+} from "@ant-design/pro-form";
 import { Space, Typography } from "antd";
 
 export function UsersTable(props) {
@@ -52,7 +57,7 @@ export function UsersEdit(props) {
 }
 
 export function UsersColumns(params) {
-  const {} = params || {};
+  const { userStatus } = params || {};
   return [
     {
       title: "Người dùng",
@@ -82,7 +87,8 @@ export function UsersColumns(params) {
     {
       title: "Trạng thái",
       dataIndex: "user_status_id",
-      valueType: "digit",
+      valueType: "select",
+      valueEnum: userStatus?.valueEnum || {},
       responsive: ["md"],
     },
     {
@@ -113,7 +119,7 @@ export function UsersColumns(params) {
 }
 
 export function UsersFields(params) {
-  const {} = params || {};
+  const { userStatus } = params || {};
   return (
     <>
       <ProForm.Group>
@@ -126,11 +132,19 @@ export function UsersFields(params) {
           placeholder="Nhập tên người dùng"
           rules={[{ required: true }]}
         />
-        <ProFormDigit
+        <ProFormText
+          name="user_desc"
+          label="Mô tả"
+          placeholder="Nhập mô tả"
+          colProps={{ sm: 12 }}
+        />
+        <ProFormSelect
           name="user_status_id"
-          label="Trạng thái người dùng"
-          placeholder="Nhập trạng thái người dùng"
+          label="Trạng thái"
+          placeholder="Chọn trạng thái"
           rules={[{ required: true }]}
+          options={userStatus?.options || []}
+          colProps={{ sm: 12 }}
         />
         <ProFormText
           name="user_email"
@@ -139,31 +153,28 @@ export function UsersFields(params) {
           rules={[{ required: true }]}
         />
         <ProFormText
-          name="user_password"
-          label="Mật khẩu người dùng"
-          placeholder="Nhập mật khẩu người dùng"
-          rules={[{ required: true }]}
-        />
-        <ProFormText
           name="user_phone"
           label="Số điện thoại"
           placeholder="Nhập số điện thoại"
+          colProps={{ sm: 12 }}
         />
         <ProFormText
           name="user_parent_phone"
           label="Số điện thoại phụ huynh"
-          placeholder="Nhập số điện thoại phụ huynh"
+          placeholder="Nhập số điện thoại"
+          colProps={{ sm: 12 }}
         />
-        <ProFormText
+        <ProFormTextArea
           name="user_avatar"
           label="Ảnh đại diện"
-          placeholder="Nhập ảnh đại diện"
+          placeholder="Nhập link"
+          fieldProps={{ autoSize: { minRows: 1, maxRows: 3 } }}
         />
-        <ProFormText name="user_desc" label="Mô tả" placeholder="Nhập mô tả" />
-        <ProFormText
+        <ProFormTextArea
           name="user_notes"
           label="Ghi chú"
           placeholder="Nhập ghi chú"
+          fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
         />
       </ProForm.Group>
     </>

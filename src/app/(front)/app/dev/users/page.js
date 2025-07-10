@@ -25,7 +25,7 @@ export default function Page(props) {
 
 function PageContent() {
   // Context
-  const {} = usePageContext();
+  const { userStatus } = usePageContext();
 
   // Hooks
   const { navDetail } = useNav();
@@ -34,8 +34,8 @@ function PageContent() {
   const useUsers = {
     table: useTable(),
     create: useForm(),
-    columns: UsersColumns(),
-    fields: UsersFields(),
+    columns: UsersColumns({ userStatus }),
+    fields: UsersFields({ userStatus }),
   };
 
   // Page action buttons

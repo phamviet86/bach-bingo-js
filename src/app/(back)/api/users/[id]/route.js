@@ -1,6 +1,11 @@
 // path: @/app/(back)/api/users/[id]/route.js
 
-import { getUser, updateUser, deleteUser } from "@/lib/service/users-service";
+import {
+  getUser,
+  updateUser,
+  deleteUser,
+  getUserByEmail,
+} from "@/lib/service/users-service";
 import { buildApiResponse } from "@/lib/util/api-util";
 
 export async function GET(_, context) {
@@ -34,7 +39,6 @@ export async function PUT(request, context) {
       user_name,
       user_status_id,
       user_email,
-      user_password,
       user_phone = null,
       user_parent_phone = null,
       user_avatar = null,
@@ -43,15 +47,20 @@ export async function PUT(request, context) {
     } = await request.json();
 
     // Validate required fields (based on NOT NULL constraints)
-    if (!user_name || !user_status_id || !user_email || !user_password) {
+    if (!user_name || !user_status_id || !user_email) {
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
+    }
+
+    // check if user changes email, it must not duplicate with another user's email
+    const existingUser = await getUserByEmail(user_email);
+    if (existingUser && existingUser.length > 0 && existingUser[0].id !== id) {
+      return buildApiResponse(409, false, "Email đã tồn tại trong hệ thống");
     }
 
     const data = {
       user_name,
       user_status_id,
       user_email,
-      user_password,
       user_phone,
       user_parent_phone,
       user_avatar,

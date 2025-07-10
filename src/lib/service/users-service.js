@@ -77,7 +77,6 @@ export async function updateUser(id, data) {
       user_name,
       user_status_id,
       user_email,
-      user_password,
       user_phone,
       user_parent_phone,
       user_avatar,
@@ -91,7 +90,6 @@ export async function updateUser(id, data) {
         user_name = ${user_name},
         user_status_id = ${user_status_id},
         user_email = ${user_email},
-        user_password = ${user_password},
         user_phone = ${user_phone},
         user_parent_phone = ${user_parent_phone},
         user_avatar = ${user_avatar},
@@ -115,6 +113,19 @@ export async function deleteUser(id) {
       WHERE deleted_at IS NULL
         AND id = ${id}
       RETURNING *;
+    `;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+export async function getUserByEmail(email) {
+  try {
+    return await sql`
+      SELECT u.*
+      FROM users_view u
+      WHERE u.deleted_at IS NULL
+        AND u.user_email = ${email};
     `;
   } catch (error) {
     throw new Error(error.message);

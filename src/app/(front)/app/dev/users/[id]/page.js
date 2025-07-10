@@ -26,7 +26,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const {} = usePageContext();
+  const { userStatus } = usePageContext();
 
   // Navigation
   const { navBack } = useNav();
@@ -36,8 +36,8 @@ function PageContent({ params }) {
   const useUsers = {
     desc: useDesc(),
     edit: useForm(),
-    columns: UsersColumns(),
-    fields: UsersFields(),
+    columns: UsersColumns({ userStatus }),
+    fields: UsersFields({ userStatus }),
   };
 
   // Page action buttons
