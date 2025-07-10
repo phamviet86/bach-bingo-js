@@ -12,7 +12,7 @@ export const getProviderConfig = (isDark = true) => ({
   theme: {
     algorithm: isDark ? darkAlgorithm : defaultAlgorithm,
     components: {
-      Button: { fontWeight: 500 },
+      Button: { fontWeight: 600 },
       Form: {
         // Remove labelColor override to let theme algorithm handle it
       },
