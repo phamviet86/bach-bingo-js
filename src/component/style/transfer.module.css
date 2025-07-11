@@ -15,7 +15,7 @@
 
 .remoteTransfer :global(.ant-transfer-operation) {
   flex-direction: column;
-  margin: 0 16px;
+  margin: 8px !important;
   align-self: center;
 }
 
@@ -31,13 +31,12 @@
 
   .responsive-xs :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-xs :global(.ant-transfer-list) {
     width: 100%;
-    margin: 0 8px;
   }
 }
 
@@ -49,13 +48,12 @@
 
   .responsive-sm :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-sm :global(.ant-transfer-list) {
     width: 100%;
-    margin: 0 8px;
   }
 }
 
@@ -67,13 +65,12 @@
 
   .responsive-md :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-md :global(.ant-transfer-list) {
     width: 100%;
-    margin: 0 8px;
   }
 }
 
@@ -85,13 +82,12 @@
 
   .responsive-lg :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-lg :global(.ant-transfer-list) {
     width: 100%;
-    margin: 8 0px;
   }
 }
 
@@ -103,13 +99,12 @@
 
   .responsive-xl :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-xl :global(.ant-transfer-list) {
     width: 100%;
-    margin: 0 8px;
   }
 }
 
@@ -121,13 +116,12 @@
 
   .responsive-xxl :global(.ant-transfer-operation) {
     flex-direction: row;
-    margin: 16px 0;
+    margin: 8px !important;
     align-self: center;
   }
 
   .responsive-xxl :global(.ant-transfer-list) {
     width: 100%;
-    margin: 0 8px;
   }
 }
 
@@ -136,7 +130,7 @@
   .remoteTransfer :global(.ant-transfer) {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    /* gap: 12px; */
   }
 
   .remoteTransfer :global(.ant-transfer-list) {
@@ -148,7 +142,7 @@
   .remoteTransfer :global(.ant-transfer-operation) {
     flex-direction: row;
     align-self: center;
-    margin: 16px 0;
+    margin: 8px !important;
     border-radius: 6px;
     gap: 8px;
   }

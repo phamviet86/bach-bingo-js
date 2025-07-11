@@ -15,8 +15,17 @@ export function PageProvider({ children }) {
     { option_table: "users", option_column: "user_status_id" }
   );
 
+  const roleStatus = convertSelection(
+    optionData,
+    { value: "id", label: "option_label", color: "option_color" },
+    { option_table: "roles", option_column: "role_status_id" }
+  );
+
   // Memoize the context value to avoid unnecessary re-renders
-  const contextValue = useMemo(() => ({ userStatus }), [userStatus]);
+  const contextValue = useMemo(
+    () => ({ userStatus, roleStatus }),
+    [userStatus, roleStatus]
+  );
 
   return (
     <PageContext.Provider value={contextValue}>{children}</PageContext.Provider>

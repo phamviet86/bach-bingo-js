@@ -20,7 +20,6 @@ export function useTransfer() {
     setVisible(false);
     setSourceParams({});
     setTargetParams({});
-    setTitle("");
   };
 
   const reload = () => {

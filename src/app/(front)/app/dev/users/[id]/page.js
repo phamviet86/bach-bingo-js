@@ -17,8 +17,17 @@ import {
   UsersEdit,
   UsersColumns,
   UsersFields,
+  UserRolesTable,
+  UserRolesColumns,
+  UserRolesTransfer,
 } from "@/component/custom";
-import { useDesc, useForm, useNav } from "@/component/hook";
+import {
+  useTable,
+  useDesc,
+  useForm,
+  useNav,
+  useTransfer,
+} from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
 
 export default function Page(props) {
@@ -31,7 +40,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const { userStatus } = usePageContext();
+  const { userStatus, roleStatus } = usePageContext();
 
   // Navigation
   const { navBack } = useNav();
@@ -99,6 +108,60 @@ function PageContent({ params }) {
   // Page title
   const pageTitle = useUsers.desc?.dataSource?.user_name || "Chi tiết";
 
+  // phân quyền logic hooks
+  const useUserRoles = {
+    table: useTable(),
+    transfer: useTransfer(),
+    columns: UserRolesColumns({ roleStatus }),
+  };
+
+  // Tab action buttons
+  const userRolesButton = (
+    <Space>
+      <AntButton
+        key="reload-button"
+        label="Tải lại"
+        color="default"
+        variant="outlined"
+        onClick={() => useUserRoles.table.reload()}
+      />
+      <AntButton
+        key="transfer-button"
+        label="Điều chỉnh"
+        color="primary"
+        variant="solid"
+        onClick={() => useUserRoles.transfer.open()}
+      />
+    </Space>
+  );
+
+  // Tab content
+  const userRolesContent = (
+    <ProCard boxShadow bordered extra={userRolesButton}>
+      <UserRolesTable
+        tableHook={useUserRoles.table}
+        columns={useUserRoles.columns}
+        requestParams={{ user_id: userId }}
+        syncToUrl={false}
+        showSearch={false}
+        showPagination={false}
+      />
+      <UserRolesTransfer
+        transferHook={useUserRoles.transfer}
+        userId={userId}
+        roleStatus={roleStatus}
+        afterClose={() => useUserRoles.table.reload()}
+      />
+    </ProCard>
+  );
+
+  // Tab definition
+  const userRolesTab = {
+    key: "userRoles",
+    label: "Phân quyền",
+    children: userRolesContent,
+  };
+
   // Render
   return (
     <AntPage
@@ -117,6 +180,7 @@ function PageContent({ params }) {
       title={pageTitle}
       extra={pageButton}
       content={pageContent}
+      tabList={[userRolesTab]}
     />
   );
 }

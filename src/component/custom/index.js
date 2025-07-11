@@ -9,3 +9,5 @@ export * from "./shifts-component";
 export * from "./roles-component";
 
 export * from "./users-component";
+
+export * from "./user-roles-component";

@@ -145,8 +145,8 @@ export function convertTransferItems(data = [], transferProps = {}) {
       result.disabled = item.hasOwnProperty(disabledProp)
         ? item[disabledProp]
         : false;
-    } else if (Array.isArray(disabledProp) && disabledProp.length === 3) {
-      const [fieldName, inArray, notInArray] = disabledProp;
+    } else if (Array.isArray(disabledProp) && disabledProp.length >= 2) {
+      const [fieldName, inArray, notInArray = []] = disabledProp;
       if (fieldName && item.hasOwnProperty(fieldName)) {
         const fieldValue = item[fieldName];
         if (
@@ -178,6 +178,7 @@ export function convertTransferItems(data = [], transferProps = {}) {
     } else {
       result.disabled = false;
     }
+
     return result;
   });
 }

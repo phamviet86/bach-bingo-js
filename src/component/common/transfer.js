@@ -1,7 +1,7 @@
 // path: @/component/common/transfer.js
 
 import { useState, useEffect, useCallback, useRef, cloneElement } from "react";
-import { Transfer as AntTransfer, message, Spin, Modal, Drawer } from "antd";
+import { Transfer, message, Spin, Modal, Drawer } from "antd";
 import { convertTransferItems } from "@/lib/util/convert-util";
 import { DRAWER_CONFIG, MODAL_CONFIG } from "@/component/config";
 import styles from "../style/transfer.module.css";
@@ -22,7 +22,7 @@ const buildSearchParams = (columns, value) => {
   }
 };
 
-export function Transfer({
+export function AntTransfer({
   // Transfer variant configuration
   variant = "page", // "page" | "modal" | "drawer"
 
@@ -35,6 +35,7 @@ export function Transfer({
   targetItem = undefined,
   onAddItem = undefined,
   onRemoveItem = undefined,
+  afterClose = undefined, // used in modal/drawer variants
 
   // Search configuration
   showSearch = false,
@@ -335,6 +336,11 @@ export function Transfer({
     [sourceSearchKeys, targetSearchKeys]
   );
 
+  const handleClose = useCallback(() => {
+    close();
+    afterClose?.();
+  }, [afterClose, close]);
+
   // ========== Base Transfer Props ==========
   const baseTransferProps = {
     ...props,
@@ -361,7 +367,7 @@ export function Transfer({
           {...DRAWER_CONFIG}
           {...drawerProps}
           open={visible}
-          onClose={close}
+          onClose={handleClose}
         >
           {visible ? (
             <Spin spinning={loading} tip="Đang tải dữ liệu..." delay={500}>
@@ -370,7 +376,7 @@ export function Transfer({
                   styles[`responsive-${responsiveBreakpoint}`]
                 }`}
               >
-                <AntTransfer {...baseTransferProps} />
+                <Transfer {...baseTransferProps} />
               </div>
             </Spin>
           ) : null}
@@ -389,7 +395,7 @@ export function Transfer({
           {...MODAL_CONFIG}
           {...modalProps}
           open={visible}
-          onCancel={close}
+          onCancel={handleClose}
           footer={null} // No footer buttons in modal
         >
           {visible ? (
@@ -399,7 +405,7 @@ export function Transfer({
                   styles[`responsive-${responsiveBreakpoint}`]
                 }`}
               >
-                <AntTransfer {...baseTransferProps} />
+                <Transfer {...baseTransferProps} />
               </div>
             </Spin>
           ) : null}
@@ -418,7 +424,7 @@ export function Transfer({
             styles[`responsive-${responsiveBreakpoint}`]
           }`}
         >
-          <AntTransfer {...baseTransferProps} />
+          <Transfer {...baseTransferProps} />
         </div>
       </Spin>
     </>
