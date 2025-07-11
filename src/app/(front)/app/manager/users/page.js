@@ -3,9 +3,9 @@
 "use client";
 
 import { Space } from "antd";
-import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { BankOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
-import { AntPage, AntButton, DetailButton } from "@/component/common";
+import { AntPage, AntButton } from "@/component/common";
 import {
   UsersTable,
   UsersCreate,
@@ -77,12 +77,12 @@ function PageContent() {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <BankOutlined />
+              <span>Quản lý</span>
             </Space>
           ),
         },
-        { title: "người dùng" },
+        { title: "Người dùng" },
       ]}
       title="Quản lý người dùng"
       extra={pageButton}

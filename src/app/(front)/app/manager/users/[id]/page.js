@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space, Avatar } from "antd";
-import { SettingOutlined, UserOutlined } from "@ant-design/icons";
+import { BankOutlined, UserOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import {
   AntPage,
@@ -169,12 +169,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <BankOutlined />
+              <span>Quản lý</span>
             </Space>
           ),
         },
-        { title: "người dùng", path: "/app/system/users" },
+        { title: "Người dùng", path: "/app/manager/users" },
         { title: pageTitle },
       ]}
       title={pageTitle}
