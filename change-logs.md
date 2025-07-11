@@ -9,6 +9,9 @@
 
 - [] Add users
   - add user-roles tab
+  - add reset password: route, button
+  - add change password: route, button
+  - add change password for users-service
 - [] Add syllabuses
   - Add modules tab
   - Add lectures tab

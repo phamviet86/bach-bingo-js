@@ -119,6 +119,7 @@ export async function deleteUser(id) {
   }
 }
 
+// Get user by email
 export async function getUserByEmail(email) {
   try {
     return await sql`
@@ -126,6 +127,33 @@ export async function getUserByEmail(email) {
       FROM users_view u
       WHERE u.deleted_at IS NULL
         AND u.user_email = ${email};
+    `;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Get user password
+export async function getUserPassword(id) {
+  try {
+    return await sql`
+      SELECT user_password
+      FROM users
+      WHERE deleted_at IS NULL AND id = ${id};
+    `;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Change user password
+export async function changeUserPassword(id, newPassword) {
+  try {
+    return await sql`
+      UPDATE users
+      SET user_password = ${newPassword}
+      WHERE deleted_at IS NULL AND id = ${id}
+      RETURNING *;
     `;
   } catch (error) {
     throw new Error(error.message);
