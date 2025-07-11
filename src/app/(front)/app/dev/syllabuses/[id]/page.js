@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { BankOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -26,7 +26,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const {} = usePageContext();
+  const { syllabusStatus } = usePageContext();
 
   // Navigation
   const { navBack } = useNav();
@@ -36,8 +36,8 @@ function PageContent({ params }) {
   const useSyllabuses = {
     desc: useDesc(),
     edit: useForm(),
-    columns: SyllabusesColumns(),
-    fields: SyllabusesFields(),
+    columns: SyllabusesColumns({ syllabusStatus }),
+    fields: SyllabusesFields({ syllabusStatus }),
   };
 
   // Page action buttons
@@ -86,12 +86,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <BankOutlined />
+              <span>Quản lý</span>
             </Space>
           ),
         },
-        { title: "giáo trình", path: "/app/system/syllabuses" },
+        { title: "Giáo trình", path: "/app/manager/syllabuses" },
         { title: pageTitle },
       ]}
       title={pageTitle}

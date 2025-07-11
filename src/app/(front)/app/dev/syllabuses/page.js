@@ -3,7 +3,7 @@
 "use client";
 
 import { Space } from "antd";
-import { SettingOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { BankOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import {
@@ -25,7 +25,7 @@ export default function Page(props) {
 
 function PageContent() {
   // Context
-  const {} = usePageContext();
+  const { syllabusStatus } = usePageContext();
 
   // Hooks
   const { navDetail } = useNav();
@@ -34,8 +34,8 @@ function PageContent() {
   const useSyllabuses = {
     table: useTable(),
     create: useForm(),
-    columns: SyllabusesColumns(),
-    fields: SyllabusesFields(),
+    columns: SyllabusesColumns({ syllabusStatus }),
+    fields: SyllabusesFields({ syllabusStatus }),
   };
 
   // Page action buttons
@@ -95,12 +95,12 @@ function PageContent() {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <BankOutlined />
+              <span>Quản lý</span>
             </Space>
           ),
         },
-        { title: "giáo trình" },
+        { title: "Giáo trình" },
       ]}
       title="Quản lý giáo trình"
       extra={pageButton}

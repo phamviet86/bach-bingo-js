@@ -8,7 +8,7 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import { ProForm, ProFormText, ProFormSelect } from "@ant-design/pro-form";
 
 export function SyllabusesTable(props) {
   return (
@@ -51,7 +51,7 @@ export function SyllabusesEdit(props) {
 }
 
 export function SyllabusesColumns(params) {
-  const {} = params || {};
+  const { syllabusStatus } = params || {};
   return [
     {
       title: "Tên giáo trình",
@@ -59,15 +59,16 @@ export function SyllabusesColumns(params) {
       valueType: "text",
     },
     {
-      title: "Trạng thái giáo trình",
+      title: "Trạng thái",
       dataIndex: "syllabus_status_id",
-      valueType: "digit",
+      valueType: "select",
+      valueEnum: syllabusStatus?.valueEnum || {},
     },
   ];
 }
 
 export function SyllabusesFields(params) {
-  const {} = params || {};
+  const { syllabusStatus } = params || {};
   return (
     <>
       <ProForm.Group>
@@ -77,14 +78,15 @@ export function SyllabusesFields(params) {
         <ProFormText
           name="syllabus_name"
           label="Tên giáo trình"
-          placeholder="Nhập Tên giáo trình"
+          placeholder="Nhập tên giáo trình"
           rules={[{ required: true }]}
         />
-        <ProFormDigit
+        <ProFormSelect
           name="syllabus_status_id"
-          label="Trạng thái giáo trình"
-          placeholder="Nhập Trạng thái giáo trình"
+          label="Trạng thái"
+          placeholder="Chọn Trạng thái"
           rules={[{ required: true }]}
+          options={syllabusStatus?.options || []}
         />
       </ProForm.Group>
     </>
