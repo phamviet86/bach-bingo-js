@@ -103,14 +103,6 @@ export async function getUserRolesByUser(userId, searchParams) {
     const { whereClause, orderByClause, limitClause, queryValues } =
       parseSearchParams(searchParams, ignoredSearchColumns);
 
-    console.log("getUserRolesByUser", {
-      userId,
-      whereClause,
-      orderByClause,
-      limitClause,
-      queryValues,
-    });
-
     const sqlValue = [userId, ...queryValues];
     const sqlText = `
       SELECT ur.*, COUNT(*) OVER() AS total,
