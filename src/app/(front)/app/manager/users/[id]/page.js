@@ -3,7 +3,7 @@
 "use client";
 
 import { use } from "react";
-import { Space, Avatar } from "antd";
+import { Space, Avatar, Image } from "antd";
 import { BankOutlined, UserOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import {
@@ -76,14 +76,11 @@ function PageContent({ params }) {
       actions={<UsersResetPassword userId={userId} />}
     >
       <ProCard colSpan={{ sm: 24, md: "240px" }} layout="center">
-        <Avatar
+        <Image
           src={
             useUsers.desc.dataSource?.user_avatar ||
             `https://api.dicebear.com/9.x/bottts/svg?seed=${userId}`
           }
-          shape="square"
-          size={192}
-          icon={<UserOutlined />}
           alt="Ảnh đại diện"
         />
       </ProCard>
