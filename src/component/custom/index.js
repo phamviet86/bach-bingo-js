@@ -11,3 +11,9 @@ export * from "./roles-component";
 export * from "./users-component";
 
 export * from "./user-roles-component";
+
+export * from "./syllabuses-component";
+
+export * from "./modules-component";
+
+export * from "./lectures-component";
