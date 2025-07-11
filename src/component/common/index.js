@@ -3,6 +3,7 @@
 export * from "./button";
 // export * from "./calendar";
 export * from "./card";
+export * from "./confirm";
 export * from "./descriptions";
 export * from "./drawer";
 export * from "./form";

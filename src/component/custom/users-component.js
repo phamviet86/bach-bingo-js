@@ -5,6 +5,8 @@ import {
   AntForm,
   AntDescriptions,
   DetailLink,
+  AntConfirm,
+  AntButton,
 } from "@/component/common";
 import {
   fetchList,
@@ -20,7 +22,7 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-form";
 import { Space, Typography, Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { UserOutlined, KeyOutlined } from "@ant-design/icons";
 
 export function UsersTable(props) {
   return (
@@ -59,6 +61,29 @@ export function UsersEdit(props) {
       onSubmit={(values) => fetchPut(`/api/users/${values?.id}`, values)}
       onDelete={(params) => fetchDelete(`/api/users/${params?.id}`)}
     />
+  );
+}
+
+export function UsersResetPassword({ userId, ...props }) {
+  return (
+    <AntConfirm
+      {...props}
+      onConfirm={() => fetchPut(`/api/users/${userId}/reset-password`)}
+      showConfirmMessage={true}
+      title="Đặt lại mật khẩu"
+      description="Bạn có chắc chắn muốn đặt lại mật khẩu không?"
+      icon={<KeyOutlined />}
+      okText="Có"
+      cancelText="Không"
+    >
+      <AntButton
+        label="Đặt lại mật khẩu"
+        icon={<KeyOutlined />}
+        color="default"
+        variant="link"
+        style={{ height: "auto" }}
+      />
+    </AntConfirm>
   );
 }
 

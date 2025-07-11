@@ -15,6 +15,7 @@ import {
 import {
   UsersDesc,
   UsersEdit,
+  UsersResetPassword,
   UsersColumns,
   UsersFields,
   UserRolesTable,
@@ -68,7 +69,12 @@ function PageContent({ params }) {
 
   // Main content
   const pageContent = (
-    <ResponsiveCard boxShadow bordered splitAt="md">
+    <ResponsiveCard
+      boxShadow
+      bordered
+      splitAt="md"
+      actions={<UsersResetPassword userId={userId} />}
+    >
       <ProCard colSpan={{ sm: 24, md: "240px" }} layout="center">
         <Avatar
           src={
