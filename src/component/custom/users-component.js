@@ -73,7 +73,11 @@ export function UsersColumns(params) {
       render: (_, record) => (
         <DetailLink id={record?.id}>
           <Avatar
-            src={record.user_avatar}
+            src={
+              record?.user_avatar
+                ? record.user_avatar
+                : `https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${record.id}`
+            }
             shape="square"
             size="large"
             icon={<UserOutlined />}
