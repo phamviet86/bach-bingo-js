@@ -1,5 +1,6 @@
 ---
 mode: "agent"
+model: GPT-4.1
 tools: ['changes', 'codebase', 'editFiles', 'githubRepo', 'problems', 'search', 'searchResults']
 description: "Generate a frontend page tab component from a SQL table definition using template code"
 ---

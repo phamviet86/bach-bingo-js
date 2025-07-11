@@ -1,5 +1,6 @@
 ---
 mode: "agent"
+model: GPT-4.1
 tools: ['changes', 'codebase', 'editFiles', 'githubRepo', 'problems', 'search', 'searchResults']
 description: "Generate React/Next.js frontend page list component and provider from SQL table structure using template code"
 ---
