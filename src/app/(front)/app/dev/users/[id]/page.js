@@ -3,10 +3,15 @@
 "use client";
 
 import { use } from "react";
-import { Space } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
+import { Space, Avatar } from "antd";
+import { SettingOutlined, UserOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
-import { AntPage, AntButton, BackButton } from "@/component/common";
+import {
+  AntPage,
+  AntButton,
+  BackButton,
+  ResponsiveCard,
+} from "@/component/common";
 import {
   UsersDesc,
   UsersEdit,
@@ -54,26 +59,41 @@ function PageContent({ params }) {
 
   // Main content
   const pageContent = (
-    <ProCard boxShadow bordered>
-      <UsersDesc
-        descHook={useUsers.desc}
-        columns={useUsers.columns}
-        requestParams={{ id: userId }}
-        onRequestSuccess={(result) =>
-          useUsers.desc.setDataSource(result?.data?.[0])
-        }
-      />
-      <UsersEdit
-        formHook={useUsers.edit}
-        fields={useUsers.fields}
-        requestParams={{ id: userId }}
-        deleteParams={{ id: userId }}
-        onSubmitSuccess={() => useUsers.desc.reload()}
-        onDeleteSuccess={() => navBack()}
-        title="Sửa người dùng"
-        variant="drawer"
-      />
-    </ProCard>
+    <ResponsiveCard boxShadow bordered splitAt="md">
+      <ProCard colSpan={{ sm: 24, md: "240px" }} layout="center">
+        <Avatar
+          src={
+            useUsers.desc.dataSource?.user_avatar ||
+            `https://api.dicebear.com/9.x/bottts/svg?seed=${userId}`
+          }
+          shape="square"
+          size={192}
+          icon={<UserOutlined />}
+          alt="Ảnh đại diện"
+        />
+      </ProCard>
+      <ProCard>
+        <UsersDesc
+          descHook={useUsers.desc}
+          columns={useUsers.columns}
+          requestParams={{ id: userId }}
+          onRequestSuccess={(result) =>
+            useUsers.desc.setDataSource(result?.data?.[0])
+          }
+          column={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 3 }}
+        />
+        <UsersEdit
+          formHook={useUsers.edit}
+          fields={useUsers.fields}
+          requestParams={{ id: userId }}
+          deleteParams={{ id: userId }}
+          onSubmitSuccess={() => useUsers.desc.reload()}
+          onDeleteSuccess={() => navBack()}
+          title="Sửa người dùng"
+          variant="drawer"
+        />
+      </ProCard>
+    </ResponsiveCard>
   );
 
   // Page title

@@ -76,11 +76,12 @@ export function UsersColumns(params) {
             src={
               record?.user_avatar
                 ? record.user_avatar
-                : `https://api.dicebear.com/9.x/avataaars-neutral/svg?seed=${record.id}`
+                : `https://api.dicebear.com/9.x/bottts/svg?seed=${record.id}`
             }
             shape="square"
             size="large"
             icon={<UserOutlined />}
+            alt="Ảnh đại diện"
           />
         </DetailLink>
       ),
