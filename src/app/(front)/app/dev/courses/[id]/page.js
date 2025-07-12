@@ -16,10 +16,17 @@ import {
   ClassesDesc,
   ClassesCreate,
   ClassesEdit,
+  ClassesTransfer,
   ClassesColumns,
   ClassesFields,
 } from "@/component/custom";
-import { useDesc, useForm, useNav, useTable } from "@/component/hook";
+import {
+  useDesc,
+  useForm,
+  useNav,
+  useTable,
+  useTransfer,
+} from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
 
 export default function Page(props) {
@@ -91,6 +98,7 @@ function PageContent({ params }) {
     create: useForm(),
     desc: useDesc(),
     edit: useForm(),
+    transfer: useTransfer(),
     columns: ClassesColumns(),
     fields: ClassesFields(),
   };
@@ -106,11 +114,11 @@ function PageContent({ params }) {
         onClick={() => useClasses.table.reload()}
       />
       <AntButton
-        key="create-button"
-        label="Tạo mới"
+        key="transfer-button"
+        label="Điều chỉnh"
         color="primary"
         variant="solid"
-        onClick={() => useClasses.create.open()}
+        onClick={() => useClasses.transfer.open()}
       />
     </Space>
   );
@@ -160,12 +168,10 @@ function PageContent({ params }) {
         ]}
         syncToUrl={false}
       />
-      <ClassesCreate
-        formHook={useClasses.create}
-        fields={useClasses.fields}
-        onSubmitSuccess={() => useClasses.table.reload()}
-        title="Tạo lớp học"
-        variant="drawer"
+      <ClassesTransfer
+        transferHook={useClasses.transfer}
+        courseId={courseId}
+        afterClose={() => useClasses.table.reload()}
       />
       <ClassesDesc
         descHook={useClasses.desc}

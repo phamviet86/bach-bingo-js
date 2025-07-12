@@ -60,7 +60,6 @@ export function UserRolesTransfer({ userId, roleStatus, ...props }) {
   return (
     <AntTransfer
       {...props}
-      variant="modal"
       onSourceRequest={() => fetchList(`/api/roles`)}
       onTargetRequest={() => fetchList(`/api/users/${userId}/user-roles`)}
       onAddItem={(keys) =>
@@ -84,11 +83,7 @@ export function UserRolesTransfer({ userId, roleStatus, ...props }) {
       }
       titles={["Vai trò", "Đã gán"]}
       operations={["Thêm quyền", "Xóa quyền"]}
-      listStyle={{
-        width: "100%",
-        height: "100%",
-        minHeight: "200px",
-      }}
+      variant="modal"
       modalProps={{ title: "Phân quyền" }}
     />
   );

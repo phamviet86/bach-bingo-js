@@ -166,12 +166,23 @@ export function AntTransfer({
     reloadRef.current = reloadData;
   }
 
-  // Khi mount: tải lại dữ liệu
+  // Khi mount: tải lại dữ liệu (chỉ cho variant "page")
   useEffect(() => {
-    setLoading(true);
-    reloadData();
+    if (variant === "page") {
+      setLoading(true);
+      reloadData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Khi modal/drawer mở: tải lại dữ liệu
+  useEffect(() => {
+    if ((variant === "modal" || variant === "drawer") && visible) {
+      setLoading(true);
+      reloadData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible, variant]);
 
   // Target add/remove handlers with error handling
   const handleTargetAdd = useCallback(

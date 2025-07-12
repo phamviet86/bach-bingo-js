@@ -66,16 +66,16 @@ export function ClassesTransfer({ courseId, ...props }) {
     <AntTransfer
       {...props}
       onSourceRequest={(params) => fetchList(`/api/modules`, params)}
-      onTargetRequest={(params) => fetchList(`/api/classes`, params)}
-      onTargetAdd={(keys) =>
-        fetchPost(`/api/classes/transfer`, {
-          course_id: courseId,
+      onTargetRequest={(params) =>
+        fetchList(`/api/courses/${courseId}/classes`, params)
+      }
+      onAddItem={(keys) =>
+        fetchPost(`/api/courses/${courseId}/classes`, {
           moduleIds: keys,
         })
       }
-      onTargetRemove={(keys) =>
-        fetchDelete(`/api/classes/transfer`, {
-          course_id: courseId,
+      onRemoveItem={(keys) =>
+        fetchDelete(`/api/courses/${courseId}/classes`, {
           moduleIds: keys,
         })
       }
@@ -90,6 +90,7 @@ export function ClassesTransfer({ courseId, ...props }) {
       render={(record) => `${record.syllabus_name} - ${record.module_name}`}
       titles={["Học phần", "Đã gán"]}
       operations={["Thêm", "Xóa"]}
+      variant="modal"
       modalProps={{ title: "Lộ trình học" }}
       locale={{
         searchPlaceholder: "Tìm kiếm...",
@@ -112,7 +113,7 @@ export function ClassesColumns(params) {
         <Space direction="vertical" size={0}>
           <Typography.Text strong>{record?.module_name}</Typography.Text>
           <Typography.Text type="secondary">
-            {record?.course_name}
+            {record?.syllabus_name}
           </Typography.Text>
         </Space>
       ),
@@ -124,10 +125,15 @@ export function ClassesColumns(params) {
       hidden: true, // Hide course name by default
     },
     {
-      title: "Module",
+      title: "Học phần",
       dataIndex: "module_name",
       valueType: "text",
       hidden: true, // Hide module name by default
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "class_status",
+      valueType: "text",
     },
     {
       title: "Ngày bắt đầu",
