@@ -15,7 +15,6 @@ CREATE TABLE classes (
   class_fee INTEGER DEFAULT 0,
   class_total_fee INTEGER DEFAULT 0
 );
-
 CREATE TRIGGER update_record
 BEFORE UPDATE ON classes
 FOR EACH ROW
@@ -26,12 +25,30 @@ CREATE OR REPLACE VIEW classes_view AS
 SELECT
   *,
   CASE
-    WHEN class_start_date IS NULL AND class_end_date IS NULL THEN 'Chưa có lịch'
-    WHEN class_start_date > class_end_date AND class_end_date IS NOT NULL THEN 'Nhập sai ngày'
-    WHEN class_start_date IS NOT NULL AND NOW() < class_start_date THEN 'Chờ'
-    WHEN class_start_date IS NOT NULL AND class_end_date IS NULL AND NOW() >= class_start_date THEN 'Đang học'
-    WHEN class_start_date IS NOT NULL AND class_end_date IS NOT NULL AND NOW() >= class_start_date AND NOW() < class_end_date THEN 'Đang học'
-    WHEN class_end_date IS NOT NULL AND NOW() >= class_end_date THEN 'Đã học xong'
-    ELSE 'Chưa có lịch'
-  END AS class_status
+    WHEN class_start_date IS NULL AND class_end_date IS NULL THEN 19
+    WHEN class_start_date > class_end_date AND class_end_date IS NOT NULL THEN 20
+    WHEN class_start_date IS NOT NULL AND NOW() < class_start_date THEN 21
+    WHEN class_start_date IS NOT NULL AND class_end_date IS NULL AND NOW() >= class_start_date THEN 22
+    WHEN class_start_date IS NOT NULL AND class_end_date IS NOT NULL AND NOW() >= class_start_date AND NOW() < class_end_date THEN 22
+    WHEN class_end_date IS NOT NULL AND NOW() >= class_end_date THEN 23
+    ELSE 19
+  END AS class_status_id
 FROM classes
+
+-- statuses:
+  -- 19: 'Chưa có lịch'
+  -- 20: 'Nhập sai ngày'
+  -- 21: 'Chờ'
+  -- 22: 'Đang học'
+  -- 23: 'Đã học xong'
+
+-- class_status:
+  -- CASE
+  --   WHEN class_start_date IS NULL AND class_end_date IS NULL THEN 'Chưa có lịch'
+  --   WHEN class_start_date > class_end_date AND class_end_date IS NOT NULL THEN 'Nhập sai ngày'
+  --   WHEN class_start_date IS NOT NULL AND NOW() < class_start_date THEN 'Chờ'
+  --   WHEN class_start_date IS NOT NULL AND class_end_date IS NULL AND NOW() >= class_start_date THEN 'Đang học'
+  --   WHEN class_start_date IS NOT NULL AND class_end_date IS NOT NULL AND NOW() >= class_start_date AND NOW() < class_end_date THEN 'Đang học'
+  --   WHEN class_end_date IS NOT NULL AND NOW() >= class_end_date THEN 'Đã học xong'
+  --   ELSE 'Chưa có lịch'
+  -- END AS class_status

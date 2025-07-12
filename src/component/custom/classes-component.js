@@ -19,8 +19,8 @@ import {
   ProFormText,
   ProFormMoney,
   ProFormDatePicker,
+  ProFormSelect,
 } from "@ant-design/pro-form";
-import { CLASS_STATUS_ENUM } from "@/component/config/enum-config";
 
 export function ClassesTable(props) {
   return (
@@ -83,7 +83,7 @@ export function ClassesTransfer({ courseId, ...props }) {
       sourceItem={{ key: "id" }}
       targetItem={{
         key: "module_id",
-        disabled: ["class_status", [], ["Chưa có lịch"]],
+        disabled: ["class_status_id", [], [19]],
       }}
       showSearch={true}
       searchSourceColumns={["syllabus_name_like", "module_name_like"]}
@@ -104,15 +104,17 @@ export function ClassesTransfer({ courseId, ...props }) {
 }
 
 export function ClassesColumns(params) {
-  const {} = params || {};
+  const { classStatus } = params || {};
   return [
     {
-      title: "Học phần",
+      title: "Lớp học",
       search: false,
       hideInDescriptions: true,
       render: (_, record) => (
         <Space direction="vertical" size={0}>
-          <Typography.Text strong>{record?.module_name}</Typography.Text>
+          <Typography.Text strong>
+            {record?.course_name} - {record?.module_name}
+          </Typography.Text>
           <Typography.Text type="secondary">
             {record?.syllabus_name}
           </Typography.Text>
@@ -139,9 +141,9 @@ export function ClassesColumns(params) {
     },
     {
       title: "Trạng thái",
-      dataIndex: "class_status",
-      valueType: "text",
-      valueEnum: CLASS_STATUS_ENUM,
+      dataIndex: "class_status_id",
+      valueType: "select",
+      valueEnum: classStatus?.valueEnum || {},
     },
     {
       title: "Ngày bắt đầu",
@@ -181,7 +183,7 @@ export function ClassesColumns(params) {
 }
 
 export function ClassesFields(params) {
-  const {} = params || {};
+  const { classStatus } = params || {};
   return (
     <>
       <ProForm.Group>
@@ -196,10 +198,11 @@ export function ClassesFields(params) {
           colProps={{ xs: 12 }}
           disabled
         />
-        <ProFormText
-          name="class_status"
+        <ProFormSelect
+          name="class_status_id"
           label="Trạng thái"
           colProps={{ xs: 12 }}
+          options={classStatus?.options || []}
           disabled
         />
         <ProFormText
@@ -249,4 +252,83 @@ export function ClassesFields(params) {
       </ProForm.Group>
     </>
   );
+}
+
+// columns for classes tab in courses
+
+export function ClassesTabColumns(params) {
+  const { classStatus } = params || {};
+  return [
+    {
+      title: "Học phần",
+      search: false,
+      hideInDescriptions: true,
+      render: (_, record) => (
+        <Space direction="vertical" size={0}>
+          <Typography.Text strong>{record?.module_name}</Typography.Text>
+          <Typography.Text type="secondary">
+            {record?.syllabus_name}
+          </Typography.Text>
+        </Space>
+      ),
+    },
+    {
+      title: "Khóa học",
+      dataIndex: "course_name",
+      valueType: "text",
+      hidden: true, // Hide course name by default
+    },
+    {
+      title: "Học phần",
+      dataIndex: "module_name",
+      valueType: "text",
+      hidden: true, // Hide module name by default
+    },
+    {
+      title: "Giáo trình",
+      dataIndex: "syllabus_name",
+      valueType: "text",
+      hidden: true, // Hide syllabus name by default
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "class_status_id",
+      valueType: "select",
+      valueEnum: classStatus?.valueEnum || {},
+    },
+    {
+      title: "Ngày bắt đầu",
+      dataIndex: "class_start_date",
+      valueType: "date",
+      search: false,
+      responsive: ["md"],
+    },
+    {
+      title: "Ngày kết thúc",
+      dataIndex: "class_end_date",
+      valueType: "date",
+      search: false,
+      responsive: ["md"],
+    },
+    {
+      title: "Học phí",
+      dataIndex: "class_fee",
+      valueType: "money",
+      search: false,
+      fieldProps: {
+        precision: 0,
+      },
+      responsive: ["lg"],
+    },
+    {
+      title: "Tổng học phí",
+      dataIndex: "class_total_fee",
+      valueType: "money",
+      search: false,
+      fieldProps: {
+        precision: 0,
+      },
+      responsive: ["lg"],
+    },
+  ];
 }

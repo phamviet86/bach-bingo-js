@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space } from "antd";
-import { SettingOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
+import { BankOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -14,10 +14,9 @@ import {
   CoursesFields,
   ClassesTable,
   ClassesDesc,
-  ClassesCreate,
   ClassesEdit,
   ClassesTransfer,
-  ClassesColumns,
+  ClassesTabColumns,
   ClassesFields,
 } from "@/component/custom";
 import {
@@ -39,7 +38,7 @@ export default function Page(props) {
 
 function PageContent({ params }) {
   // Context
-  const {} = usePageContext();
+  const { classStatus } = usePageContext();
 
   // Navigation
   const { navBack } = useNav();
@@ -99,8 +98,8 @@ function PageContent({ params }) {
     desc: useDesc(),
     edit: useForm(),
     transfer: useTransfer(),
-    columns: ClassesColumns(),
-    fields: ClassesFields(),
+    columns: ClassesTabColumns({ classStatus }),
+    fields: ClassesFields({ classStatus }),
   };
 
   // Tab action buttons
@@ -210,12 +209,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <SettingOutlined />
-              <span>Hệ thống</span>
+              <BankOutlined />
+              <span>Quản lý</span>
             </Space>
           ),
         },
-        { title: "khóa học", path: "/app/system/courses" },
+        { title: "Khóa học", path: "/app/manager/courses" },
         { title: pageTitle },
       ]}
       title={pageTitle}

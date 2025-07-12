@@ -9,8 +9,8 @@
 
 - [] Add classes pages: to assign staffs to a class
 
-  - add class list page
-  - add class detail page
+  - [+] add class list page
+  - [+] add class detail page
   - add enrollments tab
   - add transfer for teacher / ta -> add payments
 
