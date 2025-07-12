@@ -17,3 +17,5 @@ export * from "./syllabuses-component";
 export * from "./modules-component";
 
 export * from "./lectures-component";
+
+export * from "./courses-component";

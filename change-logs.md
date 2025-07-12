@@ -4,11 +4,14 @@
 
 - [] trong quá trình tạo hook cần xem lại các helpers
   - calendar
-- [] Add syllabuses
-  - Add modules tab
-  - Add lectures tab
 - [] Add courses
   - Add classes tab
+
+## 2025-07-12
+
+- [+] Add syllabuses
+  - Add modules tab
+  - Add lectures tab
 
 ## 2025-07-09
 
