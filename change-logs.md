@@ -5,7 +5,12 @@
 - [] trong quá trình tạo hook cần xem lại các helpers
   - calendar
 - [] Add courses
+
   - Add classes tab
+
+## On processing
+
+- [] Add responsive for class table columns in courses
 
 ## 2025-07-12
 
