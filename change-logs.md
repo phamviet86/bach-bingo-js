@@ -4,13 +4,19 @@
 
 - [] trong quá trình tạo hook cần xem lại các helpers
   - calendar
-- [] Add courses
-
-  - Add classes tab
 
 ## On processing
 
-- [] Add responsive for class table columns in courses
+- [] Add classes pages: to assign staffs to a class
+
+  - add class list page
+  - add class detail page
+  - add enrollments tab
+  - add transfer for teacher / ta -> add payments
+
+- [+] Add courses
+  - [+] Add classes tab
+  - [+] Add responsive for class table columns in courses
 
 ## 2025-07-12
 

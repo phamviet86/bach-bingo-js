@@ -20,6 +20,7 @@ import {
   ProFormMoney,
   ProFormDatePicker,
 } from "@ant-design/pro-form";
+import { CLASS_STATUS_ENUM } from "@/component/config/enum-config";
 
 export function ClassesTable(props) {
   return (
@@ -91,7 +92,7 @@ export function ClassesTransfer({ courseId, ...props }) {
       titles={["Học phần", "Đã gán"]}
       operations={["Thêm", "Xóa"]}
       variant="modal"
-      modalProps={{ title: "Lộ trình học" }}
+      modalProps={{ title: "Lớp học" }}
       locale={{
         searchPlaceholder: "Tìm kiếm...",
         itemsUnit: "học phần",
@@ -131,21 +132,30 @@ export function ClassesColumns(params) {
       hidden: true, // Hide module name by default
     },
     {
+      title: "Giáo trình",
+      dataIndex: "syllabus_name",
+      valueType: "text",
+      hidden: true, // Hide syllabus name by default
+    },
+    {
       title: "Trạng thái",
       dataIndex: "class_status",
       valueType: "text",
+      valueEnum: CLASS_STATUS_ENUM,
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "class_start_date",
       valueType: "date",
       search: false,
+      responsive: ["md"],
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "class_end_date",
       valueType: "date",
       search: false,
+      responsive: ["md"],
     },
     {
       title: "Học phí",
@@ -155,6 +165,7 @@ export function ClassesColumns(params) {
       fieldProps: {
         precision: 0,
       },
+      responsive: ["lg"],
     },
     {
       title: "Tổng học phí",
@@ -164,6 +175,7 @@ export function ClassesColumns(params) {
       fieldProps: {
         precision: 0,
       },
+      responsive: ["lg"],
     },
   ];
 }
@@ -174,26 +186,32 @@ export function ClassesFields(params) {
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
-        <ProFormText name="course_id" label="ID Khóa học" disabled />
-        <ProFormText name="module_id" label="ID học phần" disabled />
+        <ProFormText name="course_id" label="ID Khóa học" hidden disabled />
+        <ProFormText name="module_id" label="ID học phần" hidden disabled />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText
           name="course_name"
-          label="Khoá"
-          colProps={{ xs: 8 }}
+          label="Khoá học"
+          colProps={{ xs: 12 }}
+          disabled
+        />
+        <ProFormText
+          name="class_status"
+          label="Trạng thái"
+          colProps={{ xs: 12 }}
           disabled
         />
         <ProFormText
           name="syllabus_name"
           label="Giáo trình"
-          colProps={{ xs: 8 }}
+          colProps={{ xs: 12 }}
           disabled
         />
         <ProFormText
           name="module_name"
           label="Học phần"
-          colProps={{ xs: 8 }}
+          colProps={{ xs: 12 }}
           disabled
         />
       </ProForm.Group>

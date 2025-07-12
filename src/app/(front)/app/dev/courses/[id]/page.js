@@ -167,6 +167,8 @@ function PageContent({ params }) {
           },
         ]}
         syncToUrl={false}
+        showSearch={false}
+        showPagination={false}
       />
       <ClassesTransfer
         transferHook={useClasses.transfer}
