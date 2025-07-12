@@ -19,3 +19,5 @@ export * from "./modules-component";
 export * from "./lectures-component";
 
 export * from "./courses-component";
+
+export * from "./classes-component";
