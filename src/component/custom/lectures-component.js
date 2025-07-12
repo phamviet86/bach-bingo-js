@@ -7,8 +7,16 @@ import {
   fetchPost,
   fetchPut,
   fetchDelete,
+  fetchOption,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import {
+  ProForm,
+  ProFormText,
+  ProFormDigit,
+  ProFormSelect,
+  ProFormTextArea,
+} from "@ant-design/pro-form";
+import { renderEnum } from "@/lib/util/render-util";
 
 export function LecturesTable(props) {
   return (
@@ -51,49 +59,91 @@ export function LecturesEdit(props) {
 }
 
 export function LecturesColumns(params) {
-  const {} = params || {};
+  const { lectureStatus, syllabusId } = params || {};
   return [
     {
-      title: "Module",
+      title: "Học phần",
       dataIndex: "module_id",
+      valueType: "select",
+      request: (params) =>
+        fetchOption("/api/modules", params, {
+          label: "module_name",
+          value: "id",
+        }),
+      params: {
+        syllabus_id_e: syllabusId,
+      },
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "STT",
+      dataIndex: "lecture_no",
+      valueType: "digit",
+      responsive: ["md"],
+      search: false,
+    },
+    {
+      title: "Bài giảng",
+      dataIndex: "lecture_name",
       valueType: "text",
+      search: false,
+      hideInDescriptions: true,
+      render: (text, record) =>
+        renderEnum(lectureStatus?.valueEnum, record?.lecture_status_id, text),
     },
     {
       title: "Tên bài giảng",
       dataIndex: "lecture_name",
       valueType: "text",
+      hidden: true,
     },
     {
-      title: "Trạng thái bài giảng",
+      title: "Trạng thái",
       dataIndex: "lecture_status_id",
-      valueType: "digit",
+      valueType: "select",
+      valueEnum: lectureStatus?.valueEnum || {},
+      hidden: true,
     },
     {
-      title: "Số thứ tự",
-      dataIndex: "lecture_no",
-      valueType: "digit",
-    },
-    {
-      title: "Mô tả bài giảng",
+      title: "Mô tả",
       dataIndex: "lecture_desc",
       valueType: "text",
+      responsive: ["lg"],
     },
   ];
 }
 
 export function LecturesFields(params) {
-  const {} = params || {};
+  const { lectureStatus, syllabusId } = params || {};
   return (
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText
+        <ProFormSelect
           name="module_id"
-          label="Module"
-          placeholder="Nhập Module"
+          label="Học phần"
+          placeholder="Chọn học phần"
           rules={[{ required: true }]}
+          request={(params) =>
+            fetchOption("/api/modules", params, {
+              label: "module_name",
+              value: "id",
+            })
+          }
+          params={{
+            syllabus_id_e: syllabusId,
+          }}
+          colProps={{ sm: 12 }}
+        />
+        <ProFormSelect
+          name="lecture_status_id"
+          label="Trạng thái"
+          placeholder="Chọn trạng thái"
+          rules={[{ required: true }]}
+          options={lectureStatus?.options || []}
+          colProps={{ sm: 12 }}
         />
         <ProFormText
           name="lecture_name"
@@ -102,20 +152,15 @@ export function LecturesFields(params) {
           rules={[{ required: true }]}
         />
         <ProFormDigit
-          name="lecture_status_id"
-          label="Trạng thái bài giảng"
-          placeholder="Nhập Trạng thái bài giảng"
-          rules={[{ required: true }]}
-        />
-        <ProFormDigit
           name="lecture_no"
           label="Số thứ tự"
-          placeholder="Nhập Số thứ tự"
+          placeholder="Nhập số thứ tự"
         />
-        <ProFormText
+        <ProFormTextArea
           name="lecture_desc"
-          label="Mô tả bài giảng"
-          placeholder="Nhập Mô tả bài giảng"
+          label="Mô tả"
+          placeholder="Nhập mô tả"
+          fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
         />
       </ProForm.Group>
     </>

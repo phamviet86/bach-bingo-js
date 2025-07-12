@@ -3,10 +3,18 @@
 ## Columns
 
 ```javascript
+import { fetchOption } from "@/lib/util/fetch-util";
+import {
+  ProForm,
+  ProFormText,
+  ProFormSelect,
+  ProFormTextArea,
+  ProFormTimePicker,
+} from "@ant-design/pro-form";
 import { COLOR_ENUM } from "@/component/config";
 
 export function Columns(params) {
-  const { shiftStatus } = params || {};
+  const { shiftStatus, syllabusId } = params || {};
   return [
     {
       // text
@@ -59,24 +67,26 @@ export function Columns(params) {
       sorter: { multiple: 1 },
       responsive: ["xl"],
     },
+    {
+      // fetch remote options
+      title: "Học phần",
+      dataIndex: "module_id",
+      valueType: "select",
+      request: (params) =>
+        fetchOption("/api/modules", params, {
+          label: "module_name",
+          value: "id",
+        }),
+      params: {
+        syllabus_id_e: syllabusId,
+      },
+      sorter: { multiple: 1 },
+    },
   ];
 }
-```
-
-## Fields
-
-```javascript
-import {
-  ProForm,
-  ProFormText,
-  ProFormSelect,
-  ProFormTextArea,
-  ProFormTimePicker,
-} from "@ant-design/pro-form";
-import { COLOR_ENUM } from "@/component/config";
 
 export function Fields(params) {
-  const { shiftStatus } = params || {};
+  const { shiftStatus, syllabusId } = params || {};
   return (
     <>
       <ProForm.Group>
@@ -127,6 +137,22 @@ export function Fields(params) {
           label="Màu Sắc"
           placeholder="Chọn màu sắc"
           valueEnum={COLOR_ENUM}
+        />
+        <ProFormSelect
+          name="module_id"
+          label="Học phần"
+          placeholder="Chọn học phần"
+          rules={[{ required: true }]}
+          request={(params) =>
+            fetchOption("/api/modules", params, {
+              label: "module_name",
+              value: "id",
+            })
+          }
+          params={{
+            syllabus_id_e: syllabusId,
+          }}
+          colProps={{ sm: 12 }}
         />
       </ProForm.Group>
     </>

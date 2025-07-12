@@ -8,7 +8,12 @@ import {
   fetchPut,
   fetchDelete,
 } from "@/lib/util/fetch-util";
-import { ProForm, ProFormText, ProFormDigit } from "@ant-design/pro-form";
+import {
+  ProForm,
+  ProFormText,
+  ProFormSelect,
+  ProFormTextArea,
+} from "@ant-design/pro-form";
 
 export function ModulesTable(props) {
   return (
@@ -51,61 +56,57 @@ export function ModulesEdit(props) {
 }
 
 export function ModulesColumns(params) {
-  const {} = params || {};
+  const { moduleStatus } = params || {};
   return [
-    {
-      title: "Chương trình học",
-      dataIndex: "syllabus_id",
-      valueType: "text",
-    },
     {
       title: "Tên học phần",
       dataIndex: "module_name",
       valueType: "text",
     },
     {
-      title: "Trạng thái học phần",
+      title: "Trạng thái",
       dataIndex: "module_status_id",
-      valueType: "digit",
+      valueType: "select",
+      valueEnum: moduleStatus?.valueEnum || {},
     },
     {
-      title: "Mô tả học phần",
+      title: "Mô tả",
       dataIndex: "module_desc",
-      valueType: "text",
+      valueType: "textarea",
+      responsive: ["md"],
     },
   ];
 }
 
 export function ModulesFields(params) {
-  const {} = params || {};
+  const { moduleStatus } = params || {};
   return (
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
+        <ProFormText name="syllabus_id" label="ID Giáo trình" disabled />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText
-          name="syllabus_id"
-          label="Chương trình học"
-          placeholder="Nhập chương trình học"
-          rules={[{ required: true }]}
-        />
         <ProFormText
           name="module_name"
           label="Tên học phần"
           placeholder="Nhập tên học phần"
           rules={[{ required: true }]}
+          colProps={{ sm: 12 }}
         />
-        <ProFormDigit
+        <ProFormSelect
           name="module_status_id"
-          label="Trạng thái học phần"
-          placeholder="Nhập trạng thái học phần"
+          label="Trạng thái"
+          placeholder="Chọn trạng thái"
           rules={[{ required: true }]}
+          options={moduleStatus?.options || []}
+          colProps={{ sm: 12 }}
         />
-        <ProFormText
+        <ProFormTextArea
           name="module_desc"
-          label="Mô tả học phần"
-          placeholder="Nhập mô tả học phần"
+          label="Mô tả"
+          placeholder="Nhập mô tả"
+          fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
         />
       </ProForm.Group>
     </>

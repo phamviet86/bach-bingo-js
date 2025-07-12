@@ -15,8 +15,23 @@ export function PageProvider({ children }) {
     { option_table: "syllabuses", option_column: "syllabus_status_id" }
   );
 
+  const moduleStatus = convertSelection(
+    optionData,
+    { value: "id", label: "option_label", color: "option_color" },
+    { option_table: "modules", option_column: "module_status_id" }
+  );
+
+  const lectureStatus = convertSelection(
+    optionData,
+    { value: "id", label: "option_label", color: "option_color" },
+    { option_table: "lectures", option_column: "lecture_status_id" }
+  );
+
   // Memoize the context value to avoid unnecessary re-renders
-  const contextValue = useMemo(() => ({ syllabusStatus }), [syllabusStatus]);
+  const contextValue = useMemo(
+    () => ({ syllabusStatus, moduleStatus, lectureStatus }),
+    [syllabusStatus, moduleStatus, lectureStatus]
+  );
 
   return (
     <PageContext.Provider value={contextValue}>{children}</PageContext.Provider>
