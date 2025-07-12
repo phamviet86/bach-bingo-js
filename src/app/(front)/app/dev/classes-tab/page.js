@@ -21,7 +21,7 @@ export default function Page() {
   const pageButton = [];
   const pageContent = <ProCard boxShadow bordered />;
 
-  // lớp học logic hooks
+  // classes logic hooks
   const useClasses = {
     table: useTable(),
     create: useForm(),

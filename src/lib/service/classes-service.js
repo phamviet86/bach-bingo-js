@@ -16,7 +16,7 @@ export async function getClasses(searchParams) {
     const sqlValue = [...queryValues];
     const sqlText = `
       SELECT c.*, COUNT(*) OVER() AS total
-      FROM classes c
+      FROM classes_view c
       WHERE c.deleted_at IS NULL
       ${whereClause}
       ${orderByClause || "ORDER BY c.created_at"}
@@ -33,7 +33,7 @@ export async function getClass(id) {
   try {
     return await sql`
       SELECT c.*
-      FROM classes c
+      FROM classes_view c
       WHERE c.deleted_at IS NULL
         AND c.id = ${id};
     `;

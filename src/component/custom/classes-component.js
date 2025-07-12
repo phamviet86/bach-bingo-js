@@ -1,6 +1,12 @@
 // path: @/component/custom/classes-component.js
 
-import { AntTable, AntForm, AntDescriptions } from "@/component/common";
+import { Space, Typography } from "antd";
+import {
+  AntTable,
+  AntForm,
+  AntDescriptions,
+  AntTransfer,
+} from "@/component/common";
 import {
   fetchList,
   fetchGet,
@@ -11,7 +17,7 @@ import {
 import {
   ProForm,
   ProFormText,
-  ProFormDigit,
+  ProFormMoney,
   ProFormDatePicker,
 } from "@ant-design/pro-form";
 
@@ -55,38 +61,103 @@ export function ClassesEdit(props) {
   );
 }
 
+export function ClassesTransfer({ courseId, ...props }) {
+  return (
+    <AntTransfer
+      {...props}
+      onSourceRequest={(params) => fetchList(`/api/modules`, params)}
+      onTargetRequest={(params) => fetchList(`/api/classes`, params)}
+      onTargetAdd={(keys) =>
+        fetchPost(`/api/classes/transfer`, {
+          course_id: courseId,
+          moduleIds: keys,
+        })
+      }
+      onTargetRemove={(keys) =>
+        fetchDelete(`/api/classes/transfer`, {
+          course_id: courseId,
+          moduleIds: keys,
+        })
+      }
+      sourceItem={{ key: "id" }}
+      targetItem={{
+        key: "module_id",
+        disabled: ["class_status", [], ["Chưa có lịch"]],
+      }}
+      showSearch={true}
+      searchSourceColumns={["syllabus_name_like", "module_name_like"]}
+      searchTargetColumns={["syllabus_name_like", "module_name_like"]}
+      render={(record) => `${record.syllabus_name} - ${record.module_name}`}
+      titles={["Học phần", "Đã gán"]}
+      operations={["Thêm", "Xóa"]}
+      modalProps={{ title: "Lộ trình học" }}
+      locale={{
+        searchPlaceholder: "Tìm kiếm...",
+        itemsUnit: "học phần",
+        itemUnit: "học phần",
+        notFoundContent: "Không tìm thấy học phần",
+      }}
+    />
+  );
+}
+
 export function ClassesColumns(params) {
   const {} = params || {};
   return [
     {
+      title: "Học phần",
+      search: false,
+      hideInDescriptions: true,
+      render: (_, record) => (
+        <Space direction="vertical" size={0}>
+          <Typography.Text strong>{record?.module_name}</Typography.Text>
+          <Typography.Text type="secondary">
+            {record?.course_name}
+          </Typography.Text>
+        </Space>
+      ),
+    },
+    {
       title: "Khóa học",
-      dataIndex: "course_id",
+      dataIndex: "course_name",
       valueType: "text",
+      hidden: true, // Hide course name by default
     },
     {
       title: "Module",
-      dataIndex: "module_id",
+      dataIndex: "module_name",
       valueType: "text",
+      hidden: true, // Hide module name by default
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "class_start_date",
       valueType: "date",
+      search: false,
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "class_end_date",
       valueType: "date",
+      search: false,
     },
     {
       title: "Học phí",
       dataIndex: "class_fee",
-      valueType: "digit",
+      valueType: "money",
+      search: false,
+      fieldProps: {
+        precision: 0,
+      },
     },
     {
       title: "Tổng học phí",
       dataIndex: "class_total_fee",
-      valueType: "digit",
+      valueType: "money",
+      search: false,
+      fieldProps: {
+        precision: 0,
+      },
     },
   ];
 }
@@ -97,39 +168,59 @@ export function ClassesFields(params) {
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
+        <ProFormText name="course_id" label="ID Khóa học" disabled />
+        <ProFormText name="module_id" label="ID học phần" disabled />
       </ProForm.Group>
       <ProForm.Group>
         <ProFormText
-          name="course_id"
-          label="Khóa học"
-          placeholder="Nhập Khóa học"
-          rules={[{ required: true }]}
+          name="course_name"
+          label="Khoá"
+          colProps={{ xs: 8 }}
+          disabled
         />
         <ProFormText
-          name="module_id"
-          label="Module"
-          placeholder="Nhập Module"
-          rules={[{ required: true }]}
+          name="syllabus_name"
+          label="Giáo trình"
+          colProps={{ xs: 8 }}
+          disabled
         />
+        <ProFormText
+          name="module_name"
+          label="Học phần"
+          colProps={{ xs: 8 }}
+          disabled
+        />
+      </ProForm.Group>
+      <ProForm.Group>
         <ProFormDatePicker
           name="class_start_date"
           label="Ngày bắt đầu"
           placeholder="Chọn ngày bắt đầu"
+          colProps={{ xs: 12 }}
+          width="100%"
         />
         <ProFormDatePicker
           name="class_end_date"
           label="Ngày kết thúc"
           placeholder="Chọn ngày kết thúc"
+          colProps={{ xs: 12 }}
+          width="100%"
         />
-        <ProFormDigit
+        <ProFormMoney
           name="class_fee"
           label="Học phí"
           placeholder="Nhập học phí"
+          locale="vn-VN"
+          width="100%"
+          colProps={{ xs: 12 }}
         />
-        <ProFormDigit
+        <ProFormMoney
           name="class_total_fee"
           label="Tổng học phí"
           placeholder="Nhập tổng học phí"
+          locale="vn-VN"
+          width="100%"
+          colProps={{ xs: 12 }}
         />
       </ProForm.Group>
     </>
