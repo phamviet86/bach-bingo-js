@@ -1,6 +1,11 @@
 // path: @/lib/util/render-util.js
 
-import { Tag, Badge } from "antd";
+import { Tag, Badge, Space, Typography } from "antd";
+import {
+  SolutionOutlined,
+  TeamOutlined,
+  ReadOutlined,
+} from "@ant-design/icons";
 
 export function renderTextArea(text) {
   return (
@@ -55,5 +60,38 @@ export function renderEnum(
       status={componentStatus}
       text={displayText}
     />
+  );
+}
+
+export function renderEnrollmentType(typeId) {
+  const enrollmentTypes = {
+    24: {
+      text: "Giáo viên",
+      icon: <SolutionOutlined />,
+      color: "blue",
+    },
+    25: {
+      text: "Trợ giảng",
+      icon: <TeamOutlined />,
+      color: "green",
+    },
+    26: {
+      text: "Học viên",
+      icon: <ReadOutlined />,
+      color: "orange",
+    },
+  };
+
+  const enrollmentType = enrollmentTypes[typeId];
+
+  if (!enrollmentType) {
+    return typeId; // Return the typeId if not found
+  }
+
+  return (
+    <Space>
+      {enrollmentType.icon}
+      <Typography.Text>{enrollmentType.text}</Typography.Text>
+    </Space>
   );
 }
