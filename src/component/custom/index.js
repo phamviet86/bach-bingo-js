@@ -21,3 +21,5 @@ export * from "./lectures-component";
 export * from "./courses-component";
 
 export * from "./classes-component";
+
+export * from "./enrollments-component";
