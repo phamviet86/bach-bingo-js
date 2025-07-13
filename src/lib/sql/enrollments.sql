@@ -1,6 +1,4 @@
 -- table: đăng ký
--- có sử dụng enrollment_type_id = 20 (học viên) và enrollment_type_id khác 20 (giáo viên, trợ giảng)
--- có sử dụng trường enrollment_payment_type_id = 22 (hàng tháng)
 
 DROP VIEW IF EXISTS enrollments_view CASCADE;
 DROP TABLE IF EXISTS enrollments CASCADE;
@@ -42,15 +40,9 @@ SELECT
     -- 4. Thiếu ngày bắt đầu (dữ liệu bị mất)
     WHEN enrollment_start_date IS NULL THEN 'Thiếu ngày'
     
-    -- 4. Đang hoạt động (đang trong thời gian tham gia)
+    -- 4. Đang tham gia (đang trong thời gian tham gia)
     WHEN enrollment_start_date <= CURRENT_DATE 
-         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) 
-         AND enrollment_type_id = 20 THEN 'Đang học'
-    
-    -- 5. Đang dạy (đang trong thời gian tham gia với enrollment_type_id khác 20)
-    WHEN enrollment_start_date <= CURRENT_DATE 
-         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) 
-         AND enrollment_type_id != 20 THEN 'Đang dạy'
+         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) THEN 'Đang tham gia'
     
     
     -- 7. Chờ bắt đầu (đã xếp lớp nhưng chưa đến ngày bắt đầu)
