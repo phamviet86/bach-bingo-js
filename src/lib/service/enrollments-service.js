@@ -126,3 +126,38 @@ export async function deleteEnrollment(id) {
     throw new Error(error.message);
   }
 }
+
+// Create multiple enrollments by classId and userIds
+export async function createEnrollmentsByClass(
+  classId,
+  userIds,
+  enrollmentTypeId,
+  enrollmentPaymentAmount = 0
+) {
+  try {
+    const queryValues = [];
+    const valuePlaceholders = userIds
+      .map((userId, index) => {
+        queryValues.push(
+          userId,
+          classId,
+          enrollmentTypeId,
+          enrollmentPaymentAmount
+        );
+        return `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${
+          index * 4 + 4
+        })`;
+      })
+      .join(", ");
+
+    const queryText = `
+      INSERT INTO enrollments (user_id, class_id, enrollment_type_id, enrollment_payment_amount)
+      VALUES ${valuePlaceholders}
+      RETURNING *;
+    `;
+
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}

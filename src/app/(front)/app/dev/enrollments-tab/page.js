@@ -21,7 +21,7 @@ export default function Page() {
   const pageButton = [];
   const pageContent = <ProCard boxShadow bordered />;
 
-  // đăng ký logic hooks
+  // enrollments logic hooks
   const useEnrollments = {
     table: useTable(),
     create: useForm(),

@@ -12,7 +12,7 @@ CREATE TABLE enrollments (
   module_id UUID DEFAULT NULL,
   class_id UUID DEFAULT NULL,
   enrollment_type_id INTEGER NOT NULL,
-  enrollment_payment_type_id INTEGER DEFAULT 22,
+  enrollment_payment_type_id INTEGER DEFAULT 27,
   enrollment_payment_amount INTEGER DEFAULT 0,
   enrollment_payment_discount INTEGER DEFAULT 0,
   enrollment_start_date TIMESTAMPTZ DEFAULT NULL,
@@ -44,9 +44,8 @@ SELECT
     WHEN enrollment_start_date <= CURRENT_DATE 
          AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) THEN 'Đang tham gia'
     
-    
     -- 7. Chờ bắt đầu (đã xếp lớp nhưng chưa đến ngày bắt đầu)
     ELSE 'Đã xếp lớp'
-  END AS enrollment_status
+  END AS enrollment_status_id
 FROM 
   enrollments;

@@ -12,7 +12,10 @@ import {
   ProForm,
   ProFormText,
   ProFormDigit,
+  ProFormMoney,
   ProFormDatePicker,
+  ProFormSelect,
+  ProFormTextArea,
 } from "@ant-design/pro-form";
 
 export function EnrollmentsTable(props) {
@@ -117,65 +120,78 @@ export function EnrollmentsColumns(params) {
 }
 
 export function EnrollmentsFields(params) {
-  const {} = params || {};
+  const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
+    params || {};
   return (
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
+        <ProFormText name="user_id" label="ID Người dùng" disabled />
+        <ProFormText name="module_id" label="ID học phần" disabled />
+        <ProFormText name="class_id" label="ID lớp" disabled />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormText
-          name="user_id"
-          label="Người dùng"
-          placeholder="Nhập người dùng"
-          rules={[{ required: true }]}
+        <ProFormSelect
+          name="enrollment_status_id"
+          label="Trạng thái"
+          placeholder="Nhập trạng thái"
+          options={enrollmentStatus?.options || []}
+          disabled
         />
-        <ProFormText
-          name="module_id"
-          label="Module"
-          placeholder="Nhập module"
-        />
-        <ProFormText name="class_id" label="Lớp" placeholder="Nhập lớp" />
-        <ProFormDigit
+        <ProFormSelect
           name="enrollment_type_id"
-          label="Loại đăng ký"
-          placeholder="Nhập loại đăng ký"
-          rules={[{ required: true }]}
+          label="Loại"
+          placeholder="Nhập loại"
+          options={enrollmentType?.options || []}
+          disabled
         />
-        <ProFormDigit
+      </ProForm.Group>
+      <ProForm.Group>
+        <ProFormSelect
           name="enrollment_payment_type_id"
-          label="Loại thanh toán"
-          placeholder="Nhập loại thanh toán"
+          label="Thanh toán"
+          placeholder="Chọn thanh toán"
+          options={enrollmentPaymentType?.options || []}
         />
-        <ProFormDigit
+        <ProFormMoney
           name="enrollment_payment_amount"
-          label="Số tiền thanh toán"
-          placeholder="Nhập số tiền thanh toán"
+          label="Số tiền"
+          placeholder="Nhập số tiền"
+          locale="vn-VN"
+          width="100%"
+          colProps={{ xs: 12 }}
         />
         <ProFormDigit
           name="enrollment_payment_discount"
-          label="Giảm giá thanh toán"
-          placeholder="Nhập giảm giá thanh toán"
+          label="Giảm giá"
+          placeholder="Nhập giảm giá"
+          colProps={{ xs: 12 }}
+        />
+        <ProFormTextArea
+          name="enrollment_discount_notes"
+          label="Ghi chú giảm giá"
+          placeholder="Nhập ghi chú"
+          fieldProps={{ autoSize: { minRows: 1, maxRows: 3 } }}
         />
         <ProFormDatePicker
           name="enrollment_start_date"
           label="Ngày bắt đầu"
           placeholder="Chọn ngày bắt đầu"
+          colProps={{ xs: 12 }}
+          width="100%"
         />
         <ProFormDatePicker
           name="enrollment_end_date"
           label="Ngày kết thúc"
           placeholder="Chọn ngày kết thúc"
+          colProps={{ xs: 12 }}
+          width="100%"
         />
-        <ProFormText
-          name="enrollment_discount_notes"
-          label="Ghi chú giảm giá"
-          placeholder="Nhập ghi chú giảm giá"
-        />
-        <ProFormText
+        <ProFormTextArea
           name="enrollment_desc"
-          label="Mô tả đăng ký"
-          placeholder="Nhập mô tả đăng ký"
+          label="Mô tả"
+          placeholder="Nhập mô tả"
+          fieldProps={{ autoSize: { minRows: 3, maxRows: 6 } }}
         />
       </ProForm.Group>
     </>
