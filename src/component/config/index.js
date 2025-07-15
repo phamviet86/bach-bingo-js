@@ -1,6 +1,7 @@
 // path: @/config/index.js
 
 export * from "./calendar-config.js";
+export * from "./column-config.js";
 export * from "./drawer-config.js";
 export * from "./enum-config.js";
 export * from "./form-config.js";

@@ -10,7 +10,7 @@ import {
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText, ProFormSelect } from "@ant-design/pro-form";
 import { COLOR_ENUM } from "@/component/config";
-import { renderColumns } from "@/lib/util/render-util";
+import { renderColumns, renderEnum } from "@/lib/util/render-util";
 
 export function OptionsTable(props) {
   return (
@@ -61,10 +61,9 @@ export function OptionsColumns(params, displayConfig = []) {
       dataIndex: "id",
       key: "id",
       valueType: "text",
+      sorter: { multiple: 1 },
       search: false,
       width: 80,
-      sorter: { multiple: 1 },
-      responsive: ["md"],
     },
     {
       title: "Bảng",
@@ -72,7 +71,6 @@ export function OptionsColumns(params, displayConfig = []) {
       key: "option_table",
       valueType: "text",
       sorter: { multiple: 1 },
-      responsive: ["lg"],
     },
     {
       title: "Cột",
@@ -94,9 +92,7 @@ export function OptionsColumns(params, displayConfig = []) {
       key: "option_color",
       valueType: "select",
       valueEnum: COLOR_ENUM,
-      filters: true,
       sorter: { multiple: 1 },
-      responsive: ["xl"],
     },
     {
       title: "Nhóm",
@@ -104,7 +100,18 @@ export function OptionsColumns(params, displayConfig = []) {
       key: "option_group",
       valueType: "text",
       sorter: { multiple: 1 },
-      responsive: ["xxl"],
+    },
+    {
+      title: "Nhãn",
+      key: "displayLabel",
+      // hideInDescriptions: true,
+      render: (_, record) =>
+        renderEnum(
+          COLOR_ENUM,
+          record?.option_color,
+          record?.option_label,
+          "badge"
+        ),
     },
   ];
 

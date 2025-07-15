@@ -21,6 +21,7 @@ export function Columns(params, displayConfig = []) {
       // text
       title: "Tên ca học",
       dataIndex: "shift_name",
+      key: "shift_name",
       valueType: "text",
       sorter: { multiple: 1 },
     },
@@ -28,6 +29,7 @@ export function Columns(params, displayConfig = []) {
       // select valueEnum
       title: "Trạng thái",
       dataIndex: "shift_status_id",
+      key: "shift_status_id",
       valueType: "select",
       valueEnum: shiftStatus?.valueEnum || {},
       sorter: { multiple: 1 },
@@ -37,6 +39,7 @@ export function Columns(params, displayConfig = []) {
       // time format
       title: "Giờ bắt đầu",
       dataIndex: "shift_start_time",
+      key: "shift_start_time",
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
@@ -46,6 +49,7 @@ export function Columns(params, displayConfig = []) {
       // time format
       title: "Giờ kết thúc",
       dataIndex: "shift_end_time",
+      key: "shift_end_time",
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
@@ -55,13 +59,16 @@ export function Columns(params, displayConfig = []) {
       // textarea
       title: "Mô tả",
       dataIndex: "shift_desc",
+      key: "shift_desc",
       valueType: "textarea",
+      sorter: { multiple: 1 },
       responsive: ["lg"],
     },
     {
       // select with enum
       title: "Màu Sắc",
       dataIndex: "option_color",
+      key: "option_color",
       valueType: "select",
       valueEnum: COLOR_ENUM,
       filters: true,
@@ -72,6 +79,7 @@ export function Columns(params, displayConfig = []) {
       // fetch remote options
       title: "Học phần",
       dataIndex: "module_id",
+      key: "module_id",
       valueType: "select",
       request: (params) =>
         fetchOption("/api/modules", params, {

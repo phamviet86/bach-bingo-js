@@ -15,6 +15,7 @@ import {
 } from "@/component/custom";
 import { useDesc, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { OPTIONS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -35,7 +36,7 @@ function PageContent({ params }) {
   const useOptions = {
     desc: useDesc(),
     edit: useForm(),
-    columns: OptionsColumns(),
+    columns: OptionsColumns({}, OPTIONS_COLUMN),
     fields: OptionsFields(),
   };
 

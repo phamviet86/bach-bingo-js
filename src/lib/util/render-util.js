@@ -11,7 +11,8 @@ export function renderColumns(columns, displayConfig) {
       .map((item) => {
         const col = columns.find((c) => c.key === item.key);
         if (!col) return null;
-        return { ...col, ...(item.props || {}) };
+        const { key, ...configProps } = item;
+        return { ...col, ...configProps };
       })
       .filter(Boolean);
   }
@@ -30,7 +31,7 @@ export function renderEnum(
   enumData,
   key,
   label = null,
-  variant = "bagde",
+  variant = undefined,
   props = {}
 ) {
   // Early return if no key or enumData
@@ -39,36 +40,41 @@ export function renderEnum(
   }
 
   const enumItem = enumData[key] || {};
-  const { text = "", color } = enumItem;
+  const { text = "", status, color } = enumItem;
   const displayText = label || text || key;
 
   // Get processed color and status
-  const componentColor = color ? COLOR_ENUM[color]?.color || color : undefined;
-
-  const renderProps = {
-    ...props,
-    ...(componentColor && { color: componentColor }),
-  };
+  const textColor = color ? COLOR_ENUM[color]?.color || color : undefined;
 
   // Render component based on variant
   switch (variant) {
     case "tag":
-      return <Tag {...renderProps}>{displayText}</Tag>;
+      return (
+        <Tag {...props} color={status || color}>
+          {displayText}
+        </Tag>
+      );
 
-    case "text":
+    case "badge":
+      return (
+        <Badge
+          {...props}
+          status={status}
+          color={status || color}
+          text={displayText}
+        />
+      );
+
+    default:
       return (
         <Typography.Text
+          {...props}
           style={{
-            color: componentColor
-              ? presetPrimaryColors[componentColor]
-              : undefined,
+            color: textColor ? presetPrimaryColors[textColor] : undefined,
           }}
         >
           {displayText}
         </Typography.Text>
       );
-
-    default:
-      return <Badge {...renderProps} text={displayText} />;
   }
 }

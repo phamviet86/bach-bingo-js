@@ -86,7 +86,9 @@ export function {TableName}Columns(params, , displayConfig = []) {
     {
       title: "{Column Header}",
       dataIndex: "{column_name}",
+      key: "{column_name}",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     // Repeat the above object for each column...
   ];
