@@ -39,6 +39,20 @@ export async function POST(request) {
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
     }
 
+    // Validate date range if both dates are provided
+    if (enrollment_start_date && enrollment_end_date) {
+      const startDate = new Date(enrollment_start_date);
+      const endDate = new Date(enrollment_end_date);
+
+      if (startDate > endDate) {
+        return buildApiResponse(
+          400,
+          false,
+          "Ngày bắt đầu không được lớn hơn ngày kết thúc."
+        );
+      }
+    }
+
     const data = {
       user_id,
       enrollment_type_id,
