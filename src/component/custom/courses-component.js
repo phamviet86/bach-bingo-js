@@ -9,6 +9,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function CoursesTable(props) {
   return (
@@ -50,20 +51,25 @@ export function CoursesEdit(props) {
   );
 }
 
-export function CoursesColumns(params) {
+export function CoursesColumns(params, displayConfig = []) {
   const {} = params || {};
-  return [
+
+  const columns = [
     {
       title: "Tên khóa học",
       dataIndex: "course_name",
+      key: "course_name",
       valueType: "text",
     },
     {
       title: "Mã khóa học",
       dataIndex: "course_code",
+      key: "course_code",
       valueType: "text",
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function CoursesFields(params) {

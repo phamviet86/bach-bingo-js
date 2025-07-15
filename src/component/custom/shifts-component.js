@@ -15,6 +15,7 @@ import {
   ProFormTextArea,
   ProFormTimePicker,
 } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function ShiftsTable(props) {
   return (
@@ -56,18 +57,21 @@ export function ShiftsEdit(props) {
   );
 }
 
-export function ShiftsColumns(params) {
+export function ShiftsColumns(params, displayConfig = []) {
   const { shiftStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Tên ca học",
       dataIndex: "shift_name",
+      key: "shift_name",
       valueType: "text",
       sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
       dataIndex: "shift_status_id",
+      key: "shift_status_id",
       valueType: "select",
       valueEnum: shiftStatus?.valueEnum || {},
       sorter: { multiple: 1 },
@@ -75,6 +79,7 @@ export function ShiftsColumns(params) {
     {
       title: "Giờ bắt đầu",
       dataIndex: "shift_start_time",
+      key: "shift_start_time",
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
@@ -83,6 +88,7 @@ export function ShiftsColumns(params) {
     {
       title: "Giờ kết thúc",
       dataIndex: "shift_end_time",
+      key: "shift_end_time",
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
@@ -91,10 +97,13 @@ export function ShiftsColumns(params) {
     {
       title: "Mô tả",
       dataIndex: "shift_desc",
+      key: "shift_desc",
       valueType: "textarea",
       responsive: ["lg"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function ShiftsFields(params) {

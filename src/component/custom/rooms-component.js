@@ -14,6 +14,7 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function RoomsTable(props) {
   return (
@@ -55,18 +56,21 @@ export function RoomsEdit(props) {
   );
 }
 
-export function RoomsColumns(params) {
+export function RoomsColumns(params, displayConfig = []) {
   const { roomStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Tên phòng",
       dataIndex: "room_name",
+      key: "room_name",
       valueType: "text",
       sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
       dataIndex: "room_status_id",
+      key: "room_status_id",
       valueType: "select",
       valueEnum: roomStatus?.valueEnum || {},
       sorter: { multiple: 1 },
@@ -74,10 +78,13 @@ export function RoomsColumns(params) {
     {
       title: "Mô tả",
       dataIndex: "room_desc",
-      valueType: "text",
+      key: "room_desc",
+      valueType: "textarea",
       responsive: ["md"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function RoomsFields(params) {

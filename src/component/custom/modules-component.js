@@ -14,6 +14,7 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function ModulesTable(props) {
   return (
@@ -55,27 +56,33 @@ export function ModulesEdit(props) {
   );
 }
 
-export function ModulesColumns(params) {
+export function ModulesColumns(params, displayConfig = []) {
   const { moduleStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Tên học phần",
       dataIndex: "module_name",
+      key: "module_name",
       valueType: "text",
     },
     {
       title: "Trạng thái",
       dataIndex: "module_status_id",
+      key: "module_status_id",
       valueType: "select",
       valueEnum: moduleStatus?.valueEnum || {},
     },
     {
       title: "Mô tả",
       dataIndex: "module_desc",
+      key: "module_desc",
       valueType: "textarea",
       responsive: ["md"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function ModulesFields(params) {

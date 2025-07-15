@@ -16,7 +16,7 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
-import { renderEnum } from "@/lib/util/render-util";
+import { renderColumns, renderEnum } from "@/lib/util/render-util";
 
 export function LecturesTable(props) {
   return (
@@ -58,12 +58,14 @@ export function LecturesEdit(props) {
   );
 }
 
-export function LecturesColumns(params) {
+export function LecturesColumns(params, displayConfig = []) {
   const { lectureStatus, syllabusId } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Học phần",
       dataIndex: "module_id",
+      key: "module_id",
       valueType: "select",
       request: (params) =>
         fetchOption("/api/modules", params, {
@@ -78,6 +80,7 @@ export function LecturesColumns(params) {
     {
       title: "STT",
       dataIndex: "lecture_no",
+      key: "lecture_no",
       valueType: "digit",
       responsive: ["md"],
       search: false,
@@ -85,6 +88,7 @@ export function LecturesColumns(params) {
     {
       title: "Bài giảng",
       dataIndex: "lecture_name",
+      key: "lecture_name",
       valueType: "text",
       search: false,
       hideInDescriptions: true,
@@ -94,12 +98,14 @@ export function LecturesColumns(params) {
     {
       title: "Tên bài giảng",
       dataIndex: "lecture_name",
+      key: "lecture_name",
       valueType: "text",
       hidden: true,
     },
     {
       title: "Trạng thái",
       dataIndex: "lecture_status_id",
+      key: "lecture_status_id",
       valueType: "select",
       valueEnum: lectureStatus?.valueEnum || {},
       hidden: true,
@@ -107,10 +113,13 @@ export function LecturesColumns(params) {
     {
       title: "Mô tả",
       dataIndex: "lecture_desc",
-      valueType: "text",
+      key: "lecture_desc",
+      valueType: "textarea",
       responsive: ["lg"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function LecturesFields(params) {

@@ -24,6 +24,7 @@ import {
   ProFormTextArea,
 } from "@ant-design/pro-form";
 import { renderEnum } from "@/lib/util/render-util";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function EnrollmentsTable(props) {
   return (
@@ -124,13 +125,14 @@ export function ClassEnrollmentsTransfer({
   );
 }
 
-export function ClassEnrollmentsColumns(params) {
+export function ClassEnrollmentsColumns(params, displayConfig = []) {
   const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
     params || {};
 
-  return [
+  const columns = [
     {
       title: "Người dùng",
+      key: "displayUser",
       search: false,
       hideInDescriptions: true,
       render: (_, record) => (
@@ -148,12 +150,14 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Tên người dùng",
       dataIndex: "user_name",
+      key: "user_name",
       valueType: "text",
       hidden: true,
     },
     {
       title: "Đăng ký",
       dataIndex: "enrollment_type_id",
+      key: "enrollment_type_id",
       valueType: "select",
       valueEnum: enrollmentType?.valueEnum || {},
       hidden: true,
@@ -161,12 +165,14 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Trạng thái",
       dataIndex: "enrollment_status_id",
+      key: "enrollment_status_id",
       valueType: "select",
       valueEnum: enrollmentStatus?.valueEnum || {},
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "enrollment_start_date",
+      key: "enrollment_start_date",
       valueType: "date",
       responsive: ["lg"],
       search: false,
@@ -174,6 +180,7 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Ngày kết thúc",
       dataIndex: "enrollment_end_date",
+      key: "enrollment_end_date",
       valueType: "date",
       responsive: ["lg"],
       search: false,
@@ -181,6 +188,7 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Thanh toán",
       dataIndex: "enrollment_payment_type_id",
+      key: "enrollment_payment_type_id",
       valueType: "select",
       valueEnum: enrollmentPaymentType?.valueEnum || {},
       render: (_, record) =>
@@ -195,6 +203,7 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Số tiền",
       dataIndex: "enrollment_payment_amount",
+      key: "enrollment_payment_amount",
       valueType: "money",
       fieldProps: {
         precision: 0,
@@ -205,6 +214,7 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Giảm giá",
       dataIndex: "enrollment_payment_discount",
+      key: "enrollment_payment_discount",
       valueType: "digit",
       fieldProps: {
         formatter: (value) => (value ? `${value} %` : ""),
@@ -215,6 +225,7 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Ghi chú giảm giá",
       dataIndex: "enrollment_discount_notes",
+      key: "enrollment_discount_notes",
       valueType: "textarea",
       hidden: true,
       search: false,
@@ -222,11 +233,14 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Mô tả đăng ký",
       dataIndex: "enrollment_desc",
+      key: "enrollment_desc",
       valueType: "textarea",
       hidden: true,
       search: false,
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function EnrollmentsFields(params) {

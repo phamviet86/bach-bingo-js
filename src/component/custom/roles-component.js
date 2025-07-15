@@ -9,6 +9,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText, ProFormSelect } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function RolesTable(props) {
   return (
@@ -50,18 +51,20 @@ export function RolesEdit(props) {
   );
 }
 
-export function RolesColumns(params) {
+export function RolesColumns(params, displayConfig = []) {
   const { roleStatus } = params || {};
 
-  return [
+  const columns = [
     {
       title: "Tên vai trò",
       dataIndex: "role_name",
+      key: "role_name",
       valueType: "text",
     },
     {
       title: "Trạng thái ",
       dataIndex: "role_status_id",
+      key: "role_status_id",
       valueType: "select",
       valueEnum: roleStatus?.valueEnum || {},
       sorter: { multiple: 1 },
@@ -69,10 +72,13 @@ export function RolesColumns(params) {
     {
       title: "Đường dẫn",
       dataIndex: "role_path",
+      key: "role_path",
       valueType: "text",
       responsive: ["md"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function RolesFields(params) {

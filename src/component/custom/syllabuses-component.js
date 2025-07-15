@@ -9,6 +9,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText, ProFormSelect } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function SyllabusesTable(props) {
   return (
@@ -50,21 +51,26 @@ export function SyllabusesEdit(props) {
   );
 }
 
-export function SyllabusesColumns(params) {
+export function SyllabusesColumns(params, displayConfig = []) {
   const { syllabusStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Tên giáo trình",
       dataIndex: "syllabus_name",
+      key: "syllabus_name",
       valueType: "text",
     },
     {
       title: "Trạng thái",
       dataIndex: "syllabus_status_id",
+      key: "syllabus_status_id",
       valueType: "select",
       valueEnum: syllabusStatus?.valueEnum || {},
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function SyllabusesFields(params) {

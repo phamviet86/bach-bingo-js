@@ -13,9 +13,10 @@ import {
 } from "@ant-design/pro-form";
 import { COLOR_ENUM } from "@/component/config";
 
-export function Columns(params) {
+export function Columns(params, displayConfig = []) {
   const { shiftStatus, syllabusId } = params || {};
-  return [
+
+  const columns = [
     {
       // text
       title: "Tên ca học",
@@ -83,6 +84,8 @@ export function Columns(params) {
       sorter: { multiple: 1 },
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function Fields(params) {

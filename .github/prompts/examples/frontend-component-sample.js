@@ -50,7 +50,7 @@ export function OptionsEdit(props) {
   );
 }
 
-export function OptionsColumns(params) {
+export function OptionsColumns(params, displayConfig = []) {
   const {} = params || {};
 
   return [

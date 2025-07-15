@@ -14,7 +14,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText } from "@ant-design/pro-form";
-import { renderEnum } from "@/lib/util/render-util";
+import { renderColumns, renderEnum } from "@/lib/util/render-util";
 
 export function UserRolesTable(props) {
   return (
@@ -89,12 +89,14 @@ export function UserRolesTransfer({ userId, roleStatus, ...props }) {
   );
 }
 
-export function UserRolesColumns(params) {
+export function UserRolesColumns(params, displayConfig = []) {
   const { roleStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Vai trò",
       dataIndex: "role_name",
+      key: "role_name",
       valueType: "text",
       render: (text, record) =>
         renderEnum(roleStatus?.valueEnum, record?.role_status_id, text),
@@ -102,9 +104,12 @@ export function UserRolesColumns(params) {
     {
       title: "Đường dẫn",
       dataIndex: "role_path",
+      key: "role_path",
       valueType: "text",
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function UserRolesFields(params) {

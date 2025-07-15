@@ -21,6 +21,7 @@ import {
   ProFormDatePicker,
   ProFormSelect,
 } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function ClassesTable(props) {
   return (
@@ -103,11 +104,13 @@ export function ClassesTransfer({ courseId, ...props }) {
   );
 }
 
-export function ClassesColumns(params) {
+export function ClassesColumns(params, displayConfig = []) {
   const { classStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Lớp học",
+      key: "displayClass",
       search: false,
       hideInDescriptions: true,
       render: (_, record) => (
@@ -124,30 +127,35 @@ export function ClassesColumns(params) {
     {
       title: "Khóa học",
       dataIndex: "course_name",
+      key: "course_name",
       valueType: "text",
       hidden: true, // Hide course name by default
     },
     {
       title: "Học phần",
       dataIndex: "module_name",
+      key: "module_name",
       valueType: "text",
       hidden: true, // Hide module name by default
     },
     {
       title: "Giáo trình",
       dataIndex: "syllabus_name",
+      key: "syllabus_name",
       valueType: "text",
       hidden: true, // Hide syllabus name by default
     },
     {
       title: "Trạng thái",
       dataIndex: "class_status_id",
+      key: "class_status_id",
       valueType: "select",
       valueEnum: classStatus?.valueEnum || {},
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "class_start_date",
+      key: "class_start_date",
       valueType: "date",
       search: false,
       responsive: ["md"],
@@ -155,6 +163,7 @@ export function ClassesColumns(params) {
     {
       title: "Ngày kết thúc",
       dataIndex: "class_end_date",
+      key: "class_end_date",
       valueType: "date",
       search: false,
       responsive: ["md"],
@@ -162,6 +171,7 @@ export function ClassesColumns(params) {
     {
       title: "Học phí",
       dataIndex: "class_fee",
+      key: "class_fee",
       valueType: "money",
       search: false,
       fieldProps: {
@@ -172,6 +182,7 @@ export function ClassesColumns(params) {
     {
       title: "Tổng học phí",
       dataIndex: "class_total_fee",
+      key: "class_total_fee",
       valueType: "money",
       search: false,
       fieldProps: {
@@ -180,6 +191,8 @@ export function ClassesColumns(params) {
       responsive: ["lg"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
 
 export function ClassesFields(params) {
@@ -256,9 +269,10 @@ export function ClassesFields(params) {
 
 // columns for classes tab in courses
 
-export function ClassesTabColumns(params) {
+export function ClassesTabColumns(params, displayConfig = []) {
   const { classStatus } = params || {};
-  return [
+
+  const columns = [
     {
       title: "Học phần",
       search: false,
