@@ -65,6 +65,7 @@ export function ModulesColumns(params, displayConfig = []) {
       dataIndex: "module_name",
       key: "module_name",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
@@ -72,13 +73,14 @@ export function ModulesColumns(params, displayConfig = []) {
       key: "module_status_id",
       valueType: "select",
       valueEnum: moduleStatus?.valueEnum || {},
+      sorter: { multiple: 1 },
     },
     {
       title: "Mô tả",
       dataIndex: "module_desc",
       key: "module_desc",
       valueType: "textarea",
-      responsive: ["md"],
+      search: false,
     },
   ];
 

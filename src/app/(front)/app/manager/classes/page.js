@@ -14,6 +14,7 @@ import {
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
+import { CLASSES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -34,7 +35,7 @@ function PageContent() {
   const useClasses = {
     table: useTable(),
     create: useForm(),
-    columns: ClassesColumns({ classStatus }),
+    columns: ClassesColumns({ classStatus }, CLASSES_COLUMN),
     fields: ClassesFields({ classStatus }),
   };
 

@@ -27,6 +27,11 @@ import {
 } from "@/component/custom";
 import { useDesc, useForm, useNav, useTable } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import {
+  SYLLABUSES_COLUMN,
+  MODULES_COLUMN,
+  LECTURES_COLUMN,
+} from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -48,7 +53,7 @@ function PageContent({ params }) {
   const useSyllabuses = {
     desc: useDesc(),
     edit: useForm(),
-    columns: SyllabusesColumns({ syllabusStatus }),
+    columns: SyllabusesColumns({ syllabusStatus }, SYLLABUSES_COLUMN),
     fields: SyllabusesFields({ syllabusStatus }),
   };
 
@@ -97,7 +102,7 @@ function PageContent({ params }) {
     create: useForm(),
     desc: useDesc(),
     edit: useForm(),
-    columns: ModulesColumns({ moduleStatus }),
+    columns: ModulesColumns({ moduleStatus }, MODULES_COLUMN),
     fields: ModulesFields({ moduleStatus }),
   };
 
@@ -211,7 +216,7 @@ function PageContent({ params }) {
     create: useForm(),
     desc: useDesc(),
     edit: useForm(),
-    columns: LecturesColumns({ lectureStatus, syllabusId }),
+    columns: LecturesColumns({ lectureStatus, syllabusId }, LECTURES_COLUMN),
     fields: LecturesFields({ lectureStatus, syllabusId }),
   };
 

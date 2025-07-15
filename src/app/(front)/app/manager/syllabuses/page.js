@@ -14,6 +14,7 @@ import {
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
+import { SYLLABUSES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -34,7 +35,7 @@ function PageContent() {
   const useSyllabuses = {
     table: useTable(),
     create: useForm(),
-    columns: SyllabusesColumns({ syllabusStatus }),
+    columns: SyllabusesColumns({ syllabusStatus }, SYLLABUSES_COLUMN),
     fields: SyllabusesFields({ syllabusStatus }),
   };
 

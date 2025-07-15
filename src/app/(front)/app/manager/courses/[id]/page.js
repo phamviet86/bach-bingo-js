@@ -16,7 +16,7 @@ import {
   ClassesDesc,
   ClassesEdit,
   ClassesTransfer,
-  ClassesTabColumns,
+  ClassesColumns,
   ClassesFields,
 } from "@/component/custom";
 import {
@@ -27,6 +27,7 @@ import {
   useTransfer,
 } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { COURSES_COLUMN, CLASSES_TAB_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -48,7 +49,7 @@ function PageContent({ params }) {
   const useCourses = {
     desc: useDesc(),
     edit: useForm(),
-    columns: CoursesColumns(),
+    columns: CoursesColumns({}, COURSES_COLUMN),
     fields: CoursesFields(),
   };
 
@@ -98,7 +99,7 @@ function PageContent({ params }) {
     desc: useDesc(),
     edit: useForm(),
     transfer: useTransfer(),
-    columns: ClassesTabColumns({ classStatus }),
+    columns: ClassesColumns({ classStatus }, CLASSES_TAB_COLUMN),
     fields: ClassesFields({ classStatus }),
   };
 

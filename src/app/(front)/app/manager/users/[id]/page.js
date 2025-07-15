@@ -30,7 +30,7 @@ import {
   useTransfer,
 } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
-import { USERS_COLUMN } from "@/component/config";
+import { USERS_COLUMN, USER_ROLES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -116,7 +116,7 @@ function PageContent({ params }) {
   const useUserRoles = {
     table: useTable(),
     transfer: useTransfer(),
-    columns: UserRolesColumns({ roleStatus }),
+    columns: UserRolesColumns({ roleStatus }, USER_ROLES_COLUMN),
   };
 
   // Tab action buttons

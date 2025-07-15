@@ -60,12 +60,14 @@ export function CoursesColumns(params, displayConfig = []) {
       dataIndex: "course_name",
       key: "course_name",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Mã khóa học",
       dataIndex: "course_code",
       key: "course_code",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
   ];
 

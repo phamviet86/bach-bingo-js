@@ -16,7 +16,7 @@ export async function getEnrollments(searchParams) {
     const sqlValue = [...queryValues];
     const sqlText = `
       SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name,
+        u.user_name, u.user_avatar,
         co.course_name,
         m.module_name,
         s.syllabus_name
@@ -42,7 +42,7 @@ export async function getEnrollment(id) {
   try {
     return await sql`
       SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name,
+        u.user_name, u.user_avatar,
         co.course_name,
         m.module_name,
         s.syllabus_name
@@ -155,7 +155,7 @@ export async function getEnrollmentsByClass(classId, searchParams) {
     const sqlValue = [classId, ...queryValues];
     const sqlText = `
       SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name,
+        u.user_name, u.user_avatar,
         co.course_name,
         m.module_name,
         s.syllabus_name

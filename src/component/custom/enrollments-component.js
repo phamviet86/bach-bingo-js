@@ -114,7 +114,7 @@ export function ClassEnrollmentsTransfer({
       titles={["Người dùng", "Đã đăng ký"]}
       operations={["Thêm", "Xóa"]}
       variant="modal"
-      modalProps={{ title: "Xếp lớp" }}
+      modalProps={{ title: "Thêm đăng ký" }}
       locale={{
         searchPlaceholder: "Tìm kiếm...",
         itemsUnit: "người dùng",
@@ -125,34 +125,17 @@ export function ClassEnrollmentsTransfer({
   );
 }
 
-export function ClassEnrollmentsColumns(params, displayConfig = []) {
+export function EnrollmentsColumns(params, displayConfig = []) {
   const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
     params || {};
 
   const columns = [
     {
-      title: "Người dùng",
-      key: "displayUser",
-      search: false,
-      hideInDescriptions: true,
-      render: (_, record) => (
-        <Space size={0} direction="vertical">
-          <Typography.Text>{record.user_name}</Typography.Text>
-          {renderEnum(
-            enrollmentType?.valueEnum,
-            record.enrollment_type_id,
-            null,
-            "tag"
-          )}
-        </Space>
-      ),
-    },
-    {
       title: "Tên người dùng",
       dataIndex: "user_name",
       key: "user_name",
       valueType: "text",
-      hidden: true,
+      sorter: { multiple: 1 },
     },
     {
       title: "Đăng ký",
@@ -160,7 +143,14 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       key: "enrollment_type_id",
       valueType: "select",
       valueEnum: enrollmentType?.valueEnum || {},
-      hidden: true,
+      render: (_, record) =>
+        renderEnum(
+          enrollmentType?.valueEnum,
+          record.enrollment_type_id,
+          null,
+          "tag"
+        ),
+      sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
@@ -168,13 +158,14 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       key: "enrollment_status_id",
       valueType: "select",
       valueEnum: enrollmentStatus?.valueEnum || {},
+      sorter: { multiple: 1 },
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "enrollment_start_date",
       key: "enrollment_start_date",
       valueType: "date",
-      responsive: ["lg"],
+      sorter: { multiple: 1 },
       search: false,
     },
     {
@@ -182,7 +173,7 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       dataIndex: "enrollment_end_date",
       key: "enrollment_end_date",
       valueType: "date",
-      responsive: ["lg"],
+      sorter: { multiple: 1 },
       search: false,
     },
     {
@@ -198,7 +189,7 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
           null,
           "text"
         ),
-      responsive: ["xl"],
+      sorter: { multiple: 1 },
     },
     {
       title: "Số tiền",
@@ -208,7 +199,7 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       fieldProps: {
         precision: 0,
       },
-      responsive: ["xl"],
+      sorter: { multiple: 1 },
       search: false,
     },
     {
@@ -219,7 +210,7 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       fieldProps: {
         formatter: (value) => (value ? `${value} %` : ""),
       },
-      responsive: ["xl"],
+      sorter: { multiple: 1 },
       search: false,
     },
     {
@@ -227,7 +218,6 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       dataIndex: "enrollment_discount_notes",
       key: "enrollment_discount_notes",
       valueType: "textarea",
-      hidden: true,
       search: false,
     },
     {
@@ -235,8 +225,23 @@ export function ClassEnrollmentsColumns(params, displayConfig = []) {
       dataIndex: "enrollment_desc",
       key: "enrollment_desc",
       valueType: "textarea",
-      hidden: true,
       search: false,
+    },
+    {
+      title: "Người dùng",
+      key: "displayUser",
+      search: false,
+      render: (_, record) => (
+        <Space size={0} direction="vertical">
+          <Typography.Text>{record.user_name}</Typography.Text>
+          {renderEnum(
+            enrollmentType?.valueEnum,
+            record.enrollment_type_id,
+            null,
+            "tag"
+          )}
+        </Space>
+      ),
     },
   ];
 
@@ -269,6 +274,7 @@ export function EnrollmentsFields(params) {
           width="100%"
           disabled
         />
+        <ProFormText name="user_name" label="Tên người dùng" disabled />
         <ProFormSelect
           name="enrollment_type_id"
           label="Loại"

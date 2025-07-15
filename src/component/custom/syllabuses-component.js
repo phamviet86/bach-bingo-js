@@ -60,6 +60,7 @@ export function SyllabusesColumns(params, displayConfig = []) {
       dataIndex: "syllabus_name",
       key: "syllabus_name",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
@@ -67,6 +68,7 @@ export function SyllabusesColumns(params, displayConfig = []) {
       key: "syllabus_status_id",
       valueType: "select",
       valueEnum: syllabusStatus?.valueEnum || {},
+      sorter: { multiple: 1 },
     },
   ];
 

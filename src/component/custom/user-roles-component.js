@@ -78,7 +78,8 @@ export function UserRolesTransfer({ userId, roleStatus, ...props }) {
         renderEnum(
           roleStatus?.valueEnum,
           record?.role_status_id,
-          record?.role_name
+          record?.role_name,
+          "badge"
         )
       }
       titles={["Vai trò", "Đã gán"]}
@@ -99,13 +100,20 @@ export function UserRolesColumns(params, displayConfig = []) {
       key: "role_name",
       valueType: "text",
       render: (text, record) =>
-        renderEnum(roleStatus?.valueEnum, record?.role_status_id, text),
+        renderEnum(
+          roleStatus?.valueEnum,
+          record?.role_status_id,
+          text,
+          "badge"
+        ),
+      sorter: { multiple: 1 },
     },
     {
       title: "Đường dẫn",
       dataIndex: "role_path",
       key: "role_path",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
   ];
 

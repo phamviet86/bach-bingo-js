@@ -82,25 +82,15 @@ export function LecturesColumns(params, displayConfig = []) {
       dataIndex: "lecture_no",
       key: "lecture_no",
       valueType: "digit",
-      responsive: ["md"],
+      sorter: { multiple: 1 },
       search: false,
-    },
-    {
-      title: "Bài giảng",
-      dataIndex: "lecture_name",
-      key: "lecture_name",
-      valueType: "text",
-      search: false,
-      hideInDescriptions: true,
-      render: (text, record) =>
-        renderEnum(lectureStatus?.valueEnum, record?.lecture_status_id, text),
     },
     {
       title: "Tên bài giảng",
       dataIndex: "lecture_name",
       key: "lecture_name",
       valueType: "text",
-      hidden: true,
+      sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái",
@@ -108,14 +98,28 @@ export function LecturesColumns(params, displayConfig = []) {
       key: "lecture_status_id",
       valueType: "select",
       valueEnum: lectureStatus?.valueEnum || {},
-      hidden: true,
+      sorter: { multiple: 1 },
     },
     {
       title: "Mô tả",
       dataIndex: "lecture_desc",
       key: "lecture_desc",
       valueType: "textarea",
-      responsive: ["lg"],
+      search: false,
+    },
+    {
+      title: "Bài giảng",
+      key: "displayLecture",
+      valueType: "text",
+      search: false,
+      render: (_, record) =>
+        renderEnum(
+          lectureStatus?.valueEnum,
+          record?.lecture_status_id,
+          record?.lecture_name,
+          "badge"
+        ),
+      sorter: { multiple: 1 },
     },
   ];
 
