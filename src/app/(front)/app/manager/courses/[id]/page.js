@@ -128,6 +128,7 @@ function PageContent({ params }) {
     <ProCard boxShadow bordered extra={classesButton}>
       <ClassesTable
         tableHook={useClasses.table}
+        requestParams={{ course_id: courseId }}
         columns={useClasses.columns}
         leftColumns={[
           {

@@ -95,7 +95,7 @@ export function ClassEnrollmentsTransfer({
       sourceItem={{ key: "id" }}
       targetItem={{
         key: "user_id",
-        disabled: ["class_status_id", [], [19]],
+        disabled: ["enrollment_status_id", [], [32]],
       }}
       showSearch={true}
       searchSourceColumns={[

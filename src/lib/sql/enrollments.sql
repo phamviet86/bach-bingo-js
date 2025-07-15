@@ -24,27 +24,34 @@ CREATE TRIGGER update_record BEFORE
 UPDATE ON enrollments FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
 DROP VIEW IF EXISTS enrollments_view CASCADE;
+
 CREATE OR REPLACE VIEW enrollments_view AS
 SELECT 
   *,
   CASE
-    -- 1. Nhập sai ngày
-    WHEN enrollment_end_date IS NOT NULL AND enrollment_start_date > enrollment_end_date THEN 29
-    
-    -- 2. Đã kết thúc (có thể thôi học hoặc thôi không chờ lớp)
-    WHEN enrollment_end_date < CURRENT_DATE THEN 30
+    -- 29: Nhập sai ngày
+    WHEN enrollment_end_date IS NOT NULL 
+         AND enrollment_start_date > enrollment_end_date THEN 29
 
-    -- 3. Chờ xếp lớp
+    -- 30: Đã kết thúc
+    WHEN enrollment_end_date IS NOT NULL 
+         AND DATE(enrollment_end_date AT TIME ZONE 'Asia/Ho_Chi_Minh') <= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE THEN 30
+
+    -- 31: Chờ xếp lớp
     WHEN class_id IS NULL THEN 31
 
-    -- 4. Thiếu ngày bắt đầu (dữ liệu bị mất)
+    -- 32: Thiếu ngày bắt đầu
     WHEN enrollment_start_date IS NULL THEN 32
 
-    -- 4. Đang tham gia (đang trong thời gian tham gia)
-    WHEN enrollment_start_date <= CURRENT_DATE 
-         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) THEN 33
+    -- 33: Đang tham gia
+    WHEN enrollment_start_date IS NOT NULL
+         AND DATE(enrollment_start_date AT TIME ZONE 'Asia/Ho_Chi_Minh') <= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE
+         AND (
+           enrollment_end_date IS NULL 
+           OR DATE(enrollment_end_date AT TIME ZONE 'Asia/Ho_Chi_Minh') >= (CURRENT_TIMESTAMP AT TIME ZONE 'Asia/Ho_Chi_Minh')::DATE
+         ) THEN 33
 
-    -- 7. Chờ bắt đầu (đã xếp lớp nhưng chưa đến ngày bắt đầu)
+    -- 34: Chờ bắt đầu
     ELSE 34
   END AS enrollment_status_id
 FROM 
