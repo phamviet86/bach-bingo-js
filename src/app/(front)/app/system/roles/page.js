@@ -14,6 +14,7 @@ import {
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
+import { ROLES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -34,7 +35,7 @@ function PageContent() {
   const useRoles = {
     table: useTable(),
     create: useForm(),
-    columns: RolesColumns({ roleStatus }),
+    columns: RolesColumns({ roleStatus }, ROLES_COLUMN),
     fields: RolesFields({ roleStatus }),
   };
 

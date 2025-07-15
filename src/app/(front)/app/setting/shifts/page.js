@@ -14,6 +14,7 @@ import {
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
+import { SHIFTS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -34,7 +35,7 @@ function PageContent() {
   const useShifts = {
     table: useTable(),
     create: useForm(),
-    columns: ShiftsColumns({ shiftStatus }),
+    columns: ShiftsColumns({ shiftStatus }, SHIFTS_COLUMN),
     fields: ShiftsFields({ shiftStatus }),
   };
 

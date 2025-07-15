@@ -60,6 +60,7 @@ export function RolesColumns(params, displayConfig = []) {
       dataIndex: "role_name",
       key: "role_name",
       valueType: "text",
+      sorter: { multiple: 1 },
     },
     {
       title: "Trạng thái ",
@@ -74,7 +75,7 @@ export function RolesColumns(params, displayConfig = []) {
       dataIndex: "role_path",
       key: "role_path",
       valueType: "text",
-      responsive: ["md"],
+      sorter: { multiple: 1 },
     },
   ];
 

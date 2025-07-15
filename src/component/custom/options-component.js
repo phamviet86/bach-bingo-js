@@ -104,7 +104,7 @@ export function OptionsColumns(params, displayConfig = []) {
     {
       title: "Nhãn",
       key: "displayLabel",
-      // hideInDescriptions: true,
+      hideInDescriptions: true,
       render: (_, record) =>
         renderEnum(
           COLOR_ENUM,

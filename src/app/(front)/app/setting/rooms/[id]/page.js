@@ -15,6 +15,7 @@ import {
 } from "@/component/custom";
 import { useDesc, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { ROOMS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -36,7 +37,7 @@ function PageContent({ params }) {
   const useRooms = {
     desc: useDesc(),
     edit: useForm(),
-    columns: RoomsColumns({ roomStatus }),
+    columns: RoomsColumns({ roomStatus }, ROOMS_COLUMN),
     fields: RoomsFields({ roomStatus }),
   };
 

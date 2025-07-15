@@ -33,7 +33,6 @@ export function Columns(params, displayConfig = []) {
       valueType: "select",
       valueEnum: shiftStatus?.valueEnum || {},
       sorter: { multiple: 1 },
-      filters: true,
     },
     {
       // time format
@@ -71,7 +70,6 @@ export function Columns(params, displayConfig = []) {
       key: "option_color",
       valueType: "select",
       valueEnum: COLOR_ENUM,
-      filters: true,
       sorter: { multiple: 1 },
       responsive: ["xl"],
     },

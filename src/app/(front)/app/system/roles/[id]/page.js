@@ -15,6 +15,7 @@ import {
 } from "@/component/custom";
 import { useDesc, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { ROLES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -36,7 +37,7 @@ function PageContent({ params }) {
   const useRoles = {
     desc: useDesc(),
     edit: useForm(),
-    columns: RolesColumns({ roleStatus }),
+    columns: RolesColumns({ roleStatus }, ROLES_COLUMN),
     fields: RolesFields({ roleStatus }),
   };
 

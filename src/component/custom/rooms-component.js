@@ -20,9 +20,13 @@ export function RoomsTable(props) {
   return (
     <AntTable
       {...props}
-      onRequest={(params, sort, filter) =>
-        fetchList("/api/rooms", params, sort, filter)
-      }
+      // onRequest={(params, sort, filter) =>
+      //   fetchList("/api/rooms", params, sort, filter)
+      // }
+      onRequest={(params, sort, filter) => {
+        console.log("params", params, "sort", sort, "filter", filter);
+        return fetchList("/api/rooms", params, sort, filter);
+      }}
     />
   );
 }
@@ -80,7 +84,6 @@ export function RoomsColumns(params, displayConfig = []) {
       dataIndex: "room_desc",
       key: "room_desc",
       valueType: "textarea",
-      responsive: ["md"],
     },
   ];
 

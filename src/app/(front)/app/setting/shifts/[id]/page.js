@@ -15,6 +15,7 @@ import {
 } from "@/component/custom";
 import { useDesc, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { SHIFTS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -36,7 +37,7 @@ function PageContent({ params }) {
   const useShifts = {
     desc: useDesc(),
     edit: useForm(),
-    columns: ShiftsColumns({ shiftStatus }),
+    columns: ShiftsColumns({ shiftStatus }, SHIFTS_COLUMN),
     fields: ShiftsFields({ shiftStatus }),
   };
 

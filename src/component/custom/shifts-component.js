@@ -83,7 +83,6 @@ export function ShiftsColumns(params, displayConfig = []) {
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
-      responsive: ["md"],
     },
     {
       title: "Giờ kết thúc",
@@ -92,14 +91,12 @@ export function ShiftsColumns(params, displayConfig = []) {
       valueType: "time",
       fieldProps: { format: "HH:mm" },
       sorter: { multiple: 1 },
-      responsive: ["md"],
     },
     {
       title: "Mô tả",
       dataIndex: "shift_desc",
       key: "shift_desc",
       valueType: "textarea",
-      responsive: ["lg"],
     },
   ];
 
