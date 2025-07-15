@@ -7,10 +7,20 @@
 
 ## On processing
 
-- [] Add classes pages: to assign staffs to a class
+- [] add admin/users
+  - add enrollment -> class
+  - add enrollment -> module
+- [] add admin/classes
+  - add enrollments -> student
+  - add enrollments -> module
+- notes: hay sử dụng 1 cột trên users -> wait_modules sau đó tìm trên transfer danh sách người chờ luôn
 
-  - [+] add class list page
-  - [+] add class detail page
+## 2025-07-15
+
+- [+] Add classes pages: to assign staffs to a class
+
+  - add class list page
+  - add class detail page
   - add enrollments tab
   - add transfer for teacher / ta -> add payments
 
