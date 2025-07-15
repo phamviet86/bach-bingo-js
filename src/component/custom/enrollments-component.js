@@ -1,6 +1,11 @@
 // path: @/component/custom/enrollments-component.js
 
-import { AntTable, AntForm, AntDescriptions } from "@/component/common";
+import {
+  AntTable,
+  AntForm,
+  AntDescriptions,
+  AntTransfer,
+} from "@/component/common";
 import {
   fetchList,
   fetchGet,
@@ -17,6 +22,7 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
+import { renderEnrollmentType } from "@/lib/util/render-util";
 
 export function EnrollmentsTable(props) {
   return (
@@ -58,43 +64,86 @@ export function EnrollmentsEdit(props) {
   );
 }
 
-export function EnrollmentsColumns(params) {
-  const {} = params || {};
+export function ClassEnrollmentsTransfer({
+  classId,
+  enrollmentTypeId,
+  enrollmentPaymentAmount,
+  ...props
+}) {
+  return (
+    <AntTransfer
+      {...props}
+      onSourceRequest={(params) => fetchList(`/api/users`, params)}
+      onTargetRequest={(params) =>
+        fetchList(`/api/classes/${classId}/enrollments`, params)
+      }
+      onAddItem={(keys) =>
+        fetchPost(`/api/classes/${classId}/enrollments`, {
+          userIds: keys,
+          enrollmentTypeId,
+          enrollmentPaymentAmount,
+        })
+      }
+      onRemoveItem={(keys) =>
+        fetchDelete(`/api/classes/${classId}/enrollments`, {
+          userIds: keys,
+          enrollmentTypeId,
+        })
+      }
+      sourceItem={{ key: "id" }}
+      targetItem={{
+        key: "user_id",
+        disabled: ["class_status_id", [], [19]],
+      }}
+      showSearch={true}
+      searchSourceColumns={[
+        "user_name_like",
+        "user_email_like",
+        "user_phone_like",
+        "user_parent_phone_like",
+      ]}
+      searchTargetColumns={[
+        "user_name_like",
+        "user_email_like",
+        "user_phone_like",
+        "user_parent_phone_like",
+      ]}
+      render={(record) => `${record.user_name}`}
+      titles={["Người dùng", "Đã đăng ký"]}
+      operations={["Thêm", "Xóa"]}
+      variant="modal"
+      modalProps={{ title: "Xếp lớp" }}
+      locale={{
+        searchPlaceholder: "Tìm kiếm...",
+        itemsUnit: "người dùng",
+        itemUnit: "người dùng",
+        notFoundContent: "Không tìm thấy người dùng",
+      }}
+    />
+  );
+}
+
+export function ClassEnrollmentsColumns(params) {
+  const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
+    params || {};
   return [
     {
-      title: "Người dùng",
-      dataIndex: "user_id",
-      valueType: "text",
-    },
-    {
-      title: "Module",
-      dataIndex: "module_id",
-      valueType: "text",
-    },
-    {
-      title: "Lớp",
-      dataIndex: "class_id",
-      valueType: "text",
-    },
-    {
-      title: "Loại đăng ký",
+      title: "Đăng ký",
       dataIndex: "enrollment_type_id",
-      valueType: "digit",
+      valueType: "select",
+      // valueEnum: enrollmentType?.valueEnum || {},
+      render: renderEnrollmentType,
     },
     {
-      title: "Loại thanh toán",
-      dataIndex: "enrollment_payment_type_id",
-      valueType: "digit",
+      title: "Người dùng",
+      dataIndex: "user_name",
+      valueType: "text",
     },
     {
-      title: "Số tiền thanh toán",
-      dataIndex: "enrollment_payment_amount",
-      valueType: "digit",
-    },
-    {
-      title: "Giảm giá thanh toán",
-      dataIndex: "enrollment_payment_discount",
-      valueType: "digit",
+      title: "Trạng thái",
+      dataIndex: "enrollment_status_id",
+      valueType: "select",
+      valueEnum: enrollmentStatus?.valueEnum || {},
     },
     {
       title: "Ngày bắt đầu",
@@ -107,14 +156,34 @@ export function EnrollmentsColumns(params) {
       valueType: "date",
     },
     {
+      title: "Loại thanh toán",
+      dataIndex: "enrollment_payment_type_id",
+      valueType: "select",
+      valueEnum: enrollmentPaymentType?.valueEnum || {},
+    },
+    {
+      title: "Số tiền thanh toán",
+      dataIndex: "enrollment_payment_amount",
+      valueType: "digit",
+    },
+    {
+      title: "Giảm giá thanh toán",
+      dataIndex: "enrollment_payment_discount",
+      valueType: "digit",
+    },
+    {
       title: "Ghi chú giảm giá",
       dataIndex: "enrollment_discount_notes",
-      valueType: "text",
+      valueType: "textarea",
+      hidden: true,
+      search: false,
     },
     {
       title: "Mô tả đăng ký",
       dataIndex: "enrollment_desc",
-      valueType: "text",
+      valueType: "textarea",
+      hidden: true,
+      search: false,
     },
   ];
 }

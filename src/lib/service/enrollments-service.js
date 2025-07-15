@@ -15,8 +15,17 @@ export async function getEnrollments(searchParams) {
 
     const sqlValue = [...queryValues];
     const sqlText = `
-      SELECT e.*, COUNT(*) OVER() AS total
-      FROM enrollments e
+      SELECT e.*, COUNT(*) OVER() AS total,
+        u.user_name,
+        co.course_name,
+        m.module_name,
+        s.syllabus_name
+      FROM enrollments_view e
+      LEFT JOIN users u ON e.user_id = u.id
+      LEFT JOIN classes c ON e.class_id = c.id
+      LEFT JOIN courses co ON c.course_id = co.id
+      LEFT JOIN modules m ON c.module_id = m.id
+      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
       WHERE e.deleted_at IS NULL
       ${whereClause}
       ${orderByClause || "ORDER BY e.created_at"}
@@ -32,8 +41,17 @@ export async function getEnrollments(searchParams) {
 export async function getEnrollment(id) {
   try {
     return await sql`
-      SELECT e.*
-      FROM enrollments e
+      SELECT e.*, COUNT(*) OVER() AS total,
+        u.user_name,
+        co.course_name,
+        m.module_name,
+        s.syllabus_name
+      FROM enrollments_view e
+      LEFT JOIN users u ON e.user_id = u.id
+      LEFT JOIN classes c ON e.class_id = c.id
+      LEFT JOIN courses co ON c.course_id = co.id
+      LEFT JOIN modules m ON c.module_id = m.id
+      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
       WHERE e.deleted_at IS NULL
         AND e.id = ${id};
     `;
@@ -127,7 +145,40 @@ export async function deleteEnrollment(id) {
   }
 }
 
-// Create multiple enrollments by classId and userIds
+// Get enrollments by class ID
+export async function getEnrollmentsByClass(classId, searchParams) {
+  try {
+    const ignoredSearchColumns = ["class_id"];
+    const { whereClause, orderByClause, limitClause, queryValues } =
+      parseSearchParams(searchParams, ignoredSearchColumns);
+
+    const sqlValue = [classId, ...queryValues];
+    const sqlText = `
+      SELECT e.*, COUNT(*) OVER() AS total,
+        u.user_name,
+        co.course_name,
+        m.module_name,
+        s.syllabus_name
+      FROM enrollments_view e
+      LEFT JOIN users u ON e.user_id = u.id
+      LEFT JOIN classes c ON e.class_id = c.id
+      LEFT JOIN courses co ON c.course_id = co.id
+      LEFT JOIN modules m ON c.module_id = m.id
+      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
+      WHERE e.deleted_at IS NULL
+        AND e.class_id = $1
+      ${whereClause}
+      ${orderByClause || "ORDER BY e.created_at"}
+      ${limitClause};
+    `;
+
+    return await sql.query(sqlText, sqlValue);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Create multiple enrollments by classId, enrollmentTypeId, enrollmentPaymentAmount and userIds
 export async function createEnrollmentsByClass(
   classId,
   userIds,
@@ -156,6 +207,30 @@ export async function createEnrollmentsByClass(
       RETURNING *;
     `;
 
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Soft-delete multiple enrollments by classId, enrollmentTypeId, and userIds
+export async function deleteEnrollmentsByClass(
+  classId,
+  userIds,
+  enrollmentTypeId
+) {
+  try {
+    const placeholders = userIds.map((_, index) => `$${index + 3}`).join(", ");
+    const queryText = `
+      UPDATE enrollments
+      SET deleted_at = NOW()
+      WHERE deleted_at IS NULL
+        AND class_id = $1
+        AND enrollment_type_id = $2
+        AND user_id IN (${placeholders})
+      RETURNING *;
+    `;
+    const queryValues = [classId, enrollmentTypeId, ...userIds];
     return await sql.query(queryText, queryValues);
   } catch (error) {
     throw new Error(error.message);

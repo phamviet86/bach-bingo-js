@@ -1,10 +1,11 @@
 // path: @/lib/util/render-util.js
 
+import { geekblue, cyan, green } from "@ant-design/colors";
 import { Tag, Badge, Space, Typography } from "antd";
 import {
   SolutionOutlined,
+  UserOutlined,
   TeamOutlined,
-  ReadOutlined,
 } from "@ant-design/icons";
 
 export function renderTextArea(text) {
@@ -63,22 +64,25 @@ export function renderEnum(
   );
 }
 
-export function renderEnrollmentType(typeId) {
+export function renderEnrollmentType(_, record) {
+  const typeId = record.enrollment_type_id;
+  console.log("renderEnrollmentType", typeId, record);
+
   const enrollmentTypes = {
     24: {
       text: "Giáo viên",
-      icon: <SolutionOutlined />,
-      color: "blue",
+      icon: <SolutionOutlined style={{ color: geekblue.primary }} />,
+      color: geekblue.primary,
     },
     25: {
       text: "Trợ giảng",
-      icon: <TeamOutlined />,
-      color: "green",
+      icon: <UserOutlined style={{ color: cyan.primary }} />,
+      color: cyan.primary,
     },
     26: {
       text: "Học viên",
-      icon: <ReadOutlined />,
-      color: "orange",
+      icon: <TeamOutlined style={{ color: green.primary }} />,
+      color: green.primary,
     },
   };
 
@@ -91,7 +95,9 @@ export function renderEnrollmentType(typeId) {
   return (
     <Space>
       {enrollmentType.icon}
-      <Typography.Text>{enrollmentType.text}</Typography.Text>
+      <Typography.Text style={{ color: enrollmentType.color }}>
+        {enrollmentType.text}
+      </Typography.Text>
     </Space>
   );
 }

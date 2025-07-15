@@ -2,7 +2,7 @@
 
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { Space } from "antd";
 import { BankOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
@@ -14,12 +14,18 @@ import {
   ClassesFields,
   EnrollmentsTable,
   EnrollmentsDesc,
-  EnrollmentsCreate,
   EnrollmentsEdit,
-  EnrollmentsColumns,
+  ClassEnrollmentsColumns,
   EnrollmentsFields,
+  ClassEnrollmentsTransfer,
 } from "@/component/custom";
-import { useDesc, useForm, useNav, useTable } from "@/component/hook";
+import {
+  useDesc,
+  useForm,
+  useNav,
+  useTable,
+  useTransfer,
+} from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
 
 export default function Page(props) {
@@ -92,13 +98,18 @@ function PageContent({ params }) {
     `${useClasses.desc?.dataSource?.course_name} - ${useClasses.desc?.dataSource?.module_name}` ||
     "Chi tiết";
 
+  // enrollments state
+  const [enrollmentTypeId, setEnrollmentTypeId] = useState(null);
+  const [enrollmentPaymentAmount, setEnrollmentPaymentAmount] = useState(0);
+
   // enrollments logic hooks
   const useEnrollments = {
     table: useTable(),
     create: useForm(),
     desc: useDesc(),
     edit: useForm(),
-    columns: EnrollmentsColumns({
+    transfer: useTransfer(),
+    columns: ClassEnrollmentsColumns({
       enrollmentStatus,
       enrollmentType,
       enrollmentPaymentType,
@@ -121,11 +132,53 @@ function PageContent({ params }) {
         onClick={() => useEnrollments.table.reload()}
       />
       <AntButton
-        key="create-button"
-        label="Tạo mới"
+        key="add-teacher-button"
+        label="Giáo viên"
         color="primary"
         variant="solid"
-        onClick={() => useEnrollments.create.open()}
+        onClick={() => {
+          setEnrollmentTypeId(24);
+          setEnrollmentPaymentAmount(0);
+          useEnrollments.transfer.setSourceParams({
+            role_names_like: "Giáo viên",
+          });
+          useEnrollments.transfer.setTargetParams({
+            enrollment_type_id: 24,
+          });
+          useEnrollments.transfer.open();
+        }}
+      />
+      <AntButton
+        key="add-ta-button"
+        label="Trợ giảng"
+        color="primary"
+        variant="solid"
+        onClick={() => {
+          setEnrollmentTypeId(25);
+          setEnrollmentPaymentAmount(0);
+          useEnrollments.transfer.setSourceParams({
+            role_names_like: "Trợ giảng",
+          });
+          useEnrollments.transfer.setTargetParams({
+            enrollment_type_id: 25,
+          });
+          useEnrollments.transfer.open();
+        }}
+      />
+      <AntButton
+        key="add-student-button"
+        label="Học viên"
+        color="primary"
+        variant="solid"
+        onClick={() => {
+          setEnrollmentTypeId(26);
+          setEnrollmentPaymentAmount(useClasses.desc?.dataSource?.class_fee);
+          useEnrollments.transfer.setSourceParams({});
+          useEnrollments.transfer.setTargetParams({
+            enrollment_type_id: 26,
+          });
+          useEnrollments.transfer.open();
+        }}
       />
     </Space>
   );
@@ -175,12 +228,14 @@ function PageContent({ params }) {
         ]}
         syncToUrl={false}
       />
-      <EnrollmentsCreate
-        formHook={useEnrollments.create}
-        fields={useEnrollments.fields}
-        onSubmitSuccess={() => useEnrollments.table.reload()}
-        title="Tạo đăng ký"
-        variant="drawer"
+      <ClassEnrollmentsTransfer
+        transferHook={useEnrollments.transfer}
+        classId={classId}
+        enrollmentTypeId={enrollmentTypeId}
+        enrollmentPaymentAmount={enrollmentPaymentAmount}
+        sourceParams={useEnrollments.transfer.sourceParams}
+        targetParams={useEnrollments.transfer.targetParams}
+        afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc
         descHook={useEnrollments.desc}
