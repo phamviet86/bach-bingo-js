@@ -1,5 +1,6 @@
 // path: @/component/custom/enrollments-component.js
 
+import { Space, Typography } from "antd";
 import {
   AntTable,
   AntForm,
@@ -22,7 +23,7 @@ import {
   ProFormSelect,
   ProFormTextArea,
 } from "@ant-design/pro-form";
-import { renderEnrollmentType } from "@/lib/util/render-util";
+import { renderEnum } from "@/lib/util/render-util";
 
 export function EnrollmentsTable(props) {
   return (
@@ -126,50 +127,91 @@ export function ClassEnrollmentsTransfer({
 export function ClassEnrollmentsColumns(params) {
   const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
     params || {};
+
   return [
     {
       title: "Đăng ký",
       dataIndex: "enrollment_type_id",
       valueType: "select",
-      // valueEnum: enrollmentType?.valueEnum || {},
-      render: renderEnrollmentType,
+      valueEnum: enrollmentType?.valueEnum || {},
+      render: (_, record) =>
+        renderEnum(
+          enrollmentType?.valueEnum,
+          record.enrollment_type_id,
+          null,
+          "text"
+        ),
     },
     {
       title: "Người dùng",
+      search: false,
+      hideInDescriptions: true,
+      render: (_, record) => (
+        <Space wrap>
+          <Typography.Text>{record.user_name}</Typography.Text>
+          {renderEnum(
+            enrollmentStatus?.valueEnum,
+            record.enrollment_status_id,
+            null,
+            "tag"
+          )}
+        </Space>
+      ),
+    },
+    {
+      title: "Tên người dùng",
       dataIndex: "user_name",
       valueType: "text",
+      hidden: true,
     },
     {
       title: "Trạng thái",
       dataIndex: "enrollment_status_id",
       valueType: "select",
       valueEnum: enrollmentStatus?.valueEnum || {},
+      hidden: true,
     },
     {
       title: "Ngày bắt đầu",
       dataIndex: "enrollment_start_date",
       valueType: "date",
+      responsive: ["lg"],
+      search: false,
     },
     {
       title: "Ngày kết thúc",
       dataIndex: "enrollment_end_date",
       valueType: "date",
+      responsive: ["lg"],
+      search: false,
     },
     {
-      title: "Loại thanh toán",
+      title: "Thanh toán",
       dataIndex: "enrollment_payment_type_id",
       valueType: "select",
       valueEnum: enrollmentPaymentType?.valueEnum || {},
+      render: (_, record) =>
+        renderEnum(
+          enrollmentPaymentType?.valueEnum,
+          record.enrollment_payment_type_id,
+          null,
+          "text"
+        ),
+      responsive: ["xl"],
     },
     {
-      title: "Số tiền thanh toán",
+      title: "Số tiền",
       dataIndex: "enrollment_payment_amount",
       valueType: "digit",
+      responsive: ["xl"],
+      search: false,
     },
     {
-      title: "Giảm giá thanh toán",
+      title: "Giảm giá",
       dataIndex: "enrollment_payment_discount",
       valueType: "digit",
+      responsive: ["xl"],
+      search: false,
     },
     {
       title: "Ghi chú giảm giá",
@@ -195,16 +237,23 @@ export function EnrollmentsFields(params) {
     <>
       <ProForm.Group>
         <ProFormText name="id" label="ID" hidden disabled />
-        <ProFormText name="user_id" label="ID Người dùng" disabled />
-        <ProFormText name="module_id" label="ID học phần" disabled />
-        <ProFormText name="class_id" label="ID lớp" disabled />
+        <ProFormText name="user_id" label="ID Người dùng" hidden disabled />
+        <ProFormText name="module_id" label="ID học phần" hidden disabled />
+        <ProFormText name="class_id" label="ID lớp" hidden disabled />
       </ProForm.Group>
       <ProForm.Group>
-        <ProFormSelect
-          name="enrollment_status_id"
-          label="Trạng thái"
-          placeholder="Nhập trạng thái"
-          options={enrollmentStatus?.options || []}
+        <ProFormText
+          name="course_name"
+          label="Tên lớp"
+          colProps={{ xs: 12 }}
+          width="100%"
+          disabled
+        />
+        <ProFormText
+          name="module_name"
+          label="Học phần"
+          colProps={{ xs: 12 }}
+          width="100%"
           disabled
         />
         <ProFormSelect
@@ -212,10 +261,35 @@ export function EnrollmentsFields(params) {
           label="Loại"
           placeholder="Nhập loại"
           options={enrollmentType?.options || []}
+          colProps={{ xs: 12 }}
+          width="100%"
+          disabled
+        />
+        <ProFormSelect
+          name="enrollment_status_id"
+          label="Trạng thái"
+          placeholder="Nhập trạng thái"
+          options={enrollmentStatus?.options || []}
+          colProps={{ xs: 12 }}
+          width="100%"
           disabled
         />
       </ProForm.Group>
       <ProForm.Group>
+        <ProFormDatePicker
+          name="enrollment_start_date"
+          label="Ngày bắt đầu"
+          placeholder="Chọn ngày bắt đầu"
+          colProps={{ xs: 12 }}
+          width="100%"
+        />
+        <ProFormDatePicker
+          name="enrollment_end_date"
+          label="Ngày kết thúc"
+          placeholder="Chọn ngày kết thúc"
+          colProps={{ xs: 12 }}
+          width="100%"
+        />
         <ProFormSelect
           name="enrollment_payment_type_id"
           label="Thanh toán"
@@ -241,20 +315,6 @@ export function EnrollmentsFields(params) {
           label="Ghi chú giảm giá"
           placeholder="Nhập ghi chú"
           fieldProps={{ autoSize: { minRows: 1, maxRows: 3 } }}
-        />
-        <ProFormDatePicker
-          name="enrollment_start_date"
-          label="Ngày bắt đầu"
-          placeholder="Chọn ngày bắt đầu"
-          colProps={{ xs: 12 }}
-          width="100%"
-        />
-        <ProFormDatePicker
-          name="enrollment_end_date"
-          label="Ngày kết thúc"
-          placeholder="Chọn ngày kết thúc"
-          colProps={{ xs: 12 }}
-          width="100%"
         />
         <ProFormTextArea
           name="enrollment_desc"

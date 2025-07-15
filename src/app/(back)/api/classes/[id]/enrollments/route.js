@@ -37,8 +37,6 @@ export async function POST(request, context) {
       enrollmentPaymentAmount = 0,
     } = await request.json();
 
-    console.log("User IDs:", userIds);
-
     // Validate required fields (based on NOT NULL constraints in SQL)
     if (
       !classId ||

@@ -1,12 +1,8 @@
 // path: @/lib/util/render-util.js
 
-import { geekblue, cyan, green } from "@ant-design/colors";
 import { Tag, Badge, Space, Typography } from "antd";
-import {
-  SolutionOutlined,
-  UserOutlined,
-  TeamOutlined,
-} from "@ant-design/icons";
+import { presetPrimaryColors } from "@ant-design/colors";
+import { COLOR_ENUM } from "@/component/config/enum-config";
 
 export function renderTextArea(text) {
   return (
@@ -20,84 +16,53 @@ export function renderEnum(
   enumData,
   key,
   label = null,
-  variant = "badge",
+  variant = "bagde",
   props = {}
 ) {
-  // Early return if no key provided (enumData is required too)
-  if (!key) {
-    return null;
-  }
-
-  // Validate enumData
-  if (!enumData || typeof enumData !== "object") {
+  // Early return if no key or enumData
+  if (!key || !enumData || typeof enumData !== "object") {
     return label || key || null;
   }
 
-  // Get enum item data or use fallback
   const enumItem = enumData[key] || {};
-  const { text = "", status, color } = enumItem;
-
-  // Determine display text with priority: label > enum text > key
+  const { text = "", color } = enumItem;
   const displayText = label || text || key;
 
-  // Get color for component
-  const componentColor = status || color || "default";
-  const componentStatus = status || "default";
+  // Get processed color and status
+  const componentColor = color ? COLOR_ENUM[color]?.color || color : undefined;
 
-  // Return Tag or Badge based on variant
-  if (variant === "tag") {
-    return (
-      <Tag {...props} color={componentColor}>
-        {displayText}
-      </Tag>
-    );
+  const renderProps = {
+    ...props,
+    ...(componentColor && { color: componentColor }),
+  };
+
+  // Render component based on variant
+  switch (variant) {
+    case "tag":
+      return <Tag {...renderProps}>{displayText}</Tag>;
+
+    case "text":
+      return (
+        <Typography.Text
+          style={{
+            color: componentColor
+              ? presetPrimaryColors[componentColor]
+              : undefined,
+          }}
+        >
+          {displayText}
+        </Typography.Text>
+      );
+
+    default:
+      return <Badge {...renderProps} text={displayText} />;
   }
-
-  // Default to Badge
-  return (
-    <Badge
-      {...props}
-      color={componentColor}
-      status={componentStatus}
-      text={displayText}
-    />
-  );
 }
 
 export function renderEnrollmentType(_, record) {
-  const typeId = record.enrollment_type_id;
-  console.log("renderEnrollmentType", typeId, record);
-
-  const enrollmentTypes = {
-    24: {
-      text: "Giáo viên",
-      icon: <SolutionOutlined style={{ color: geekblue.primary }} />,
-      color: geekblue.primary,
-    },
-    25: {
-      text: "Trợ giảng",
-      icon: <UserOutlined style={{ color: cyan.primary }} />,
-      color: cyan.primary,
-    },
-    26: {
-      text: "Học viên",
-      icon: <TeamOutlined style={{ color: green.primary }} />,
-      color: green.primary,
-    },
-  };
-
-  const enrollmentType = enrollmentTypes[typeId];
-
-  if (!enrollmentType) {
-    return typeId; // Return the typeId if not found
-  }
-
   return (
     <Space>
-      {enrollmentType.icon}
-      <Typography.Text style={{ color: enrollmentType.color }}>
-        {enrollmentType.text}
-      </Typography.Text>
+      <Typography.Text>{record.enrollment_type_id}</Typography.Text>
     </Space>
   );
 }

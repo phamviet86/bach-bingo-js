@@ -29,23 +29,23 @@ SELECT
   *,
   CASE
     -- 1. Nhập sai ngày
-    WHEN enrollment_end_date IS NOT NULL AND enrollment_start_date > enrollment_end_date THEN 'Nhập sai ngày'
+    WHEN enrollment_end_date IS NOT NULL AND enrollment_start_date > enrollment_end_date THEN 29
     
     -- 2. Đã kết thúc (có thể thôi học hoặc thôi không chờ lớp)
-    WHEN enrollment_end_date < CURRENT_DATE THEN 'Đã kết thúc'
+    WHEN enrollment_end_date < CURRENT_DATE THEN 30
 
     -- 3. Chờ xếp lớp
-    WHEN class_id IS NULL THEN 'Chờ xếp lớp'
-    
+    WHEN class_id IS NULL THEN 31
+
     -- 4. Thiếu ngày bắt đầu (dữ liệu bị mất)
-    WHEN enrollment_start_date IS NULL THEN 'Thiếu ngày'
-    
+    WHEN enrollment_start_date IS NULL THEN 32
+
     -- 4. Đang tham gia (đang trong thời gian tham gia)
     WHEN enrollment_start_date <= CURRENT_DATE 
-         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) THEN 'Đang tham gia'
-    
+         AND (enrollment_end_date IS NULL OR enrollment_end_date >= CURRENT_DATE) THEN 33
+
     -- 7. Chờ bắt đầu (đã xếp lớp nhưng chưa đến ngày bắt đầu)
-    ELSE 'Đã xếp lớp'
+    ELSE 34
   END AS enrollment_status_id
 FROM 
   enrollments;

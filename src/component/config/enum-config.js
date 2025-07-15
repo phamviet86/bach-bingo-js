@@ -1,100 +1,90 @@
 // path: @/component/config/selection-config.js
 
 export const COLOR_ENUM = {
+  // Status group (sorted alphabetically)
   default: {
     text: "Default",
     status: "default",
-    color: "#595959",
-    bgColor: "#f0f0f0",
-  },
-  processing: {
-    text: "Processing",
-    status: "processing",
-    color: "#1677ff",
-    bgColor: "#e6f4ff",
-  },
-  success: {
-    text: "Success",
-    status: "success",
-    color: "#52c41a",
-    bgColor: "#f6ffed",
+    color: "grey",
   },
   error: {
     text: "Error",
     status: "error",
-    color: "#ff4d4f",
-    bgColor: "#fff2f0",
+    color: "red",
+  },
+  processing: {
+    text: "Processing",
+    status: "processing",
+    color: "blue",
+  },
+  success: {
+    text: "Success",
+    status: "success",
+    color: "green",
   },
   warning: {
     text: "Warning",
     status: "warning",
-    color: "#faad14",
-    bgColor: "#fffbe6",
-  },
-  magenta: {
-    text: "Magenta",
-    color: "magenta",
-    bgColor: "#fff0f6",
-  },
-  red: {
-    text: "Red",
-    color: "red",
-    bgColor: "#fff1f0",
-  },
-  volcano: {
-    text: "Volcano",
-    color: "volcano",
-    bgColor: "#fff2e8",
-  },
-  orange: {
-    text: "Orange",
     color: "orange",
-    bgColor: "#fff7e6",
   },
-  gold: {
-    text: "Gold",
-    color: "gold",
-    bgColor: "#fffbe6",
-  },
-  lime: {
-    text: "Lime",
-    color: "lime",
-    bgColor: "#fcffe6",
-  },
-  green: {
-    text: "Green",
-    color: "green",
-    bgColor: "#f6ffed",
+
+  // Color group (sorted alphabetically)
+
+  blue: {
+    text: "Blue",
+    color: "blue",
   },
   cyan: {
     text: "Cyan",
     color: "cyan",
-    bgColor: "#e6fffb",
-  },
-  blue: {
-    text: "Blue",
-    color: "blue",
-    bgColor: "#e6f4ff",
   },
   geekblue: {
     text: "Geekblue",
     color: "geekblue",
-    bgColor: "#f0f5ff",
   },
-  purple: {
-    text: "Purple",
-    color: "purple",
-    bgColor: "#f9f0ff",
+  gold: {
+    text: "Gold",
+    color: "gold",
+  },
+  green: {
+    text: "Green",
+    color: "green",
+  },
+  grey: {
+    text: "Grey",
+    color: "grey",
+  },
+  lime: {
+    text: "Lime",
+    color: "lime",
+  },
+  magenta: {
+    text: "Magenta",
+    color: "magenta",
+  },
+  orange: {
+    text: "Orange",
+    color: "orange",
   },
   pink: {
     text: "Pink",
     color: "pink",
-    bgColor: "#fff0f6",
   },
-  gray: {
-    text: "Gray",
-    color: "gray",
-    bgColor: "#fafafa",
+  purple: {
+    text: "Purple",
+    color: "purple",
+  },
+  red: {
+    text: "Red",
+    color: "red",
+  },
+  volcano: {
+    text: "Volcano",
+    color: "volcano",
+  },
+  yellow: {
+    text: "Yellow",
+    color: "yellow",
   },
 };
 
