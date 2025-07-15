@@ -34,6 +34,7 @@ import {
   fetchDelete,
 } from "@/lib/util/fetch-util";
 import { ProForm, ProFormText } from "@ant-design/pro-form";
+import { renderColumns } from "@/lib/util/render-util";
 
 export function {TableName}Table(props) {
   return (
@@ -79,9 +80,9 @@ export function {TableName}Edit(props) {
   );
 }
 
-export function {TableName}Columns(params) {
+export function {TableName}Columns(params, , displayConfig = []) {
   const {} = params || {};
-  return [
+  const columns = [
     {
       title: "{Column Header}",
       dataIndex: "{column_name}",
@@ -89,6 +90,7 @@ export function {TableName}Columns(params) {
     },
     // Repeat the above object for each column...
   ];
+  return renderColumns(columns, displayConfig);
 }
 
 export function {TableName}Fields(params) {

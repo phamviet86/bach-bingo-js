@@ -1,11 +1,11 @@
 // path: @/lib/util/render-util.js
 
-import { Tag, Badge, Space, Typography } from "antd";
+import { Tag, Badge, Typography } from "antd";
 import { presetPrimaryColors } from "@ant-design/colors";
 import { COLOR_ENUM } from "@/component/config/enum-config";
 
 // Helper function to map columns with display configuration
-function renderColumns(columns, displayConfig) {
+export function renderColumns(columns, displayConfig) {
   if (Array.isArray(displayConfig) && displayConfig.length > 0) {
     return displayConfig
       .map((item) => {
