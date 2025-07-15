@@ -345,4 +345,6 @@ export function ClassesTabColumns(params, displayConfig = []) {
       responsive: ["lg"],
     },
   ];
+
+  return renderColumns(columns, displayConfig);
 }
