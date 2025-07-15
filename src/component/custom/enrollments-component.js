@@ -81,14 +81,14 @@ export function ClassEnrollmentsTransfer({
       onAddItem={(keys) =>
         fetchPost(`/api/classes/${classId}/enrollments`, {
           userIds: keys,
-          enrollmentTypeId,
-          enrollmentPaymentAmount,
+          enrollmentTypeId: enrollmentTypeId,
+          enrollmentPaymentAmount: enrollmentPaymentAmount,
         })
       }
       onRemoveItem={(keys) =>
         fetchDelete(`/api/classes/${classId}/enrollments`, {
           userIds: keys,
-          enrollmentTypeId,
+          enrollmentTypeId: enrollmentTypeId,
         })
       }
       sourceItem={{ key: "id" }}
@@ -130,28 +130,15 @@ export function ClassEnrollmentsColumns(params) {
 
   return [
     {
-      title: "Đăng ký",
-      dataIndex: "enrollment_type_id",
-      valueType: "select",
-      valueEnum: enrollmentType?.valueEnum || {},
-      render: (_, record) =>
-        renderEnum(
-          enrollmentType?.valueEnum,
-          record.enrollment_type_id,
-          null,
-          "text"
-        ),
-    },
-    {
       title: "Người dùng",
       search: false,
       hideInDescriptions: true,
       render: (_, record) => (
-        <Space wrap>
+        <Space size={0} direction="vertical">
           <Typography.Text>{record.user_name}</Typography.Text>
           {renderEnum(
-            enrollmentStatus?.valueEnum,
-            record.enrollment_status_id,
+            enrollmentType?.valueEnum,
+            record.enrollment_type_id,
             null,
             "tag"
           )}
@@ -165,11 +152,17 @@ export function ClassEnrollmentsColumns(params) {
       hidden: true,
     },
     {
+      title: "Đăng ký",
+      dataIndex: "enrollment_type_id",
+      valueType: "select",
+      valueEnum: enrollmentType?.valueEnum || {},
+      hidden: true,
+    },
+    {
       title: "Trạng thái",
       dataIndex: "enrollment_status_id",
       valueType: "select",
       valueEnum: enrollmentStatus?.valueEnum || {},
-      hidden: true,
     },
     {
       title: "Ngày bắt đầu",
@@ -202,7 +195,10 @@ export function ClassEnrollmentsColumns(params) {
     {
       title: "Số tiền",
       dataIndex: "enrollment_payment_amount",
-      valueType: "digit",
+      valueType: "money",
+      fieldProps: {
+        precision: 0,
+      },
       responsive: ["xl"],
       search: false,
     },
@@ -210,6 +206,9 @@ export function ClassEnrollmentsColumns(params) {
       title: "Giảm giá",
       dataIndex: "enrollment_payment_discount",
       valueType: "digit",
+      fieldProps: {
+        formatter: (value) => (value ? `${value} %` : ""),
+      },
       responsive: ["xl"],
       search: false,
     },
@@ -306,8 +305,9 @@ export function EnrollmentsFields(params) {
         />
         <ProFormDigit
           name="enrollment_payment_discount"
-          label="Giảm giá"
+          label="Giảm giá (%)"
           placeholder="Nhập giảm giá"
+          fieldProps={{ formatter: (value) => (value ? `${value} %` : "") }}
           colProps={{ xs: 12 }}
         />
         <ProFormTextArea

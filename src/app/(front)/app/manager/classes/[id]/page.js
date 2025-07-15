@@ -189,6 +189,7 @@ function PageContent({ params }) {
       <EnrollmentsTable
         tableHook={useEnrollments.table}
         columns={useEnrollments.columns}
+        requestParams={{ class_id: classId }}
         leftColumns={[
           {
             width: 56,

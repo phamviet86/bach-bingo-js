@@ -58,11 +58,3 @@ export function renderEnum(
       return <Badge {...renderProps} text={displayText} />;
   }
 }
-
-export function renderEnrollmentType(_, record) {
-  return (
-    <Space>
-      <Typography.Text>{record.enrollment_type_id}</Typography.Text>
-    </Space>
-  );
-}
