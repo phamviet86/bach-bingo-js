@@ -30,6 +30,7 @@ import {
   useTransfer,
 } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
+import { USERS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -51,7 +52,7 @@ function PageContent({ params }) {
   const useUsers = {
     desc: useDesc(),
     edit: useForm(),
-    columns: UsersColumns({ userStatus }),
+    columns: UsersColumns({ userStatus }, USERS_COLUMN),
     fields: UsersFields({ userStatus }),
   };
 

@@ -84,6 +84,7 @@ export function RoomsColumns(params, displayConfig = []) {
       dataIndex: "room_desc",
       key: "room_desc",
       valueType: "textarea",
+      search: false,
     },
   ];
 

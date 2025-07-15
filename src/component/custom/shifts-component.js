@@ -97,6 +97,7 @@ export function ShiftsColumns(params, displayConfig = []) {
       dataIndex: "shift_desc",
       key: "shift_desc",
       valueType: "textarea",
+      search: false,
     },
   ];
 

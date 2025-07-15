@@ -93,11 +93,60 @@ export function UsersColumns(params, displayConfig = []) {
 
   const columns = [
     {
+      title: "Tên người dùng",
+      dataIndex: "user_name",
+      key: "user_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Mô tả",
+      dataIndex: "user_desc",
+      key: "user_desc",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Trạng thái",
+      dataIndex: "user_status_id",
+      key: "user_status_id",
+      valueType: "select",
+      valueEnum: userStatus?.valueEnum || {},
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Email",
+      dataIndex: "user_email",
+      key: "user_email",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Phone",
+      dataIndex: "user_phone",
+      key: "user_phone",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Phone 2",
+      dataIndex: "user_parent_phone",
+      key: "user_parent_phone",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Ghi chú",
+      dataIndex: "user_notes",
+      key: "user_notes",
+      valueType: "textarea",
+      search: false,
+    },
+    {
       key: "displayAvatar",
       width: 68,
       align: "center",
       search: false,
-      hideInDescriptions: true,
       render: (_, record) => (
         <DetailLink id={record?.id}>
           <Avatar
@@ -118,7 +167,6 @@ export function UsersColumns(params, displayConfig = []) {
       key: "displayUser",
       title: "Người dùng",
       search: false,
-      hideInDescriptions: true,
       render: (_, record) => (
         <Space direction="vertical" size={0}>
           <Typography.Text strong>{record?.user_name}</Typography.Text>
@@ -127,56 +175,6 @@ export function UsersColumns(params, displayConfig = []) {
           </Typography.Text>
         </Space>
       ),
-    },
-    {
-      title: "Tên người dùng",
-      dataIndex: "user_name",
-      key: "user_name",
-      valueType: "text",
-      hidden: true, // Hidden by default
-    },
-    {
-      title: "Mô tả",
-      dataIndex: "user_desc",
-      key: "user_desc",
-      valueType: "text",
-      hidden: true, // Hidden by default
-    },
-    {
-      title: "Trạng thái",
-      dataIndex: "user_status_id",
-      key: "user_status_id",
-      valueType: "select",
-      valueEnum: userStatus?.valueEnum || {},
-      responsive: ["md"],
-    },
-    {
-      title: "Email",
-      dataIndex: "user_email",
-      key: "user_email",
-      valueType: "text",
-      responsive: ["lg"],
-    },
-    {
-      title: "Phone",
-      dataIndex: "user_phone",
-      key: "user_phone",
-      valueType: "text",
-      responsive: ["md"],
-    },
-    {
-      title: "Phone 2",
-      dataIndex: "user_parent_phone",
-      key: "user_parent_phone",
-      valueType: "text",
-      hidden: true, // Hidden by default
-    },
-    {
-      title: "Ghi chú",
-      dataIndex: "user_notes",
-      key: "user_notes",
-      valueType: "textarea",
-      responsive: ["xl"],
     },
   ];
 

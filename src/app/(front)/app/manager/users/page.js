@@ -14,6 +14,7 @@ import {
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
+import { USERS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -34,7 +35,7 @@ function PageContent() {
   const useUsers = {
     table: useTable(),
     create: useForm(),
-    columns: UsersColumns({ userStatus }),
+    columns: UsersColumns({ userStatus }, USERS_COLUMN),
     fields: UsersFields({ userStatus }),
   };
 
