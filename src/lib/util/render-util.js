@@ -4,6 +4,20 @@ import { Tag, Badge, Space, Typography } from "antd";
 import { presetPrimaryColors } from "@ant-design/colors";
 import { COLOR_ENUM } from "@/component/config/enum-config";
 
+// Helper function to map columns with display configuration
+function renderColumns(columns, displayConfig) {
+  if (Array.isArray(displayConfig) && displayConfig.length > 0) {
+    return displayConfig
+      .map((item) => {
+        const col = columns.find((c) => c.key === item.key);
+        if (!col) return null;
+        return { ...col, ...(item.props || {}) };
+      })
+      .filter(Boolean);
+  }
+  return columns;
+}
+
 export function renderTextArea(text) {
   return (
     <div style={{ whiteSpace: "pre-wrap", wordBreak: "break-word" }}>
