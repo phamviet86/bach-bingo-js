@@ -1,20 +1,20 @@
-// COURSES LIST PAGE
+// SYLLABUSES LIST PAGE
 
 "use client";
 
 import { Space } from "antd";
-import { BankOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { ToolOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import {
-  CoursesTable,
-  CoursesCreate,
-  CoursesColumns,
-  CoursesFields,
+  SyllabusesTable,
+  SyllabusesCreate,
+  SyllabusesColumns,
+  SyllabusesFields,
 } from "@/component/custom";
 import { useTable, useForm, useNav } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
-import { COURSES_COLUMN } from "@/component/config";
+import { SYLLABUSES_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -26,17 +26,17 @@ export default function Page(props) {
 
 function PageContent() {
   // Context
-  const {} = usePageContext();
+  const { syllabusStatus } = usePageContext();
 
   // Hooks
   const { navDetail } = useNav();
 
-  // khóa học logic hooks
-  const useCourses = {
+  // giáo trình logic hooks
+  const useSyllabuses = {
     table: useTable(),
     create: useForm(),
-    columns: CoursesColumns({}, COURSES_COLUMN),
-    fields: CoursesFields(),
+    columns: SyllabusesColumns({ syllabusStatus }, SYLLABUSES_COLUMN),
+    fields: SyllabusesFields({ syllabusStatus }),
   };
 
   // Page action buttons
@@ -46,23 +46,23 @@ function PageContent() {
       label="Tải lại"
       color="default"
       variant="outlined"
-      onClick={() => useCourses.table.reload()}
+      onClick={() => useSyllabuses.table.reload()}
     />,
     <AntButton
       key="create-button"
       label="Tạo mới"
       color="primary"
       variant="solid"
-      onClick={() => useCourses.create.open()}
+      onClick={() => useSyllabuses.create.open()}
     />,
   ];
 
   // Main content
   const pageContent = (
     <ProCard boxShadow bordered>
-      <CoursesTable
-        tableHook={useCourses.table}
-        columns={useCourses.columns}
+      <SyllabusesTable
+        tableHook={useSyllabuses.table}
+        columns={useSyllabuses.columns}
         leftColumns={[
           {
             width: 56,
@@ -79,11 +79,11 @@ function PageContent() {
           },
         ]}
       />
-      <CoursesCreate
-        formHook={useCourses.create}
-        fields={useCourses.fields}
+      <SyllabusesCreate
+        formHook={useSyllabuses.create}
+        fields={useSyllabuses.fields}
         onSubmitSuccess={(result) => navDetail(result?.data[0]?.id)}
-        title="Tạo khóa học"
+        title="Tạo giáo trình"
         variant="drawer"
       />
     </ProCard>
@@ -96,14 +96,14 @@ function PageContent() {
         {
           title: (
             <Space>
-              <BankOutlined />
-              <span>Quản lý</span>
+              <ToolOutlined />
+              <span>Thiết lập</span>
             </Space>
           ),
         },
-        { title: "Khóa học" },
+        { title: "Giáo trình" },
       ]}
-      title="Quản lý khóa học"
+      title="Danh sách giáo trình"
       extra={pageButton}
       content={pageContent}
     />

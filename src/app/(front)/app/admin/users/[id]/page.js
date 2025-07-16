@@ -2,8 +2,8 @@
 
 "use client";
 
-import { use, useState } from "react";
-import { Space, Avatar, Image } from "antd";
+import { use } from "react";
+import { Space, Image } from "antd";
 import { BankOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import {
@@ -121,9 +121,6 @@ function PageContent({ params }) {
   // Page title
   const pageTitle = useUsers.desc?.dataSource?.user_name || "Chi tiết";
 
-  // enrollments state
-  const [enrollmentTypeId, setEnrollmentTypeId] = useState(26);
-
   // enrollments logic hooks
   const useEnrollments = {
     table: useTable(),
@@ -158,7 +155,7 @@ function PageContent({ params }) {
       />
       <AntButton
         key="add-class-button"
-        label="Đăng ký lớp"
+        label="Đăng ký học"
         color="primary"
         variant="solid"
         onClick={() => useEnrollments.transfer.open()}
@@ -172,7 +169,7 @@ function PageContent({ params }) {
       <EnrollmentsTable
         tableHook={useEnrollments.table}
         columns={useEnrollments.columns}
-        requestParams={{ user_id: userId }}
+        requestParams={{ user_id: userId, enrollment_type_id: 26 }}
         leftColumns={[
           {
             width: 56,
@@ -215,9 +212,9 @@ function PageContent({ params }) {
       <UserEnrollmentsTransfer
         transferHook={useEnrollments.transfer}
         userId={userId}
-        enrollmentTypeId={enrollmentTypeId}
-        sourceParams={{ class_status_id_in: [21, 22] }} // Only active classes
-        // targetParams={useEnrollments.transfer.targetParams}
+        enrollmentTypeId={26}
+        sourceParams={{ class_status_id_in: [21, 22] }}
+        targetParams={{ enrollment_type_id: 26 }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc
@@ -244,7 +241,7 @@ function PageContent({ params }) {
   // Tab definition
   const enrollmentsTab = {
     key: "enrollments",
-    label: "Đăng ký",
+    label: "Danh sách lớp",
     children: enrollmentsContent,
   };
 

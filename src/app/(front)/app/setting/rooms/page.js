@@ -103,7 +103,7 @@ function PageContent() {
         },
         { title: "Phòng học" },
       ]}
-      title="Quản lý phòng học"
+      title="Danh sách phòng học"
       extra={pageButton}
       content={pageContent}
     />

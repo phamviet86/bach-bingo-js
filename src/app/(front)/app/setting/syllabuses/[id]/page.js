@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space } from "antd";
-import { BankOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
+import { ToolOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -328,12 +328,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <BankOutlined />
-              <span>Quản lý</span>
+              <ToolOutlined />
+              <span>Thiết lập</span>
             </Space>
           ),
         },
-        { title: "Giáo trình", path: "/app/manager/syllabuses" },
+        { title: "Giáo trình", path: "/app/setting/syllabuses" },
         { title: pageTitle },
       ]}
       title={pageTitle}

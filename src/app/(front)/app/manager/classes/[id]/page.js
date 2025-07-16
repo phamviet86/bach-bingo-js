@@ -134,12 +134,23 @@ function PageContent({ params }) {
         variant="outlined"
         onClick={() => useEnrollments.table.reload()}
       />
-      <Dropdown.Button
+      <Dropdown
         menu={{
           items: [
             {
-              key: "ta",
-              label: "Thêm trợ giảng",
+              key: "add-teacher",
+              label: "Giáo viên",
+              onClick: () => {
+                setEnrollmentTypeId(24);
+                useEnrollments.transfer.setSourceParams({
+                  role_names_like: "Giáo viên",
+                });
+                useEnrollments.transfer.open();
+              },
+            },
+            {
+              key: "add-ta",
+              label: "Trợ giảng",
               onClick: () => {
                 setEnrollmentTypeId(25);
                 useEnrollments.transfer.setSourceParams({
@@ -149,8 +160,8 @@ function PageContent({ params }) {
               },
             },
             {
-              key: "student",
-              label: "Thêm học viên",
+              key: "add-student",
+              label: "Học viên",
               onClick: () => {
                 setEnrollmentTypeId(26);
                 useEnrollments.transfer.setSourceParams({});
@@ -159,17 +170,14 @@ function PageContent({ params }) {
             },
           ],
         }}
-        type="primary"
-        onClick={() => {
-          setEnrollmentTypeId(24);
-          useEnrollments.transfer.setSourceParams({
-            role_names_like: "Giáo viên",
-          });
-          useEnrollments.transfer.open();
-        }}
       >
-        Thêm giáo viên
-      </Dropdown.Button>
+        <AntButton
+          key="dropdown-button"
+          label="Thêm"
+          color="primary"
+          variant="solid"
+        />
+      </Dropdown>
     </Space>
   );
 
@@ -257,7 +265,7 @@ function PageContent({ params }) {
   // Tab definition
   const enrollmentsTab = {
     key: "enrollments",
-    label: "Đăng ký",
+    label: "Danh sách lớp",
     children: enrollmentsContent,
   };
 

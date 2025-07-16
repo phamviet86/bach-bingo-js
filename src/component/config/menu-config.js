@@ -34,6 +34,8 @@ export const MENU_CONFIG = [
     path: "/app/setting",
     icon: <ToolOutlined />,
     routes: [
+      { path: "/app/setting/syllabuses", name: "Giáo trình" },
+      { path: "/app/setting/courses", name: "Khóa học" },
       { path: "/app/setting/rooms", name: "Phòng học" },
       { path: "/app/setting/shifts", name: "Ca học" },
     ],
@@ -44,8 +46,6 @@ export const MENU_CONFIG = [
     icon: <BankOutlined />,
     routes: [
       { path: "/app/manager/users", name: "Người dùng" },
-      { path: "/app/manager/syllabuses", name: "Giáo trình" },
-      { path: "/app/manager/courses", name: "Khóa học" },
       { path: "/app/manager/classes", name: "Lớp học" },
       { path: "/app/manager/schedules", name: "Lịch học" },
     ],
