@@ -3,8 +3,8 @@
 "use client";
 
 import { use } from "react";
-import { Space, Avatar, Image } from "antd";
-import { BankOutlined, UserOutlined } from "@ant-design/icons";
+import { Space, Image } from "antd";
+import { BankOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import {
   AntPage,
