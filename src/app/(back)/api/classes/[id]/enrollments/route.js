@@ -5,6 +5,7 @@ import {
   createEnrollmentsByClass,
   deleteEnrollmentsByClass,
 } from "@/lib/service/enrollments-service";
+import { getClassFee } from "@/lib/service/classes-service";
 import { buildApiResponse } from "@/lib/util/api-util";
 
 export async function GET(request, context) {
@@ -31,21 +32,24 @@ export async function POST(request, context) {
       return buildApiResponse(400, false, "Thiếu ID lớp học.");
     }
 
-    const {
-      userIds,
-      enrollmentTypeId,
-      enrollmentPaymentAmount = 0,
-    } = await request.json();
+    const { userIds, enrollmentTypeId } = await request.json();
 
     // Validate required fields (based on NOT NULL constraints in SQL)
     if (!enrollmentTypeId || !Array.isArray(userIds) || userIds.length === 0)
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
 
+    // get class fee for the class
+    let classFee = 0;
+    if (enrollmentTypeId == 26) {
+      const classFeeResult = await getClassFee(classId);
+      classFee = classFeeResult?.[0]?.class_fee || 0;
+    }
+
     const result = await createEnrollmentsByClass(
       classId,
       userIds,
       enrollmentTypeId,
-      enrollmentPaymentAmount
+      classFee
     );
 
     if (!result || !result.length)

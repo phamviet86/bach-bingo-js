@@ -69,7 +69,6 @@ export function EnrollmentsEdit(props) {
 export function ClassEnrollmentsTransfer({
   classId,
   enrollmentTypeId,
-  enrollmentPaymentAmount,
   ...props
 }) {
   return (
@@ -83,7 +82,6 @@ export function ClassEnrollmentsTransfer({
         fetchPost(`/api/classes/${classId}/enrollments`, {
           userIds: keys,
           enrollmentTypeId: enrollmentTypeId,
-          enrollmentPaymentAmount: enrollmentPaymentAmount,
         })
       }
       onRemoveItem={(keys) =>
@@ -120,6 +118,61 @@ export function ClassEnrollmentsTransfer({
         itemsUnit: "người dùng",
         itemUnit: "người dùng",
         notFoundContent: "Không tìm thấy người dùng",
+      }}
+    />
+  );
+}
+
+export function UserEnrollmentsTransfer({
+  userId,
+  enrollmentTypeId,
+  ...props
+}) {
+  return (
+    <AntTransfer
+      {...props}
+      onSourceRequest={(params) => fetchList(`/api/classes`, params)}
+      onTargetRequest={(params) =>
+        fetchList(`/api/users/${userId}/enrollments`, params)
+      }
+      onAddItem={(keys) =>
+        fetchPost(`/api/users/${userId}/enrollments`, {
+          classIds: keys,
+          enrollmentTypeId: enrollmentTypeId,
+        })
+      }
+      onRemoveItem={(keys) =>
+        fetchDelete(`/api/users/${userId}/enrollments`, {
+          classIds: keys,
+          enrollmentTypeId: enrollmentTypeId,
+        })
+      }
+      sourceItem={{ key: "id" }}
+      targetItem={{
+        key: "class_id",
+        disabled: ["enrollment_status_id", [], [32]],
+      }}
+      showSearch={true}
+      searchSourceColumns={[
+        "course_name_like",
+        "module_name_like",
+        "syllabus_name_like",
+      ]}
+      searchTargetColumns={[
+        "course_name_like",
+        "module_name_like",
+        "syllabus_name_like",
+      ]}
+      render={(record) => `${record.course_name} - ${record.module_name}`}
+      titles={["Lớp học", "Đã đăng ký"]}
+      operations={["Thêm", "Xóa"]}
+      variant="modal"
+      modalProps={{ title: "Xếp lớp" }}
+      locale={{
+        searchPlaceholder: "Tìm kiếm...",
+        itemsUnit: "lớp học",
+        itemUnit: "lớp học",
+        notFoundContent: "Không tìm thấy lớp học",
       }}
     />
   );

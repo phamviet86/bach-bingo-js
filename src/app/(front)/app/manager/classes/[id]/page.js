@@ -106,7 +106,6 @@ function PageContent({ params }) {
 
   // enrollments state
   const [enrollmentTypeId, setEnrollmentTypeId] = useState(null);
-  const [enrollmentPaymentAmount, setEnrollmentPaymentAmount] = useState(0);
 
   // enrollments logic hooks
   const useEnrollments = {
@@ -148,7 +147,6 @@ function PageContent({ params }) {
               label: "Thêm trợ giảng",
               onClick: () => {
                 setEnrollmentTypeId(25);
-                setEnrollmentPaymentAmount(0);
                 useEnrollments.transfer.setSourceParams({
                   role_names_like: "Trợ giảng",
                 });
@@ -163,9 +161,6 @@ function PageContent({ params }) {
               label: "Thêm học viên",
               onClick: () => {
                 setEnrollmentTypeId(26);
-                setEnrollmentPaymentAmount(
-                  useClasses.desc?.dataSource?.class_fee
-                );
                 useEnrollments.transfer.setSourceParams({});
                 useEnrollments.transfer.setTargetParams({
                   enrollment_type_id: 26,
@@ -178,7 +173,6 @@ function PageContent({ params }) {
         type="primary"
         onClick={() => {
           setEnrollmentTypeId(24);
-          setEnrollmentPaymentAmount(0);
           useEnrollments.transfer.setSourceParams({
             role_names_like: "Giáo viên",
           });
@@ -249,7 +243,6 @@ function PageContent({ params }) {
         transferHook={useEnrollments.transfer}
         classId={classId}
         enrollmentTypeId={enrollmentTypeId}
-        enrollmentPaymentAmount={enrollmentPaymentAmount}
         sourceParams={useEnrollments.transfer.sourceParams}
         targetParams={useEnrollments.transfer.targetParams}
         afterClose={() => useEnrollments.table.reload()}

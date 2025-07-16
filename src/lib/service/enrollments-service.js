@@ -178,23 +178,18 @@ export async function getEnrollmentsByClass(classId, searchParams) {
   }
 }
 
-// Create multiple enrollments by classId, enrollmentTypeId, enrollmentPaymentAmount and userIds
+// Create multiple enrollments by classId, enrollmentTypeId and userIds
 export async function createEnrollmentsByClass(
   classId,
   userIds,
   enrollmentTypeId,
-  enrollmentPaymentAmount = 0
+  classFee
 ) {
   try {
     const queryValues = [];
     const valuePlaceholders = userIds
       .map((userId, index) => {
-        queryValues.push(
-          userId,
-          classId,
-          enrollmentTypeId,
-          enrollmentPaymentAmount
-        );
+        queryValues.push(userId, classId, enrollmentTypeId, classFee);
         return `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${
           index * 4 + 4
         })`;
@@ -270,22 +265,21 @@ export async function getEnrollmentsByUser(userId, searchParams) {
   }
 }
 
-// Create multiple enrollments by userId, enrollmentTypeId, enrollmentPaymentAmount and classIds
+// Create multiple enrollments by userId, enrollmentTypeId and classData
 export async function createEnrollmentsByUser(
   userId,
-  classIds,
-  enrollmentTypeId,
-  enrollmentPaymentAmount = 0
+  classData,
+  enrollmentTypeId
 ) {
   try {
     const queryValues = [];
-    const valuePlaceholders = classIds
-      .map((classId, index) => {
+    const valuePlaceholders = classData
+      .map((classItem, index) => {
         queryValues.push(
           userId,
-          classId,
+          classItem.classId,
           enrollmentTypeId,
-          enrollmentPaymentAmount
+          classItem.classFee
         );
         return `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${
           index * 4 + 4

@@ -199,3 +199,17 @@ export async function deleteClassesByCourse(courseId, moduleIds) {
     throw new Error(error.message);
   }
 }
+
+// Get class fee by class ID
+export async function getClassFee(id) {
+  try {
+    return await sql`
+      SELECT c.*, COUNT(*) OVER() AS total
+      FROM classes c
+      WHERE c.deleted_at IS NULL
+        AND c.id = ${id};
+    `;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
