@@ -89,7 +89,7 @@ export function UsersResetPassword({ userId, ...props }) {
 }
 
 export function UsersColumns(params, displayConfig = []) {
-  const { userStatus } = params || {};
+  const { userStatus, roleList } = params || {};
 
   const columns = [
     {
@@ -141,6 +141,13 @@ export function UsersColumns(params, displayConfig = []) {
       key: "user_notes",
       valueType: "textarea",
       search: false,
+    },
+    {
+      title: "Vai trò",
+      dataIndex: "role_names",
+      key: "role_names",
+      valueType: "select",
+      valueEnum: roleList?.valueEnum || {},
     },
     {
       key: "displayAvatar",

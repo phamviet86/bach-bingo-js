@@ -41,6 +41,7 @@ export const USERS_COLUMN = [
   { key: "user_phone", responsive: ["md"] },
   { key: "user_parent_phone", hidden: true },
   { key: "user_notes", responsive: ["xl"] },
+  { key: "role_names", hidden: true },
 ];
 
 export const USER_ROLES_COLUMN = [

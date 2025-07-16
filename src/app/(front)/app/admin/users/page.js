@@ -79,13 +79,13 @@ function PageContent() {
           title: (
             <Space>
               <BankOutlined />
-              <span>Quản lý</span>
+              <span>Quản sinh</span>
             </Space>
           ),
         },
-        { title: "Người dùng" },
+        { title: "Danh bạ" },
       ]}
-      title="Quản lý người dùng"
+      title="Danh sách người dùng"
       extra={pageButton}
       content={pageContent}
     />
