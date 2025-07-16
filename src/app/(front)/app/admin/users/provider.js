@@ -17,14 +17,25 @@ export function PageProvider({ children }) {
     { option_table: "users", option_column: "user_status_id" }
   );
 
-  const roleStatus = convertSelection(
+  const enrollmentStatus = convertSelection(
     optionData,
     { value: "id", label: "option_label", color: "option_color" },
-    { option_table: "roles", option_column: "role_status_id" }
+    { option_table: "enrollments", option_column: "enrollment_status_id" }
+  );
+
+  const enrollmentType = convertSelection(
+    optionData,
+    { value: "id", label: "option_label", color: "option_color" },
+    { option_table: "enrollments", option_column: "enrollment_type_id" }
+  );
+
+  const enrollmentPaymentType = convertSelection(
+    optionData,
+    { value: "id", label: "option_label", color: "option_color" },
+    { option_table: "enrollments", option_column: "enrollment_payment_type_id" }
   );
 
   const { data: roleData = [] } = useFetchList("/api/roles");
-
   const roleList = convertSelection(roleData, {
     value: "role_name",
     label: "role_name",
@@ -32,8 +43,20 @@ export function PageProvider({ children }) {
 
   // Memoize the context value to avoid unnecessary re-renders
   const contextValue = useMemo(
-    () => ({ userStatus, roleStatus, roleList }),
-    [userStatus, roleStatus, roleList]
+    () => ({
+      userStatus,
+      roleList,
+      enrollmentStatus,
+      enrollmentType,
+      enrollmentPaymentType,
+    }),
+    [
+      userStatus,
+      roleList,
+      enrollmentStatus,
+      enrollmentType,
+      enrollmentPaymentType,
+    ]
   );
 
   return (

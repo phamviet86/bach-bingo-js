@@ -86,7 +86,7 @@ export const CLASSES_COLUMN = [
   { key: "class_total_fee", responsive: ["lg"] },
 ];
 
-export const CLASSES_TAB_COLUMN = [
+export const COURSE_CLASSES_COLUMN = [
   { key: "displayModule", hideInDescriptions: true },
   { key: "course_name", hidden: true },
   { key: "module_name", hidden: true },
@@ -98,12 +98,25 @@ export const CLASSES_TAB_COLUMN = [
   { key: "class_total_fee", responsive: ["lg"] },
 ];
 
-export const ENROLLMENTS_COLUMN = [];
-
-export const ENROLLMENTS_TAB_COLUMN = [
+export const CLASS_ENROLLMENTS_COLUMN = [
   { key: "displayUser", hideInDescriptions: true },
   { key: "enrollment_type_id", hidden: true },
   { key: "user_name", hidden: true },
+  { key: "enrollment_status_id" },
+  { key: "enrollment_start_date", responsive: ["lg"] },
+  { key: "enrollment_end_date", responsive: ["lg"] },
+  { key: "enrollment_payment_type_id", responsive: ["xl"] },
+  { key: "enrollment_payment_amount", responsive: ["xl"] },
+  { key: "enrollment_payment_discount", responsive: ["xl"] },
+  { key: "enrollment_discount_notes", hidden: true },
+  { key: "enrollment_desc", hidden: true },
+];
+
+export const USER_ENROLLMENTS_COLUMN = [
+  { key: "displayClass", hideInDescriptions: true },
+  { key: "enrollment_type_id", hidden: true },
+  { key: "course_name", hidden: true },
+  { key: "module_name", hidden: true },
   { key: "enrollment_status_id" },
   { key: "enrollment_start_date", responsive: ["lg"] },
   { key: "enrollment_end_date", responsive: ["lg"] },

@@ -184,7 +184,21 @@ export function EnrollmentsColumns(params, displayConfig = []) {
 
   const columns = [
     {
-      title: "Tên người dùng",
+      title: "Khoá học",
+      dataIndex: "course_name",
+      key: "course_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Học phần",
+      dataIndex: "module_name",
+      key: "module_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Người dùng",
       dataIndex: "user_name",
       key: "user_name",
       valueType: "text",
@@ -286,7 +300,25 @@ export function EnrollmentsColumns(params, displayConfig = []) {
       search: false,
       render: (_, record) => (
         <Space size={0} direction="vertical">
-          <Typography.Text>{record.user_name}</Typography.Text>
+          <Typography.Text strong>{record.user_name}</Typography.Text>
+          {renderEnum(
+            enrollmentType?.valueEnum,
+            record.enrollment_type_id,
+            null,
+            "tag"
+          )}
+        </Space>
+      ),
+    },
+    {
+      title: "Lớp học",
+      key: "displayClass",
+      search: false,
+      render: (_, record) => (
+        <Space size={0} direction="vertical">
+          <Typography.Text strong>
+            {record.course_name} - {record.module_name}
+          </Typography.Text>
           {renderEnum(
             enrollmentType?.valueEnum,
             record.enrollment_type_id,

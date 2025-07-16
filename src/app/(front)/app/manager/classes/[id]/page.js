@@ -4,12 +4,7 @@
 
 import { use, useState } from "react";
 import { Space, Avatar, Dropdown } from "antd";
-import {
-  BankOutlined,
-  UserOutlined,
-  EditOutlined,
-  DownOutlined,
-} from "@ant-design/icons";
+import { BankOutlined, UserOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -32,7 +27,7 @@ import {
   useTransfer,
 } from "@/component/hook";
 import { PageProvider, usePageContext } from "../provider";
-import { CLASSES_COLUMN, ENROLLMENTS_TAB_COLUMN } from "@/component/config";
+import { CLASSES_COLUMN, CLASS_ENROLLMENTS_COLUMN } from "@/component/config";
 
 export default function Page(props) {
   return (
@@ -120,7 +115,7 @@ function PageContent({ params }) {
         enrollmentType,
         enrollmentPaymentType,
       },
-      ENROLLMENTS_TAB_COLUMN
+      CLASS_ENROLLMENTS_COLUMN
     ),
     fields: EnrollmentsFields({
       enrollmentStatus,
@@ -150,9 +145,6 @@ function PageContent({ params }) {
                 useEnrollments.transfer.setSourceParams({
                   role_names_like: "Trợ giảng",
                 });
-                useEnrollments.transfer.setTargetParams({
-                  enrollment_type_id: 25,
-                });
                 useEnrollments.transfer.open();
               },
             },
@@ -162,9 +154,6 @@ function PageContent({ params }) {
               onClick: () => {
                 setEnrollmentTypeId(26);
                 useEnrollments.transfer.setSourceParams({});
-                useEnrollments.transfer.setTargetParams({
-                  enrollment_type_id: 26,
-                });
                 useEnrollments.transfer.open();
               },
             },
@@ -175,9 +164,6 @@ function PageContent({ params }) {
           setEnrollmentTypeId(24);
           useEnrollments.transfer.setSourceParams({
             role_names_like: "Giáo viên",
-          });
-          useEnrollments.transfer.setTargetParams({
-            enrollment_type_id: 24,
           });
           useEnrollments.transfer.open();
         }}
@@ -244,7 +230,7 @@ function PageContent({ params }) {
         classId={classId}
         enrollmentTypeId={enrollmentTypeId}
         sourceParams={useEnrollments.transfer.sourceParams}
-        targetParams={useEnrollments.transfer.targetParams}
+        targetParams={{ enrollment_type_id: enrollmentTypeId }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc
