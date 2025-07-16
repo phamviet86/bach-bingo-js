@@ -103,7 +103,7 @@ function PageContent() {
         },
         { title: "Vai trò" },
       ]}
-      title="Quản lý vai trò"
+      title="Danh sách vai trò"
       extra={pageButton}
       content={pageContent}
     />
