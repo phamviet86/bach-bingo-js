@@ -1,21 +1,21 @@
-// path: @/app/(back)/api/classes/[id]/enrollments/route.js
+// path: @/app/(back)/api/users/[id]/enrollments/route.js
 
 import {
-  getEnrollmentsByClass,
-  createEnrollmentsByClass,
-  deleteEnrollmentsByClass,
+  getEnrollmentsByUser,
+  createEnrollmentsByUser,
+  deleteEnrollmentsByUser,
 } from "@/lib/service/enrollments-service";
 import { buildApiResponse } from "@/lib/util/api-util";
 
 export async function GET(request, context) {
   try {
-    const { id: classId } = await context.params;
-    if (!classId) {
-      return buildApiResponse(400, false, "Thiếu ID lớp học.");
+    const { id: userId } = await context.params;
+    if (!userId) {
+      return buildApiResponse(400, false, "Thiếu ID người dùng.");
     }
 
     const { searchParams } = new URL(request.url);
-    const result = await getEnrollmentsByClass(classId, searchParams);
+    const result = await getEnrollmentsByUser(userId, searchParams);
     return buildApiResponse(200, true, "Lấy danh sách lớp thành công", {
       data: result,
     });
@@ -26,24 +26,24 @@ export async function GET(request, context) {
 
 export async function POST(request, context) {
   try {
-    const { id: classId } = await context.params;
-    if (!classId) {
-      return buildApiResponse(400, false, "Thiếu ID lớp học.");
+    const { id: userId } = await context.params;
+    if (!userId) {
+      return buildApiResponse(400, false, "Thiếu ID người dùng.");
     }
 
     const {
-      userIds,
+      classIds,
       enrollmentTypeId,
       enrollmentPaymentAmount = 0,
     } = await request.json();
 
     // Validate required fields (based on NOT NULL constraints in SQL)
-    if (!enrollmentTypeId || !Array.isArray(userIds) || userIds.length === 0)
+    if (!enrollmentTypeId || !Array.isArray(classIds) || classIds.length === 0)
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
 
-    const result = await createEnrollmentsByClass(
-      classId,
-      userIds,
+    const result = await createEnrollmentsByUser(
+      userId,
+      classIds,
       enrollmentTypeId,
       enrollmentPaymentAmount
     );
@@ -61,20 +61,20 @@ export async function POST(request, context) {
 
 export async function DELETE(request, context) {
   try {
-    const { id: classId } = await context.params;
-    if (!classId) {
-      return buildApiResponse(400, false, "Thiếu ID lớp học.");
+    const { id: userId } = await context.params;
+    if (!userId) {
+      return buildApiResponse(400, false, "Thiếu ID người dùng.");
     }
 
-    const { userIds, enrollmentTypeId } = await request.json();
+    const { classIds, enrollmentTypeId } = await request.json();
 
     // Validate required fields (based on NOT NULL constraints in SQL)
-    if (!enrollmentTypeId || !Array.isArray(userIds) || userIds.length === 0)
+    if (!enrollmentTypeId || !Array.isArray(classIds) || classIds.length === 0)
       return buildApiResponse(400, false, "Thiếu thông tin bắt buộc");
 
-    const result = await deleteEnrollmentsByClass(
-      classId,
-      userIds,
+    const result = await deleteEnrollmentsByUser(
+      userId,
+      classIds,
       enrollmentTypeId
     );
 

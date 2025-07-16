@@ -236,3 +236,94 @@ export async function deleteEnrollmentsByClass(
     throw new Error(error.message);
   }
 }
+
+// Get enrollments by user ID
+export async function getEnrollmentsByUser(userId, searchParams) {
+  try {
+    const ignoredSearchColumns = ["user_id"];
+    const { whereClause, orderByClause, limitClause, queryValues } =
+      parseSearchParams(searchParams, ignoredSearchColumns);
+
+    const sqlValue = [userId, ...queryValues];
+    const sqlText = `
+      SELECT e.*, COUNT(*) OVER() AS total,
+        u.user_name, u.user_avatar,
+        co.course_name,
+        m.module_name,
+        s.syllabus_name
+      FROM enrollments_view e
+      LEFT JOIN users u ON e.user_id = u.id
+      LEFT JOIN classes c ON e.class_id = c.id
+      LEFT JOIN courses co ON c.course_id = co.id
+      LEFT JOIN modules m ON c.module_id = m.id
+      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
+      WHERE e.deleted_at IS NULL
+        AND e.user_id = $1
+      ${whereClause}
+      ${orderByClause || "ORDER BY e.created_at"}
+      ${limitClause};
+    `;
+
+    return await sql.query(sqlText, sqlValue);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// Create multiple enrollments by userId, enrollmentTypeId, enrollmentPaymentAmount and classIds
+export async function createEnrollmentsByUser(
+  userId,
+  classIds,
+  enrollmentTypeId,
+  enrollmentPaymentAmount = 0
+) {
+  try {
+    const queryValues = [];
+    const valuePlaceholders = classIds
+      .map((classId, index) => {
+        queryValues.push(
+          userId,
+          classId,
+          enrollmentTypeId,
+          enrollmentPaymentAmount
+        );
+        return `($${index * 4 + 1}, $${index * 4 + 2}, $${index * 4 + 3}, $${
+          index * 4 + 4
+        })`;
+      })
+      .join(", ");
+
+    const queryText = `
+      INSERT INTO enrollments (user_id, class_id, enrollment_type_id, enrollment_payment_amount)
+      VALUES ${valuePlaceholders}
+      RETURNING *;
+    `;
+
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+// Soft-delete multiple enrollments by userId, enrollmentTypeId, and classIds
+export async function deleteEnrollmentsByUser(
+  userId,
+  classIds,
+  enrollmentTypeId
+) {
+  try {
+    const placeholders = classIds.map((_, index) => `$${index + 3}`).join(", ");
+    const queryText = `
+      UPDATE enrollments
+      SET deleted_at = NOW()
+      WHERE deleted_at IS NULL
+        AND user_id = $1
+        AND enrollment_type_id = $2
+        AND class_id IN (${placeholders})
+      RETURNING *;
+    `;
+    const queryValues = [userId, enrollmentTypeId, ...classIds];
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
