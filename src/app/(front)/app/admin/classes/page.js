@@ -28,10 +28,15 @@ function PageContent() {
   // Context
   const { classStatus } = usePageContext();
 
+  // Hooks
+  const { navDetail } = useNav();
+
   // lớp học logic hooks
   const useClasses = {
     table: useTable(),
+    create: useForm(),
     columns: ClassesColumns({ classStatus }, CLASSES_COLUMN),
+    fields: ClassesFields({ classStatus }),
   };
 
   // Page action buttons
@@ -42,6 +47,13 @@ function PageContent() {
       color="default"
       variant="outlined"
       onClick={() => useClasses.table.reload()}
+    />,
+    <AntButton
+      key="create-button"
+      label="Tạo mới"
+      color="primary"
+      variant="solid"
+      onClick={() => useClasses.create.open()}
     />,
   ];
 
@@ -66,6 +78,13 @@ function PageContent() {
             ),
           },
         ]}
+      />
+      <ClassesCreate
+        formHook={useClasses.create}
+        fields={useClasses.fields}
+        onSubmitSuccess={(result) => navDetail(result?.data[0]?.id)}
+        title="Tạo lớp học"
+        variant="drawer"
       />
     </ProCard>
   );
