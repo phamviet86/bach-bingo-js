@@ -3,7 +3,7 @@
 "use client";
 
 import { Space } from "antd";
-import { BankOutlined } from "@ant-design/icons";
+import { PhoneOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton } from "@/component/common";
 import {
@@ -82,7 +82,7 @@ function PageContent() {
         {
           title: (
             <Space>
-              <BankOutlined />
+              <PhoneOutlined />
               <span>Quản sinh</span>
             </Space>
           ),

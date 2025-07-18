@@ -4,7 +4,7 @@
 
 import { use } from "react";
 import { Space, Image } from "antd";
-import { BankOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
+import { PhoneOutlined, EyeOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import {
   AntPage,
@@ -288,7 +288,7 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <BankOutlined />
+              <PhoneOutlined />
               <span>Quản sinh</span>
             </Space>
           ),
