@@ -227,7 +227,7 @@ function PageContent({ params }) {
         userId={userId}
         enrollmentTypeId={26}
         sourceParams={{ class_status_id_in: [21, 22] }}
-        targetParams={{ enrollment_type_id: 26 }}
+        targetParams={{ user_id: userId, enrollment_type_id: 26 }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc
