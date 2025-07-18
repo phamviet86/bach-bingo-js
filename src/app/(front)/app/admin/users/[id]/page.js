@@ -156,8 +156,15 @@ function PageContent({ params }) {
         onClick={() => useEnrollments.table.reload()}
       />
       <AntButton
+        key="add-module-button"
+        label="Đăng ký chờ"
+        color="default"
+        variant="outlined"
+        onClick={() => useEnrollments.transfer.open()}
+      />
+      <AntButton
         key="add-class-button"
-        label="Đăng ký lớp"
+        label="Đăng ký học"
         color="primary"
         variant="solid"
         onClick={() => useEnrollments.transfer.open()}

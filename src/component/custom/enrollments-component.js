@@ -385,12 +385,9 @@ export function EnrollmentsColumns(params, displayConfig = []) {
               ? `${record.course_name} - ${record.module_name}`
               : `${record.waiting_syllabus_name} - ${record.waiting_module_name}`}
           </Typography.Text>
-          {renderEnum(
-            enrollmentType?.valueEnum,
-            record.enrollment_type_id,
-            null,
-            "tag"
-          )}
+          <Typography.Text type="secondary">
+            {record.class_id ? record.syllabus_name : ""}
+          </Typography.Text>
         </Space>
       ),
     },
