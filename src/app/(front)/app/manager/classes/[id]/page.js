@@ -18,6 +18,7 @@ import {
   EnrollmentsColumns,
   EnrollmentsFields,
   ClassEnrollmentsTransfer,
+  ClassWaitingEnrollmentsTransfer,
 } from "@/component/custom";
 import {
   useDesc,
@@ -50,6 +51,9 @@ function PageContent({ params }) {
   const { navBack } = useNav();
   const { id: classId } = use(params);
 
+  // class status
+  const [moduleId, setModuleId] = useState(null);
+
   // lớp học logic hooks
   const useClasses = {
     desc: useDesc(),
@@ -77,9 +81,11 @@ function PageContent({ params }) {
         descHook={useClasses.desc}
         columns={useClasses.columns}
         requestParams={{ id: classId }}
-        onRequestSuccess={(result) =>
-          useClasses.desc.setDataSource(result?.data?.[0])
-        }
+        onRequestSuccess={(result) => {
+          const recordData = result?.data?.[0];
+          useClasses.desc.setDataSource(recordData);
+          setModuleId(recordData?.module_id);
+        }}
       />
       <ClassesEdit
         formHook={useClasses.edit}
@@ -109,6 +115,7 @@ function PageContent({ params }) {
     desc: useDesc(),
     edit: useForm(),
     transfer: useTransfer(),
+    waitingTransfer: useTransfer(),
     columns: EnrollmentsColumns(
       {
         enrollmentStatus,
@@ -134,12 +141,12 @@ function PageContent({ params }) {
         variant="outlined"
         onClick={() => useEnrollments.table.reload()}
       />
-      <Dropdown
+      <Dropdown.Button
         menu={{
           items: [
             {
               key: "add-teacher",
-              label: "Giáo viên",
+              label: "Thêm giáo viên",
               onClick: () => {
                 setEnrollmentTypeId(24);
                 useEnrollments.transfer.setSourceParams({
@@ -150,7 +157,7 @@ function PageContent({ params }) {
             },
             {
               key: "add-ta",
-              label: "Trợ giảng",
+              label: "Thêm trợ giảng",
               onClick: () => {
                 setEnrollmentTypeId(25);
                 useEnrollments.transfer.setSourceParams({
@@ -161,7 +168,7 @@ function PageContent({ params }) {
             },
             {
               key: "add-student",
-              label: "Học viên",
+              label: "Thêm học viên",
               onClick: () => {
                 setEnrollmentTypeId(26);
                 useEnrollments.transfer.setSourceParams({});
@@ -170,14 +177,13 @@ function PageContent({ params }) {
             },
           ],
         }}
+        type="primary"
+        onClick={() => {
+          useEnrollments.waitingTransfer.open();
+        }}
       >
-        <AntButton
-          key="dropdown-button"
-          label="Thêm"
-          color="primary"
-          variant="solid"
-        />
-      </Dropdown>
+        Danh sách chờ
+      </Dropdown.Button>
     </Space>
   );
 
@@ -242,6 +248,14 @@ function PageContent({ params }) {
           class_id: classId,
           enrollment_type_id: enrollmentTypeId,
         }}
+        afterClose={() => useEnrollments.table.reload()}
+      />
+      <ClassWaitingEnrollmentsTransfer
+        transferHook={useEnrollments.waitingTransfer}
+        classId={classId}
+        enrollmentTypeId={enrollmentTypeId}
+        sourceParams={{ "e.module_id": moduleId }}
+        targetParams={{ enrollment_status_id: 32 }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc

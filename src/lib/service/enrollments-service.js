@@ -207,6 +207,58 @@ export async function deleteEnrollmentsByClass(
   }
 }
 
+// Add classId to multiple enrollments by enrollmentIds and classFee
+export async function addWaitingEnrollmentsByClass(
+  classId,
+  enrollmentIds,
+  classFee
+) {
+  // check input
+  if (!classId || !Array.isArray(enrollmentIds) || enrollmentIds.length === 0) {
+    throw new Error("Invalid input");
+  }
+
+  try {
+    const placeholders = enrollmentIds
+      .map((_, index) => `$${index + 3}`)
+      .join(", ");
+    const queryText = `
+      UPDATE enrollments
+      SET class_id = $1,
+          enrollment_payment_amount = $2
+      WHERE deleted_at IS NULL
+        AND id IN (${placeholders})
+      RETURNING *;
+    `;
+    const queryValues = [classId, classFee, ...enrollmentIds];
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
+// remove classId from multiple enrollments by classId and enrollmentIds
+export async function setWaitingEnrollmentsByClass(classId, enrollmentIds) {
+  try {
+    const placeholders = enrollmentIds
+      .map((_, index) => `$${index + 2}`)
+      .join(", ");
+    const queryText = `
+      UPDATE enrollments
+      SET class_id = NULL,
+          enrollment_payment_amount = 0
+      WHERE deleted_at IS NULL
+        AND class_id = $1 
+        AND id IN (${placeholders}) 
+      RETURNING *;
+    `;
+    const queryValues = [classId, ...enrollmentIds];
+    return await sql.query(queryText, queryValues);
+  } catch (error) {
+    throw new Error(error.message);
+  }
+}
+
 // Create multiple enrollments by userId, enrollmentTypeId and classData
 export async function createEnrollmentsByUser(
   userId,

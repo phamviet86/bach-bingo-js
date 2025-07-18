@@ -13,6 +13,7 @@ import {
   fetchPost,
   fetchPut,
   fetchDelete,
+  fetchPatch,
 } from "@/lib/util/fetch-util";
 import {
   ProForm,
@@ -92,6 +93,59 @@ export function ClassEnrollmentsTransfer({
       targetItem={{
         key: "user_id",
         disabled: ["enrollment_status_id", [], [32]],
+      }}
+      showSearch={true}
+      searchSourceColumns={[
+        "user_name_like",
+        "user_email_like",
+        "user_phone_like",
+        "user_parent_phone_like",
+      ]}
+      searchTargetColumns={[
+        "user_name_like",
+        "user_email_like",
+        "user_phone_like",
+        "user_parent_phone_like",
+      ]}
+      render={(record) => `${record.user_name}`}
+      titles={["Người dùng", "Đã đăng ký"]}
+      operations={["Thêm", "Xóa"]}
+      variant="modal"
+      modalProps={{ title: "Thêm đăng ký" }}
+      locale={{
+        searchPlaceholder: "Tìm kiếm...",
+        itemsUnit: "người dùng",
+        itemUnit: "người dùng",
+        notFoundContent: "Không tìm thấy người dùng",
+      }}
+    />
+  );
+}
+
+export function ClassWaitingEnrollmentsTransfer({
+  classId,
+  enrollmentTypeId,
+  ...props
+}) {
+  return (
+    <AntTransfer
+      {...props}
+      onSourceRequest={(params) => fetchList(`/api/enrollments`, params)}
+      onTargetRequest={(params) => fetchList(`/api/enrollments`, params)}
+      onAddItem={(keys) =>
+        fetchPut(`/api/classes/${classId}/enrollments`, {
+          enrollmentIds: keys,
+        })
+      }
+      onRemoveItem={(keys) =>
+        fetchPatch(`/api/classes/${classId}/enrollments`, {
+          enrollmentIds: keys,
+        })
+      }
+      sourceItem={{ key: "id" }}
+      targetItem={{
+        key: "id",
+        // disabled: ["enrollment_status_id", [], [32]],
       }}
       showSearch={true}
       searchSourceColumns={[
