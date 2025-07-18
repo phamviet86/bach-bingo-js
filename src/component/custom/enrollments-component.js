@@ -183,9 +183,7 @@ export function UserWaitingEnrollmentsTransfer({
     <AntTransfer
       {...props}
       onSourceRequest={(params) => fetchList(`/api/modules`, params)}
-      onTargetRequest={(params) =>
-        fetchList(`/api/users/${userId}/waiting-enrollments`, params)
-      }
+      onTargetRequest={(params) => fetchList(`/api/enrollments/`, params)}
       onAddItem={(keys) =>
         fetchPost(`/api/users/${userId}/waiting-enrollments`, {
           moduleIds: keys,
@@ -206,7 +204,15 @@ export function UserWaitingEnrollmentsTransfer({
       showSearch={true}
       searchSourceColumns={["module_name_like", "syllabus_name_like"]}
       searchTargetColumns={["module_name_like", "syllabus_name_like"]}
-      render={(record) => `${record.syllabus_name} - ${record.module_name}`}
+      render={(record) =>
+        `${
+          record.syllabus_name
+            ? record.syllabus_name
+            : record.waiting_syllabus_name
+        } - ${
+          record.module_name ? record.module_name : record.waiting_module_name
+        }`
+      }
       titles={["Học phần", "Đã đăng ký"]}
       operations={["Thêm", "Xóa"]}
       variant="modal"

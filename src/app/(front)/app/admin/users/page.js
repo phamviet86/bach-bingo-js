@@ -60,7 +60,11 @@ function PageContent() {
   // Main content
   const pageContent = (
     <ProCard boxShadow bordered>
-      <UsersTable tableHook={useUsers.table} columns={useUsers.columns} />
+      <UsersTable
+        tableHook={useUsers.table}
+        columns={useUsers.columns}
+        requestParams={{ role_names_null: true }}
+      />
       <UsersCreate
         formHook={useUsers.create}
         fields={useUsers.fields}
@@ -83,9 +87,9 @@ function PageContent() {
             </Space>
           ),
         },
-        { title: "Danh bạ" },
+        { title: "Học viên" },
       ]}
-      title="Danh sách người dùng"
+      title="Danh sách học viên"
       extra={pageButton}
       content={pageContent}
     />

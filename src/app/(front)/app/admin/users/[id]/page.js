@@ -99,9 +99,13 @@ function PageContent({ params }) {
           descHook={useUsers.desc}
           columns={useUsers.columns}
           requestParams={{ id: userId }}
-          onRequestSuccess={(result) =>
-            useUsers.desc.setDataSource(result?.data?.[0])
-          }
+          onRequestSuccess={(result) => {
+            const userData = result?.data?.[0];
+            // If user data does not have role_names, navigate back
+            if (userData.role_names) navBack();
+            // Set the data source for the description component
+            useUsers.desc.setDataSource(userData);
+          }}
           column={{ xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 3 }}
         />
         <UsersEdit
@@ -158,9 +162,9 @@ function PageContent({ params }) {
       <AntButton
         key="add-module-button"
         label="Đăng ký chờ"
-        color="default"
+        color="primary"
         variant="outlined"
-        onClick={() => useEnrollments.transfer.open()}
+        onClick={() => useEnrollments.waitingTransfer.open()}
       />
       <AntButton
         key="add-class-button"
@@ -188,19 +192,18 @@ function PageContent({ params }) {
             align: "center",
             search: false,
             render: (_, record) => {
-              if (record?.class_id) {
-                return (
-                  <AntButton
-                    icon={<EyeOutlined />}
-                    color="primary"
-                    variant="link"
-                    onClick={() => {
-                      useEnrollments.desc.setParams({ id: record?.id });
-                      useEnrollments.desc.open();
-                    }}
-                  />
-                );
-              }
+              return (
+                <AntButton
+                  icon={<EyeOutlined />}
+                  color="primary"
+                  variant="link"
+                  onClick={() => {
+                    useEnrollments.desc.setParams({ id: record?.id });
+                    useEnrollments.desc.open();
+                  }}
+                  disabled={!record?.class_id}
+                />
+              );
             },
           },
         ]}
@@ -210,23 +213,23 @@ function PageContent({ params }) {
             align: "center",
             search: false,
             render: (_, record) => {
-              if (record?.class_id) {
-                return (
-                  <AntButton
-                    icon={<EditOutlined />}
-                    color="primary"
-                    variant="link"
-                    onClick={() => {
-                      useEnrollments.edit.setRequestParams({ id: record?.id });
-                      useEnrollments.edit.setDeleteParams({ id: record?.id });
-                      useEnrollments.edit.open();
-                    }}
-                  />
-                );
-              }
+              return (
+                <AntButton
+                  icon={<EditOutlined />}
+                  color="primary"
+                  variant="link"
+                  onClick={() => {
+                    useEnrollments.edit.setRequestParams({ id: record?.id });
+                    useEnrollments.edit.setDeleteParams({ id: record?.id });
+                    useEnrollments.edit.open();
+                  }}
+                  disabled={!record?.class_id}
+                />
+              );
             },
           },
         ]}
+        showSearch={false}
         syncToUrl={false}
       />
       <UserEnrollmentsTransfer
@@ -235,6 +238,18 @@ function PageContent({ params }) {
         enrollmentTypeId={26}
         sourceParams={{ class_status_id_in: [21, 22] }}
         targetParams={{ user_id: userId, enrollment_type_id: 26 }}
+        afterClose={() => useEnrollments.table.reload()}
+      />
+      <UserWaitingEnrollmentsTransfer
+        transferHook={useEnrollments.waitingTransfer}
+        userId={userId}
+        enrollmentTypeId={26}
+        sourceParams={{ syllabus_status_id: 12, module_status_id: 14 }}
+        targetParams={{
+          user_id: userId,
+          enrollment_type_id: 26,
+          class_id_null: true,
+        }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc
@@ -252,6 +267,7 @@ function PageContent({ params }) {
         deleteParams={useEnrollments.edit.deleteParams}
         onSubmitSuccess={() => useEnrollments.table.reload()}
         onDeleteSuccess={() => useEnrollments.table.reload()}
+        showDeleteBtn={false}
         title="Sửa đăng ký"
         variant="drawer"
       />
@@ -277,7 +293,7 @@ function PageContent({ params }) {
             </Space>
           ),
         },
-        { title: "Danh bạ", path: "/app/admin/users" },
+        { title: "Học viên", path: "/app/admin/users" },
         { title: pageTitle },
       ]}
       title={pageTitle}

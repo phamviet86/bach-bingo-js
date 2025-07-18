@@ -117,7 +117,7 @@ export const USER_ENROLLMENTS_COLUMN = [
   { key: "enrollment_type_id", hidden: true },
   { key: "course_name", hidden: true },
   { key: "module_name", hidden: true },
-  { key: "enrollment_status_id" },
+  { key: "enrollment_status_id", filters: true },
   { key: "enrollment_start_date", responsive: ["lg"] },
   { key: "enrollment_end_date", responsive: ["lg"] },
   { key: "enrollment_payment_type_id", responsive: ["xl"] },
