@@ -24,7 +24,6 @@ export function RoomsTable(props) {
       //   fetchList("/api/rooms", params, sort, filter)
       // }
       onRequest={(params, sort, filter) => {
-        console.log("params", params, "sort", sort, "filter", filter);
         return fetchList("/api/rooms", params, sort, filter);
       }}
     />
