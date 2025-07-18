@@ -1,29 +1,11 @@
 // path: @/app/(back)/api/users/[id]/enrollments/route.js
 
 import {
-  getEnrollmentsByUser,
   createEnrollmentsByUser,
   deleteEnrollmentsByUser,
 } from "@/lib/service/enrollments-service";
 import { getClassFee } from "@/lib/service/classes-service";
 import { buildApiResponse } from "@/lib/util/api-util";
-
-export async function GET(request, context) {
-  try {
-    const { id: userId } = await context.params;
-    if (!userId) {
-      return buildApiResponse(400, false, "Thiếu ID người dùng.");
-    }
-
-    const { searchParams } = new URL(request.url);
-    const result = await getEnrollmentsByUser(userId, searchParams);
-    return buildApiResponse(200, true, "Lấy danh sách lớp thành công", {
-      data: result,
-    });
-  } catch (error) {
-    return buildApiResponse(500, false, error.message);
-  }
-}
 
 export async function POST(request, context) {
   try {

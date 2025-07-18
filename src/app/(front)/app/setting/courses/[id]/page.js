@@ -174,6 +174,7 @@ function PageContent({ params }) {
       <ClassesTransfer
         transferHook={useClasses.transfer}
         courseId={courseId}
+        targetParams={{ course_id: courseId }}
         afterClose={() => useClasses.table.reload()}
       />
       <ClassesDesc

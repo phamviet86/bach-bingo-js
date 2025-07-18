@@ -238,7 +238,10 @@ function PageContent({ params }) {
         classId={classId}
         enrollmentTypeId={enrollmentTypeId}
         sourceParams={useEnrollments.transfer.sourceParams}
-        targetParams={{ enrollment_type_id: enrollmentTypeId }}
+        targetParams={{
+          class_id: classId,
+          enrollment_type_id: enrollmentTypeId,
+        }}
         afterClose={() => useEnrollments.table.reload()}
       />
       <EnrollmentsDesc

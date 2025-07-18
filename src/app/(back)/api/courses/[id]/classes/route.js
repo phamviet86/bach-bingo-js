@@ -1,28 +1,10 @@
 // path: @/app/(back)/api/courses/[id]/classes/route.js
 
 import {
-  getClassesByCourse,
   createClassesByCourse,
   deleteClassesByCourse,
 } from "@/lib/service/classes-service";
 import { buildApiResponse } from "@/lib/util/api-util";
-
-export async function GET(request, context) {
-  try {
-    const { id: courseId } = await context.params;
-    if (!courseId) {
-      return buildApiResponse(400, false, "Thiếu ID khóa học.");
-    }
-
-    const { searchParams } = new URL(request.url);
-    const result = await getClassesByCourse(courseId, searchParams);
-    return buildApiResponse(200, true, "Lấy danh sách lớp học thành công", {
-      data: result,
-    });
-  } catch (error) {
-    return buildApiResponse(500, false, error.message);
-  }
-}
 
 export async function POST(request, context) {
   try {

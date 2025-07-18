@@ -68,9 +68,7 @@ export function ClassesTransfer({ courseId, ...props }) {
     <AntTransfer
       {...props}
       onSourceRequest={(params) => fetchList(`/api/modules`, params)}
-      onTargetRequest={(params) =>
-        fetchList(`/api/courses/${courseId}/classes`, params)
-      }
+      onTargetRequest={(params) => fetchList(`/api/classes`, params)}
       onAddItem={(keys) =>
         fetchPost(`/api/courses/${courseId}/classes`, {
           moduleIds: keys,
@@ -279,4 +277,3 @@ export function ClassesFields(params) {
     </>
   );
 }
-

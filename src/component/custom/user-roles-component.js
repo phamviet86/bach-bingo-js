@@ -60,8 +60,8 @@ export function UserRolesTransfer({ userId, roleStatus, ...props }) {
   return (
     <AntTransfer
       {...props}
-      onSourceRequest={() => fetchList(`/api/roles`)}
-      onTargetRequest={() => fetchList(`/api/users/${userId}/user-roles`)}
+      onSourceRequest={(params) => fetchList(`/api/roles`, params)}
+      onTargetRequest={(params) => fetchList(`/api/user-roles`, params)}
       onAddItem={(keys) =>
         fetchPost(`/api/users/${userId}/user-roles`, {
           roleIds: keys,

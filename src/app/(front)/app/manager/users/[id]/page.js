@@ -154,6 +154,7 @@ function PageContent({ params }) {
         transferHook={useUserRoles.transfer}
         userId={userId}
         roleStatus={roleStatus}
+        targetParams={{ user_id: userId }}
         afterClose={() => useUserRoles.table.reload()}
       />
     </ProCard>

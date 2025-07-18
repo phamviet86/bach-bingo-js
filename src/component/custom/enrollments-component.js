@@ -75,9 +75,7 @@ export function ClassEnrollmentsTransfer({
     <AntTransfer
       {...props}
       onSourceRequest={(params) => fetchList(`/api/users`, params)}
-      onTargetRequest={(params) =>
-        fetchList(`/api/classes/${classId}/enrollments`, params)
-      }
+      onTargetRequest={(params) => fetchList(`/api/enrollments`, params)}
       onAddItem={(keys) =>
         fetchPost(`/api/classes/${classId}/enrollments`, {
           userIds: keys,

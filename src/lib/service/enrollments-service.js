@@ -153,43 +153,6 @@ export async function deleteEnrollment(id) {
   }
 }
 
-// Get enrollments by class ID
-export async function getEnrollmentsByClass(classId, searchParams) {
-  try {
-    const ignoredSearchColumns = ["class_id"];
-    const { whereClause, orderByClause, limitClause, queryValues } =
-      parseSearchParams(searchParams, ignoredSearchColumns);
-
-    const sqlValue = [classId, ...queryValues];
-    const sqlText = `
-      SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name, u.user_avatar,
-        co.course_name,
-        m.module_name,
-        s.syllabus_name,
-        wm.module_name AS waiting_module_name,
-        ws.syllabus_name AS waiting_syllabus_name
-      FROM enrollments_view e
-      LEFT JOIN users u ON e.user_id = u.id
-      LEFT JOIN classes c ON e.class_id = c.id
-      LEFT JOIN courses co ON c.course_id = co.id
-      LEFT JOIN modules m ON c.module_id = m.id
-      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
-      LEFT JOIN modules wm ON e.module_id = wm.id
-      LEFT JOIN syllabuses ws ON wm.syllabus_id = ws.id
-      WHERE e.deleted_at IS NULL
-        AND e.class_id = $1
-      ${whereClause}
-      ${orderByClause || "ORDER BY e.created_at"}
-      ${limitClause};
-    `;
-
-    return await sql.query(sqlText, sqlValue);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
 // Create multiple enrollments by classId, enrollmentTypeId and userIds
 export async function createEnrollmentsByClass(
   classId,
@@ -239,43 +202,6 @@ export async function deleteEnrollmentsByClass(
     `;
     const queryValues = [classId, enrollmentTypeId, ...userIds];
     return await sql.query(queryText, queryValues);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-// Get enrollments by user ID
-export async function getEnrollmentsByUser(userId, searchParams) {
-  try {
-    const ignoredSearchColumns = ["user_id"];
-    const { whereClause, orderByClause, limitClause, queryValues } =
-      parseSearchParams(searchParams, ignoredSearchColumns);
-
-    const sqlValue = [userId, ...queryValues];
-    const sqlText = `
-      SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name, u.user_avatar,
-        co.course_name,
-        m.module_name,
-        s.syllabus_name,
-        wm.module_name AS waiting_module_name,
-        ws.syllabus_name AS waiting_syllabus_name
-      FROM enrollments_view e
-      LEFT JOIN users u ON e.user_id = u.id
-      LEFT JOIN classes c ON e.class_id = c.id
-      LEFT JOIN courses co ON c.course_id = co.id
-      LEFT JOIN modules m ON c.module_id = m.id
-      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
-      LEFT JOIN modules wm ON e.module_id = wm.id
-      LEFT JOIN syllabuses ws ON wm.syllabus_id = ws.id
-      WHERE e.deleted_at IS NULL
-        AND e.user_id = $1
-      ${whereClause}
-      ${orderByClause || "ORDER BY e.created_at"}
-      ${limitClause};
-    `;
-
-    return await sql.query(sqlText, sqlValue);
   } catch (error) {
     throw new Error(error.message);
   }
@@ -334,43 +260,6 @@ export async function deleteEnrollmentsByUser(
     `;
     const queryValues = [userId, enrollmentTypeId, ...classIds];
     return await sql.query(queryText, queryValues);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
-// Get waiting enrollments by user ID
-export async function getWaitingEnrollmentsByUser(userId, searchParams) {
-  try {
-    const ignoredSearchColumns = ["user_id"];
-    const { whereClause, orderByClause, limitClause, queryValues } =
-      parseSearchParams(searchParams, ignoredSearchColumns);
-
-    const sqlValue = [userId, ...queryValues];
-    const sqlText = `
-      SELECT e.*, COUNT(*) OVER() AS total,
-        u.user_name, u.user_avatar,
-        co.course_name,
-        m.module_name,
-        s.syllabus_name,
-        wm.module_name AS waiting_module_name,
-        ws.syllabus_name AS waiting_syllabus_name
-      FROM enrollments_view e
-      LEFT JOIN users u ON e.user_id = u.id
-      LEFT JOIN classes c ON e.class_id = c.id
-      LEFT JOIN courses co ON c.course_id = co.id
-      LEFT JOIN modules m ON c.module_id = m.id
-      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
-      LEFT JOIN modules wm ON e.module_id = wm.id
-      LEFT JOIN syllabuses ws ON wm.syllabus_id = ws.id
-      WHERE e.deleted_at IS NULL
-        AND e.user_id = $1
-      ${whereClause}
-      ${orderByClause || "ORDER BY e.created_at"}
-      ${limitClause};
-    `;
-
-    return await sql.query(sqlText, sqlValue);
   } catch (error) {
     throw new Error(error.message);
   }

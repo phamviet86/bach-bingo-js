@@ -1,28 +1,10 @@
 // path: @/app/(back)/api/users/[id]/waiting-enrollments/route.js
 
 import {
-  getWaitingEnrollmentsByUser,
   createWaitingEnrollmentsByUser,
   deleteWaitingEnrollmentsByUser,
 } from "@/lib/service/enrollments-service";
 import { buildApiResponse } from "@/lib/util/api-util";
-
-export async function GET(request, context) {
-  try {
-    const { id: userId } = await context.params;
-    if (!userId) {
-      return buildApiResponse(400, false, "Thiếu ID người dùng.");
-    }
-
-    const { searchParams } = new URL(request.url);
-    const result = await getWaitingEnrollmentsByUser(userId, searchParams);
-    return buildApiResponse(200, true, "Lấy danh sách chờ thành công", {
-      data: result,
-    });
-  } catch (error) {
-    return buildApiResponse(500, false, error.message);
-  }
-}
 
 export async function POST(request, context) {
   try {

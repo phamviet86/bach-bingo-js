@@ -124,36 +124,6 @@ export async function deleteClass(id) {
   }
 }
 
-// Get classes by course ID
-export async function getClassesByCourse(courseId, searchParams) {
-  try {
-    const ignoredSearchColumns = ["course_id"];
-    const { whereClause, orderByClause, limitClause, queryValues } =
-      parseSearchParams(searchParams, ignoredSearchColumns);
-
-    const sqlValue = [courseId, ...queryValues];
-    const sqlText = `
-      SELECT c.*, COUNT(*) OVER() AS total,
-        co.course_name, co.course_code,
-        m.module_name,
-        s.syllabus_name
-      FROM classes_view c
-      LEFT JOIN courses co ON c.course_id = co.id
-      LEFT JOIN modules m ON c.module_id = m.id
-      LEFT JOIN syllabuses s ON m.syllabus_id = s.id
-      WHERE c.deleted_at IS NULL
-        AND c.course_id = $1
-      ${whereClause}
-      ${orderByClause || "ORDER BY c.created_at"}
-      ${limitClause};
-    `;
-
-    return await sql.query(sqlText, sqlValue);
-  } catch (error) {
-    throw new Error(error.message);
-  }
-}
-
 // create multiple classes by course ID and module IDs
 export async function createClassesByCourse(courseId, moduleIds) {
   try {
