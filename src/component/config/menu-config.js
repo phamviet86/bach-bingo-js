@@ -54,7 +54,10 @@ export const MENU_CONFIG = [
     name: "Quản sinh",
     path: "/app/admin",
     icon: <PhoneOutlined />,
-    routes: [{ path: "/app/admin/users", name: "Học viên" }],
+    routes: [
+      { path: "/app/admin/users", name: "Học viên" },
+      { path: "/app/admin/classes", name: "Lớp học" },
+    ],
   },
   {
     name: "Giáo viên",

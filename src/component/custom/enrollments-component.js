@@ -145,7 +145,7 @@ export function ClassWaitingEnrollmentsTransfer({
       sourceItem={{ key: "id" }}
       targetItem={{
         key: "id",
-        // disabled: ["enrollment_status_id", [], [32]],
+        disabled: ["enrollment_status_id", [], [32]],
       }}
       showSearch={true}
       searchSourceColumns={[
