@@ -3,11 +3,11 @@
 "use client";
 
 import { Space } from "antd";
-import { BankOutlined, InfoCircleOutlined } from "@ant-design/icons";
+import { PhoneOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, DetailButton } from "@/component/common";
 import { ClassesTable, ClassesColumns } from "@/component/custom";
-import { useTable, useNav } from "@/component/hook";
+import { useTable } from "@/component/hook";
 import { PageProvider, usePageContext } from "./provider";
 import { CLASSES_COLUMN } from "@/component/config";
 
@@ -72,7 +72,7 @@ function PageContent() {
         {
           title: (
             <Space>
-              <BankOutlined />
+              <PhoneOutlined />
               <span>Quản lý</span>
             </Space>
           ),

@@ -4,7 +4,7 @@
 
 import { use, useState } from "react";
 import { Space, Avatar, Dropdown } from "antd";
-import { BankOutlined, UserOutlined, EditOutlined } from "@ant-design/icons";
+import { PhoneOutlined, UserOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { AntPage, AntButton, BackButton } from "@/component/common";
 import {
@@ -261,12 +261,12 @@ function PageContent({ params }) {
         {
           title: (
             <Space>
-              <BankOutlined />
-              <span>Quản lý</span>
+              <PhoneOutlined />
+              <span>Quản sinh</span>
             </Space>
           ),
         },
-        { title: "Lớp học", path: "/app/manager/classes" },
+        { title: "Lớp học", path: "/app/admin/classes" },
         { title: pageTitle },
       ]}
       title={pageTitle}
