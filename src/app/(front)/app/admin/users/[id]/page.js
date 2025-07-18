@@ -24,6 +24,7 @@ import {
   EnrollmentsColumns,
   EnrollmentsFields,
   UserEnrollmentsTransfer,
+  UserWaitingEnrollmentsTransfer,
 } from "@/component/custom";
 import {
   useTable,
@@ -124,10 +125,11 @@ function PageContent({ params }) {
   // enrollments logic hooks
   const useEnrollments = {
     table: useTable(),
-    create: useForm(),
+    waitingTable: useTable(),
     desc: useDesc(),
     edit: useForm(),
     transfer: useTransfer(),
+    waitingTransfer: useTransfer(),
     columns: EnrollmentsColumns(
       {
         enrollmentStatus,
@@ -155,7 +157,7 @@ function PageContent({ params }) {
       />
       <AntButton
         key="add-class-button"
-        label="Đăng ký học"
+        label="Đăng ký lớp"
         color="primary"
         variant="solid"
         onClick={() => useEnrollments.transfer.open()}
@@ -169,23 +171,30 @@ function PageContent({ params }) {
       <EnrollmentsTable
         tableHook={useEnrollments.table}
         columns={useEnrollments.columns}
-        requestParams={{ user_id: userId, enrollment_type_id: 26 }}
+        requestParams={{
+          user_id: userId,
+          enrollment_type_id: 26,
+        }}
         leftColumns={[
           {
             width: 56,
             align: "center",
             search: false,
-            render: (_, record) => (
-              <AntButton
-                icon={<EyeOutlined />}
-                color="primary"
-                variant="link"
-                onClick={() => {
-                  useEnrollments.desc.setParams({ id: record?.id });
-                  useEnrollments.desc.open();
-                }}
-              />
-            ),
+            render: (_, record) => {
+              if (record?.class_id) {
+                return (
+                  <AntButton
+                    icon={<EyeOutlined />}
+                    color="primary"
+                    variant="link"
+                    onClick={() => {
+                      useEnrollments.desc.setParams({ id: record?.id });
+                      useEnrollments.desc.open();
+                    }}
+                  />
+                );
+              }
+            },
           },
         ]}
         rightColumns={[
@@ -193,18 +202,22 @@ function PageContent({ params }) {
             width: 56,
             align: "center",
             search: false,
-            render: (_, record) => (
-              <AntButton
-                icon={<EditOutlined />}
-                color="primary"
-                variant="link"
-                onClick={() => {
-                  useEnrollments.edit.setRequestParams({ id: record?.id });
-                  useEnrollments.edit.setDeleteParams({ id: record?.id });
-                  useEnrollments.edit.open();
-                }}
-              />
-            ),
+            render: (_, record) => {
+              if (record?.class_id) {
+                return (
+                  <AntButton
+                    icon={<EditOutlined />}
+                    color="primary"
+                    variant="link"
+                    onClick={() => {
+                      useEnrollments.edit.setRequestParams({ id: record?.id });
+                      useEnrollments.edit.setDeleteParams({ id: record?.id });
+                      useEnrollments.edit.open();
+                    }}
+                  />
+                );
+              }
+            },
           },
         ]}
         syncToUrl={false}

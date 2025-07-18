@@ -178,6 +178,53 @@ export function UserEnrollmentsTransfer({
   );
 }
 
+export function UserWaitingEnrollmentsTransfer({
+  userId,
+  enrollmentTypeId,
+  ...props
+}) {
+  return (
+    <AntTransfer
+      {...props}
+      onSourceRequest={(params) => fetchList(`/api/modules`, params)}
+      onTargetRequest={(params) =>
+        fetchList(`/api/users/${userId}/waiting-enrollments`, params)
+      }
+      onAddItem={(keys) =>
+        fetchPost(`/api/users/${userId}/waiting-enrollments`, {
+          moduleIds: keys,
+          enrollmentTypeId: enrollmentTypeId,
+        })
+      }
+      onRemoveItem={(keys) =>
+        fetchDelete(`/api/users/${userId}/waiting-enrollments`, {
+          moduleIds: keys,
+          enrollmentTypeId: enrollmentTypeId,
+        })
+      }
+      sourceItem={{ key: "id" }}
+      targetItem={{
+        key: "module_id",
+        disabled: ["enrollment_status_id", [], [31]],
+      }}
+      showSearch={true}
+      searchSourceColumns={["module_name_like", "syllabus_name_like"]}
+      searchTargetColumns={["module_name_like", "syllabus_name_like"]}
+      render={(record) => `${record.syllabus_name} - ${record.module_name}`}
+      titles={["Học phần", "Đã đăng ký"]}
+      operations={["Thêm", "Xóa"]}
+      variant="modal"
+      modalProps={{ title: "Xếp chờ" }}
+      locale={{
+        searchPlaceholder: "Tìm kiếm...",
+        itemsUnit: "học phần",
+        itemUnit: "học phần",
+        notFoundContent: "Không tìm thấy học phần",
+      }}
+    />
+  );
+}
+
 export function EnrollmentsColumns(params, displayConfig = []) {
   const { enrollmentStatus, enrollmentType, enrollmentPaymentType } =
     params || {};
@@ -191,9 +238,30 @@ export function EnrollmentsColumns(params, displayConfig = []) {
       sorter: { multiple: 1 },
     },
     {
+      title: "Giáo trình",
+      dataIndex: "syllabus_name",
+      key: "syllabus_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
       title: "Học phần",
       dataIndex: "module_name",
       key: "module_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Giáo trình",
+      dataIndex: "waiting_syllabus_name",
+      key: "waiting_syllabus_name",
+      valueType: "text",
+      sorter: { multiple: 1 },
+    },
+    {
+      title: "Học phần",
+      dataIndex: "waiting_module_name",
+      key: "waiting_module_name",
       valueType: "text",
       sorter: { multiple: 1 },
     },
@@ -317,7 +385,9 @@ export function EnrollmentsColumns(params, displayConfig = []) {
       render: (_, record) => (
         <Space size={0} direction="vertical">
           <Typography.Text strong>
-            {record.course_name} - {record.module_name}
+            {record.class_id
+              ? `${record.course_name} - ${record.module_name}`
+              : `${record.waiting_syllabus_name} - ${record.waiting_module_name}`}
           </Typography.Text>
           {renderEnum(
             enrollmentType?.valueEnum,
